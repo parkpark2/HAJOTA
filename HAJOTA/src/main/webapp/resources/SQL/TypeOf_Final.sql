@@ -25,6 +25,7 @@
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------
 
+
 -- 테이블 생성
 /* 게스트 테이블 */
 CREATE TABLE tbl_guest (
@@ -1082,3 +1083,110 @@ ALTER TABLE tbl_host_report
 		REFERENCES tbl_guest (
 			guest_email
 		);
+
+
+
+-- 시퀀스 생성
+create sequence seq_host_withdraw_reason
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+
+create sequence seq_notice
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+
+create sequence seq_recruit
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+
+create sequence seq_lodge_image
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+
+create sequence seq_lodge
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+
+create sequence seq_coupon
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+
+create sequence seq_payment
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+
+create sequence seq_host_report
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+
+create sequence seq_report_review
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+
+create sequence seq_review
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+
+create sequence seq_review_guest
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+
+create sequence seq_review_host
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+
+create sequence seq_guest_withdraw_reason
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
