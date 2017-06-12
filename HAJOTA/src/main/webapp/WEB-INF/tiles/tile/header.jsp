@@ -13,7 +13,7 @@
 		<img src="<%= request.getContextPath() %>/resources/images/oneofall/truelogo.png" style="width:130px; height:40px;"/>  
 		</div> 
 		
-		<div style="margin-left: 1500px; display: inline; float: right;"> 
+		<div style=" display: inline; float: right;"> 
  		<img src="<%= request.getContextPath() %>/resources/images/oneofall/1.jpg" style="width:30px; height:30px;"/>&nbsp;&nbsp;
  		<img src="<%= request.getContextPath() %>/resources/images/oneofall/2.jpg" style="width:30px; height:30px;"/>&nbsp;&nbsp;
  		<img src="<%= request.getContextPath() %>/resources/images/oneofall/3.jpg" style="width:30px; height:30px;"/>&nbsp;&nbsp;
