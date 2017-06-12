@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 
 <%-- ===== #35. tiles 를 사용하는 레이아웃 페이지 만들기  ===== --%>
-<%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"  %>    
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"  %>    
     
 <!DOCTYPE html>
 <html>
@@ -11,16 +11,23 @@
 <title>tiles 를 사용한 메인(시작) 페이지 작성하기</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/resources/BootStrapStudy/css/bootstrap.css">
-  <script type="text/javascript" src="<%=request.getContextPath() %>/resources/js/jquery-2.0.0.js"></script>
-  <script type="text/javascript" src="<%=request.getContextPath() %>/resources/BootStrapStudy/js/bootstrap.js"></script>
+  <link rel="stylesheet"
+   href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+	<link rel="stylesheet"
+	   href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" />
+	<script
+	   src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script
+	   src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<link href="<%=request.getContextPath()%>/resources/css/style.css"
+	   rel="stylesheet" />
   
   <style type="text/css">
-  	#mycontainer	{ width:90%; margin:0 auto; padding:20px; }
-	#myheader		{ background-color:#EBEBE0; height:56px; padding: 10px; }
-	#mycontent		{ background-color:#F5F5F5; float:left; width:75%; min-height:800px; padding-top: 40px;}
-	#mysideinfo		{ background-color:#F0FFFF; float:left; width:25%; min-height:800px; padding-top: 20px;}
-	#myfooter		{ background-color:#555555; clear:both; height:100px; }
+  	#mycontainer	{ width:98%; margin:0 auto; padding:20px;  }
+	#myheader		{ height:40px; padding: 10px; opacity: 0.5; margin-left:-10px; margin-top: -20px; width: 100%; }
+	#mycontent		{  float:left; width:100%; min-height:800px; padding-top: 40px; }
+	#myfooter		{ clear:both; height:100px; opacity: 0.5; }
+	p {line-height: 2}
 	/* #displayRank 	{ margin:20px; height:200px;} */
 	
 	#myheader a {text-decoration:none;}
@@ -46,22 +53,21 @@
 </head>
 
 <body>
+	<div id="section1"
+      style="background: url('<%=request.getContextPath()%>/resources/images/oneofall/index.jpg') no-repeat center center fixed; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;">
 	<div id="mycontainer">
 		<div id="myheader">
 			<tiles:insertAttribute name="header" />
 		</div>
 	
 		<div id="mycontent">
-			<tiles:insertAttribute name="content" />
+			<tiles:insertAttribute name="search" />
 		</div>
 		
-		<div id="mysideinfo">
-			<tiles:insertAttribute name="sideinfo" />
-		</div>
-	
 		<div id="myfooter">
 			<tiles:insertAttribute name="footer" />
 		</div>
+	</div>
 	</div>
 </body>
 </html>
