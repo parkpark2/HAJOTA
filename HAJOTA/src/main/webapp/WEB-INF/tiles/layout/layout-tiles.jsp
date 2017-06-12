@@ -19,14 +19,12 @@
 	   src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script
 	   src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-	<link href="<%=request.getContextPath()%>/resources/css/style.css"
-	   rel="stylesheet" />
-  
+	
   <style type="text/css">
-  	#mycontainer	{ width:98%; margin:0 auto; padding:20px;  }
-	#myheader		{ height:40px; padding: 10px; opacity: 0.5; margin-left:-10px; margin-top: -20px; width: 100%; }
+  	#mycontainer	{ width:100%; margin:0 auto;  }
+	#myheader		{ background-color: white; height:40px;   margin-left:0px; margin-top: 0px; width: 100%; }
 	#mycontent		{  float:left; width:100%; min-height:800px; padding-top: 40px; }
-	#myfooter		{ clear:both; height:100px; opacity: 0.5; }
+	#myfooter		{ background-color: white; clear:both; height:50px; width: 100%; margin: auto; }
 	p {line-height: 2}
 	/* #displayRank 	{ margin:20px; height:200px;} */
 	
@@ -55,19 +53,21 @@
 <body>
 	<div id="section1"
       style="background: url('<%=request.getContextPath()%>/resources/images/oneofall/index.jpg') no-repeat center center fixed; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;">
-	<div id="mycontainer">
-		<div id="myheader">
+	<div id="myheader">
 			<tiles:insertAttribute name="header" />
 		</div>
+	<div id="mycontainer">
+		
 	
 		<div id="mycontent">
 			<tiles:insertAttribute name="search" />
 		</div>
-		
 		<div id="myfooter">
 			<tiles:insertAttribute name="footer" />
 		</div>
+		
 	</div>
+	
 	</div>
 </body>
 </html>

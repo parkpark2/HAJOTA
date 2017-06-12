@@ -10,14 +10,14 @@
 <body>
 <div style="display: inline;">
 		<div style="display: inline; margin-bottom: 10px; float: left;">
-		<img src="<%= request.getContextPath() %>/resources/images/oneofall/truelogo.png" style="width:130px; height:40px;"/>  
+		<img src="<%= request.getContextPath() %>/resources/images/oneofall/loco.png" style="width:130px; height:40px;"/>  
 		</div> 
 		
 		<div style=" display: inline; float: right;"> 
- 		<img src="<%= request.getContextPath() %>/resources/images/oneofall/1.jpg" style="width:30px; height:30px;"/>&nbsp;&nbsp;
- 		<img src="<%= request.getContextPath() %>/resources/images/oneofall/2.jpg" style="width:30px; height:30px;"/>&nbsp;&nbsp;
- 		<img src="<%= request.getContextPath() %>/resources/images/oneofall/3.jpg" style="width:30px; height:30px;"/>&nbsp;&nbsp;
- 		<img src="<%= request.getContextPath() %>/resources/images/oneofall/4.jpg" style="width:30px; height:30px;"/>
+ 		<img src="<%= request.getContextPath() %>/resources/images/oneofall/1.jpg" style="width:30px; height:40px;"/>&nbsp;&nbsp;
+ 		<img src="<%= request.getContextPath() %>/resources/images/oneofall/2.jpg" style="width:30px; height:40px;"/>&nbsp;&nbsp;
+ 		<img src="<%= request.getContextPath() %>/resources/images/oneofall/3.jpg" style="width:30px; height:40px;"/>&nbsp;&nbsp;
+ 		<img src="<%= request.getContextPath() %>/resources/images/oneofall/4.jpg" style="width:30px; height:40px;"/>
  		</div>
 		<%-- <img src="<%= request.getContextPath() %>/images/로고1.png" style="width:50px; height:45px;"/> 
 		<span style="font-size:20px; margin-left:1400px;">호스팅하기 | 로그인 | 회원가입</span>
