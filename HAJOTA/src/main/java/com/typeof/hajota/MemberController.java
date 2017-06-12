@@ -3,6 +3,7 @@ package com.typeof.hajota;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.typeof.hajota.member.service.MemberService;
 
@@ -20,5 +21,12 @@ public class MemberController {
 	@Autowired
 	private MemberService service;
 
+	
+	@RequestMapping(value="/index.go")
+	public String test(){
+		
+		
+		return "main/index.tiles";
+	}
 
 }

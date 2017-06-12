@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
-<%-- ===== #39.  tiles 중 footer 페이지 만들기  ===== --%>
-
-<div align="center" style="color: #999999; padding: 7px;">
-(사)KH정보교육원  |  사업자등록번호 : 118-82-02004 <br/>
-강남지원 1관 : 서울특별시 강남구 역삼동 823-24 남도빌딩 2F, 3F, 4F | 강남지원 2관 : 서울특별시 강남구 역삼동 823-42 그랑프리 빌딩 3F, 4F, 5F, 7F <br/>
-당산지원 : 서울특별시 영등포구 선유동2로 57 이레빌딩 (구관) 19F, 20F | 종로지원 : 서울특별시 중구 남대문로 120 대일빌딩 2F<br/>
-Copyright © 1998-2016 KH Information Educational Institute All Right Reserved
-</div>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+  <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-text-green">HAJOTA.co</a></p>
+</body>
+</html>
