@@ -5,7 +5,17 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
-
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+  $( function() {
+    $( ".datepicker" ).datepicker({
+    
+    });
+  } );
+  </script>
 </head>
 <body>
 <div class="container">
@@ -24,15 +34,11 @@
 
             <p>
                <!-- 달력 띄우자 -->
-               <input type="text" id="search" name="search"
-                  placeholder="도시, 지역, 숙소 검색" size="10" />&nbsp; <input type="text"
-                  id="startDate" name="startDate" readonly="readonly"
-                  placeholder="체크인" size="10" />&nbsp; <input type="text"
-                  id="endDate" name="endDate" readonly="readonly" placeholder="체크아웃"
-                  size="10" />&nbsp; <input type="text" id="numOfPeople"
-                  name="numOfPeople" readonly="readonly" placeholder="숙박 인원"
-                  size="10" />&nbsp; <a class="btn btn-lg btn-default" href="#"
-                  role="button">View Latest News »</a>
+               <input type="text" id="search" name="search" placeholder="도시, 지역, 숙소 검색" size="10" />&nbsp; 
+               <input type="text" class="datepicker" name="startDate" placeholder="체크인" size="10" />&nbsp; 
+               <input type="text" class="datepicker" name="endDate"  placeholder="체크아웃" size="10" />&nbsp; 
+               <input type="text" id="numOfPeople" name="numOfPeople" readonly="readonly" placeholder="숙박 인원" size="10" />&nbsp; 
+               <a class="btn btn-lg btn-default" href="#" role="button">View Latest News »</a>
             </p>
          </div>
 
