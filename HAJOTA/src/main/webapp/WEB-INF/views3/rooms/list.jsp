@@ -65,11 +65,11 @@ a:hover {
 	color: #999;
 	text-transform: uppercase;
 }
-
+/* 
 .page-header h3 {
 	line-height: 0.88rem;
 	color: #000;
-}
+} */
 
 /* Thumbnail Box */
 .caption h4 {
