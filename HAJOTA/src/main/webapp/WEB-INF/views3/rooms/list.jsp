@@ -1,15 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
-
+<!-- 
 <link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" /> -->
 <link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" />
+	href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/css/bootstrap.min.css" />
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script
@@ -27,10 +29,15 @@
 	background: #3399cc;
 	padding: 40px;
 } */
+    
 img {
 	max-width: 100%;
 }
-
+/* 
+img.mainImg {
+	min-width: 100%;
+} 
+ */
 a {
 	-webkit-transition: all 150ms ease;
 	-moz-transition: all 150ms ease;
@@ -47,16 +54,26 @@ a:hover {
 	text-decoration: none;
 }
 
+.thumbnails {
+	width: 100%;
+}
+
+ul, ol {
+	margin-bottom: 20px;
+}
+
 /* Container */
 .container-fluid {
-	background: #FFFFFF;
+	/* background: #F5F5F5; */
 	/* margin: 40px auto 10px;
 	padding: 20px 40px 0; */
-	max-width: 960px;
-	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+	max-width: 100%;
+	min-height: 100%;
+	/* box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1); */
 }
 
 /* Page Header */
+
 .page-header {
 	background: #f9f9f9;
 	/* margin: -30px -40px 40px;
@@ -65,6 +82,7 @@ a:hover {
 	color: #999;
 	text-transform: uppercase;
 }
+
 /* 
 .page-header h3 {
 	line-height: 0.88rem;
@@ -88,7 +106,7 @@ a:hover {
 
 /* Carousel Control */
 .control-box {
-	text-align: right;
+	text-align: center;
 	width: 100%;
 }
 
@@ -104,7 +122,7 @@ a:hover {
 	padding: 4px 10px 0px;
 	position: static;
 	height: 30px;
-	width: 15px;
+	width: 40px;
 }
 
 /* Footer */
@@ -123,7 +141,7 @@ a:hover {
 p.right {
 	float: right;
 }
-
+/* 
 /* Mobile Only */
 @media ( max-width : 767px) {
 	.page-header, .control-box {
@@ -135,11 +153,12 @@ p.right {
 	.caption {
 		word-break: break-all;
 	}
-}
+} */
 
 /* ADD-ON
 -------------------------------------------------- */
-/* body:after {
+/*
+body:after {
 	content: "less than 320px";
 	font-size: 1rem;
 	font-weight: bold;
@@ -204,12 +223,14 @@ p.right {
 		margin-left: 0
 	}
 }
- */
+*/
+/*
 ::selection {
 	background: #ff5e99;
 	color: #F5F5F5;
 	text-shadow: 0;
 }
+*/
 
 ::-moz-selection {
 	background: #ff5e99;
@@ -245,9 +266,9 @@ input::-moz-focus-inner {
 					<div class="carousel-inner">
 						<div class="item active">
 							<ul class="thumbnails">
-								<li class="span3">
+								<li class="span4">
 									<div class="thumbnail">
-										<a href="#"><img src="http://placehold.it/360x240" alt=""></a>
+										<a href="#"><img class="mainImg" src="http://placehold.it/360x240" alt=""></a>
 									</div>
 									<div class="caption">
 										<h4>Praesent commodo</h4>
@@ -255,9 +276,10 @@ input::-moz-focus-inner {
 										<a class="btn btn-mini" href="#">&raquo; Read More</a>
 									</div>
 								</li>
-								<li class="span3">
+								
+								<li class="span4">
 									<div class="thumbnail">
-										<a href="#"><img src="http://placehold.it/360x240" alt=""></a>
+										<a href="#"><img class="mainImg" src="http://placehold.it/360x240" alt=""></a>
 									</div>
 									<div class="caption">
 										<h4>Praesent commodo</h4>
@@ -265,9 +287,10 @@ input::-moz-focus-inner {
 										<a class="btn btn-mini" href="#">&raquo; Read More</a>
 									</div>
 								</li>
-								<li class="span3">
+								
+								<li class="span4">
 									<div class="thumbnail">
-										<a href="#"><img src="http://placehold.it/360x240" alt=""></a>
+										<a href="#"><img class="mainImg" src="http://placehold.it/360x240" alt=""></a>
 									</div>
 									<div class="caption">
 										<h4>Praesent commodo</h4>
@@ -275,9 +298,34 @@ input::-moz-focus-inner {
 										<a class="btn btn-mini" href="#">&raquo; Read More</a>
 									</div>
 								</li>
-								<li class="span3">
+							</ul>
+							
+							<ul class="thumbnails">
+								<li class="span4">
 									<div class="thumbnail">
-										<a href="#"><img src="http://placehold.it/360x240" alt=""></a>
+										<a href="#"><img class="mainImg" src="http://placehold.it/360x240" alt=""></a>
+									</div>
+									<div class="caption">
+										<h4>Praesent commodo</h4>
+										<p>Nullam Condimentum Nibh Etiam Sem</p>
+										<a class="btn btn-mini" href="#">&raquo; Read More</a>
+									</div>
+								</li>
+								
+								<li class="span4">
+									<div class="thumbnail">
+										<a href="#"><img class="mainImg" src="http://placehold.it/360x240" alt=""></a>
+									</div>
+									<div class="caption">
+										<h4>Praesent commodo</h4>
+										<p>Nullam Condimentum Nibh Etiam Sem</p>
+										<a class="btn btn-mini" href="#">&raquo; Read More</a>
+									</div>
+								</li>
+								
+								<li class="span4">
+									<div class="thumbnail">
+										<a href="#"><img class="mainImg" src="http://placehold.it/360x240" alt=""></a>
 									</div>
 									<div class="caption">
 										<h4>Praesent commodo</h4>
@@ -287,10 +335,12 @@ input::-moz-focus-inner {
 								</li>
 							</ul>
 						</div>
-						<!-- /Slide1 -->
+						
+						<!-- 반복되는 슬라이드 부분 -->
+						<!--
 						<div class="item">
 							<ul class="thumbnails">
-								<li class="span3">
+								<li class="span4">
 									<div class="thumbnail">
 										<a href="#"><img src="http://placehold.it/360x240" alt=""></a>
 									</div>
@@ -300,7 +350,7 @@ input::-moz-focus-inner {
 										<a class="btn btn-mini" href="#">&raquo; Read More</a>
 									</div>
 								</li>
-								<li class="span3">
+								<li class="span4">
 									<div class="thumbnail">
 										<a href="#"><img src="http://placehold.it/360x240" alt=""></a>
 									</div>
@@ -310,7 +360,7 @@ input::-moz-focus-inner {
 										<a class="btn btn-mini" href="#">&raquo; Read More</a>
 									</div>
 								</li>
-								<li class="span3">
+								<li class="span4">
 									<div class="thumbnail">
 										<a href="#"><img src="http://placehold.it/360x240" alt=""></a>
 									</div>
@@ -320,7 +370,7 @@ input::-moz-focus-inner {
 										<a class="btn btn-mini" href="#">&raquo; Read More</a>
 									</div>
 								</li>
-								<li class="span3">
+								<li class="span4">
 									<div class="thumbnail">
 										<a href="#"><img src="http://placehold.it/360x240" alt=""></a>
 									</div>
@@ -332,12 +382,48 @@ input::-moz-focus-inner {
 								</li>
 							</ul>
 						</div>
+						 -->
 						<!-- /Slide2 -->
 						<div class="item">
+								<ul class="thumbnails">
+								<li class="span4">
+									<div class="thumbnail">
+										<a href="#"><img class="mainImg" src="http://placehold.it/360x240" alt=""></a>
+									</div>
+									<div class="caption">
+										<h4>Praesent commodo</h4>
+										<p>Nullam Condimentum Nibh Etiam Sem</p>
+										<a class="btn btn-mini" href="#">&raquo; Read More</a>
+									</div>
+								</li>
+								
+								<li class="span4">
+									<div class="thumbnail">
+										<a href="#"><img class="mainImg" src="http://placehold.it/360x240" alt=""></a>
+									</div>
+									<div class="caption">
+										<h4>Praesent commodo</h4>
+										<p>Nullam Condimentum Nibh Etiam Sem</p>
+										<a class="btn btn-mini" href="#">&raquo; Read More</a>
+									</div>
+								</li>
+								
+								<li class="span4">
+									<div class="thumbnail">
+										<a href="#"><img class="mainImg" src="http://placehold.it/360x240" alt=""></a>
+									</div>
+									<div class="caption">
+										<h4>Praesent commodo</h4>
+										<p>Nullam Condimentum Nibh Etiam Sem</p>
+										<a class="btn btn-mini" href="#">&raquo; Read More</a>
+									</div>
+								</li>
+							</ul>
+							
 							<ul class="thumbnails">
-								<li class="span3">
+								<li class="span4">
 									<div class="thumbnail">
-										<a href="#"><img src="http://placehold.it/360x240" alt=""></a>
+										<a href="#"><img class="mainImg" src="http://placehold.it/360x240" alt=""></a>
 									</div>
 									<div class="caption">
 										<h4>Praesent commodo</h4>
@@ -345,9 +431,10 @@ input::-moz-focus-inner {
 										<a class="btn btn-mini" href="#">&raquo; Read More</a>
 									</div>
 								</li>
-								<li class="span3">
+								
+								<li class="span4">
 									<div class="thumbnail">
-										<a href="#"><img src="http://placehold.it/360x240" alt=""></a>
+										<a href="#"><img sclass="mainImg" rc="http://placehold.it/360x240" alt=""></a>
 									</div>
 									<div class="caption">
 										<h4>Praesent commodo</h4>
@@ -355,19 +442,10 @@ input::-moz-focus-inner {
 										<a class="btn btn-mini" href="#">&raquo; Read More</a>
 									</div>
 								</li>
-								<li class="span3">
+								
+								<li class="span4">
 									<div class="thumbnail">
-										<a href="#"><img src="http://placehold.it/360x240" alt=""></a>
-									</div>
-									<div class="caption">
-										<h4>Praesent commodo</h4>
-										<p>Nullam Condimentum Nibh Etiam Sem</p>
-										<a class="btn btn-mini" href="#">&raquo; Read More</a>
-									</div>
-								</li>
-								<li class="span3">
-									<div class="thumbnail">
-										<a href="#"><img src="http://placehold.it/360x240" alt=""></a>
+										<a href="#"><img class="mainImg" src="http://placehold.it/360x240" alt=""></a>
 									</div>
 									<div class="caption">
 										<h4>Praesent commodo</h4>
@@ -396,5 +474,28 @@ input::-moz-focus-inner {
 		<!-- /.row -->
 	</div>
 	<!-- /.container -->
+	<c:if test="${roomsList == null || empty roomsList}">
+		<div>등록 된 숙소가 없습니다.</div>
+	</c:if>	
+	
+	<c:if test="${roomsList != null || not empty roomsList}">
+		<c:forEach var="rooms" items="${roomsList}">
+			<div>${rooms.SEQ_LODGE}</div>
+			<div>${rooms.HOST_EMAIL}</div>
+			<div>${rooms.NAME}</div>
+			<div>${rooms.TYPE_LODGE}</div>
+			<div>${rooms.TYPE_BUILDING}</div>
+			<div>${rooms.LOCATION}</div>
+			<div>${rooms.LAT}</div>
+			<div>${rooms.LON}</div>
+			<div>${rooms.IMG_MAIN}</div>
+			<div>${rooms.NUM_OF_PEOPLE}</div>
+			<div>${rooms.PADD_PRICE}</div>
+			<div>${rooms.DEPOSIT_PRICE}</div>
+			<div>${rooms.CLEAN_PRICE}</div>
+			<div>${rooms.TOTAL_PRICE}</div>
+			<div>${rooms.STATUS}</div>
+		</c:forEach>
+	</c:if>
 </body>
 </html>

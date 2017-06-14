@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ===== #26. mapper 기본설정 ===== -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<!-- ===== #27. 루트엘리먼트 & 네임스페이스 설정(프로젝트 전체 내에서 고유해야 한다.) ===== -->
+<mapper namespace="JH_rooms">
+	<resultMap type="java.util.HashMap" id="roomsListMap">
+	 		<result property="SEQ_LODGE" 		column="seq_lodge" 		javaType="int" />
+	 		<result property="HOST_EMAIL" 		column="host_email" 	javaType="String" />
+	 		<result property="NAME" 			column="name" 			javaType="String" />
+	 		<result property="TYPE_LODGE" 		column="type_lodge" 	javaType="String" />
+	 		<result property="TYPE_BUILDING"	column="type_building" 	javaType="String" />
+	 		<result property="LOCATION" 		column="location" 		javaType="String" />
+	 		<result property="LAT" 				column="lat" 			javaType="double" />
+	 		<result property="LON" 				column="lon" 			javaType="double" />
+	 		<result property="IMG_MAIN" 		column="img_main" 		javaType="String" />
+	 		<result property="NUM_OF_PEOPLE" 	column="num_of_people" 	javaType="int" />
+	 		<result property="PADD_PRICE" 		column="padd_price" 	javaType="int" />
+	 		<result property="DEPOSIT_PRICE" 	column="deposit_price" 	javaType="int" />
+	 		<result property="CLEAN_PRICE" 		column="clean_price" 	javaType="int" />
+	 		<result property="TOTAL_PRICE" 		column="total_price" 	javaType="int" />
+	 		<result property="STATUS" 			column="status" 		javaType="int" />
+	</resultMap>
+
+	<select id="selectRoomsList" resultMap="roomsListMap">
+ 		select *
+        from tbl_lodge
+        where 1 = 1
+        and status = 1
+        order by seq_lodge desc
+        <!-- 
+        <if test="department_id_Arr != null">
+        	and department_id IN
+        	<foreach collection="department_id_Arr" item="item" index="i" open="(" close=")" separator="," >   
+        		${department_id_Arr[i]}
+        	</foreach>
+        </if>
+        
+        <if test='gender != null and !gender.equals("전체")'>
+        	and gender = #{gender}
+        </if>
+	 	<if test='ageline != null and ageline >= 0'>
+        	and trunc(age, -1) = #{ageline}
+        </if>
+         -->
+ 	</select>
+ 	
+ 	
+ 	 	
+	<resultMap type="java.util.HashMap" id="roomsLocatonInfoListMap">
+ 		<result property="SEQ_LODGE" 		column="seq_lodge" 		javaType="int" />
+ 		<result property="LAT" 				column="lat" 			javaType="double" />
+ 		<result property="LON" 				column="lon" 			javaType="double" />
+ 		<result property="TOTAL_PRICE" 		column="total_price" 	javaType="int" />
+	</resultMap>
+
+	<!-- 사람 수, 이름으로 검색하는 것 필요함 -->
+	<select id="selectRoomsLocationInfoList" parameterType="java.util.HashMap" resultMap="roomsLocatonInfoListMap">
+ 		select seq_lodge, lat, lon, total_price
+        from tbl_lodge
+        where 1 = 1
+        and status = 1
+        and location like '%' || #{search_content} || '%'
+        
+        <!-- 
+        <if test='location != null and !location.equals("전체")'>
+        	
+        </if>
+         -->
+        <!-- 
+        <if test="department_id_Arr != null">
+        	and department_id IN
+        	<foreach collection="department_id_Arr" item="item" index="i" open="(" close=")" separator="," >   
+        		${department_id_Arr[i]}
+        	</foreach>
+        </if>
+        
+        <if test='gender != null and !gender.equals("전체")'>
+        	and gender = #{gender}
+        </if>
+	 	<if test='ageline != null and ageline >= 0'>
+        	and trunc(age, -1) = #{ageline}
+        </if>
+         -->
+ 	</select>  
+
+</mapper>
