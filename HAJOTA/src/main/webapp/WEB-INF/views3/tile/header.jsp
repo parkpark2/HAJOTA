@@ -1,86 +1,61 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+body, h1, h2, h3, h4, h5, h6 {
+	font-family: "Raleway", Arial, Helvetica, sans-serif
+}
 
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-
-<!-- Optional theme -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-
-<style type="text/css">
-	.navbarcontainer {
-		width: 100%;
-	}
+.myLink {
+	display: none
+}
 </style>
- 
-</head>
+<body class="w3-light-grey">
 
-<body>
-	<%-- 
-	<div>
-		<div style="display: inline-block; float: left;">
-			<img src="<%= request.getContextPath() %>/resources/images/oneofall/loco.png" style="width:130px; height:40px;"/>  
-		</div>
-		
-		<div style="display: inline-block; width: 70%; text-align: center; padding-top: 10px;">
-			
-		</div>
-		
-		
-		<div style=" display: inline-block; float: right;"> 
-	 		<img src="<%= request.getContextPath() %>/resources/images/oneofall/1.jpg" style="width:30px; height:40px;"/>&nbsp;&nbsp;
-	 		<img src="<%= request.getContextPath() %>/resources/images/oneofall/2.jpg" style="width:30px; height:40px;"/>&nbsp;&nbsp;
-	 		<img src="<%= request.getContextPath() %>/resources/images/oneofall/3.jpg" style="width:30px; height:40px;"/>&nbsp;&nbsp;
-	 		<img src="<%= request.getContextPath() %>/resources/images/oneofall/4.jpg" style="width:30px; height:40px;"/>
- 		</div>
+	<!-- Navigation Bar -->
+	<div class="w3-bar w3-white w3-border-bottom w3-xlarge">
+		<img
+			src="<%= request.getContextPath() %>/resources/images/oneofall/logo.png"
+			style="width: 200px; height: 60px; margin-left: 30px; margin-bottom: 10px;" /> <label><i
+			class="fa fa-search-plus" style="margin-left: 270px;"></i></label>&nbsp; <input
+			type="text" id="search" name="search" placeholder="search" size="10"
+			style="height: 30px;" />&nbsp; <label><i class="fa fa-male"></i></label>&nbsp;
+		<input type="text" id="search" name="search" placeholder="1" size="3"
+			style="height: 30px;" />&nbsp; <label><i
+			class="fa fa-calendar-o"></i></label>&nbsp; <input type="text"
+			class="datepicker" name="startDate" placeholder="Check In" size="10"
+			style="height: 30px;" />&nbsp; <label><i
+			class="fa fa-calendar-o"></i></label>&nbsp; <input type="text"
+			class="datepicker" name="endDate" placeholder="Check Out" size="10"
+			style="height: 30px;" />&nbsp; <a href="#"
+			class="w3-button w3-hover-white w3-text-white"
+			style="background-color: #0099ff; width: 50px; height: 50px;"><i
+			class="fa fa-search"></i></a> <a
+			href="<%= request.getContextPath() %>/index.go"> <img
+			src="<%= request.getContextPath() %>/resources/images/oneofall/South Korea.png"
+			style="margin-left: 100px;" />
+		</a> <a href="<%= request.getContextPath() %>/indexChinese.go"> <img
+			src="<%= request.getContextPath() %>/resources/images/oneofall/China.png"
+			style="margin-left: 10px;" />
+		</a> <img
+			src="<%= request.getContextPath() %>/resources/images/oneofall/Japan.png"
+			style="margin-left: 10px;" /> <img
+			src="<%= request.getContextPath() %>/resources/images/oneofall/USA.png"
+			style="margin-left: 10px;" /> <a href="#"
+			class="w3-bar-item w3-button  w3-right w3-hide-small w3-padding-large"
+			title="question"><i class="fa fa-question-circle"></i></a> <a
+			href="#"
+			class="w3-bar-item w3-button  w3-right w3-hide-small w3-padding-large"
+			title="Join"><i class="fa fa-user-plus"></i></a> <a href="#"
+			class="w3-bar-item w3-button  w3-right w3-hide-small w3-padding-large"
+			title="Login"><i class="fa fa-user"></i></a>
+
 	</div>
- --%>
-	<nav class="navbar navbar-default navbar-fixed-top">
-	<div class="navbarcontainer">
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle collapsed"
-				data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-				aria-controls="navbar">
-				<span class="sr-only">Toggle navigation</span> <span
-					class="icon-bar"></span> <span class="icon-bar"></span> <span
-					class="icon-bar"></span>
-			</button>
-			<a class="navbar-brand" href="/"><strong style="color: #29d846">Ha</strong>Jota</a>
-		</div>
-		<div id="navbar" class="navbar-collapse collapse">
-			<ul class="nav navbar-nav">
-				<li><a href="/">Home</a></li>
-				<li><a href="#">About</a></li>
-				<li><a href="#">Contact</a></li>
-				<li class="dropdown"><a href="#" class="dropdown-toggle"
-					data-toggle="dropdown" role="button" aria-haspopup="true"
-					aria-expanded="false">Major Attractions<span class="caret"></span></a>
-					<ul class="dropdown-menu">
-						<li><a href="#">Disney</a></li>
-						<li><a href="#">Seaworld</a></li>
-						<li><a href="#">Universal</a></li>
-					</ul>
-				</li>
-			</ul>
-			
-			<ul class="nav navbar-nav navbar-right">
-				<li><img src="<%= request.getContextPath() %>/resources/images/oneofall/1.jpg" style="width:30px; height:40px;"/></li>
-		 		<li><img src="<%= request.getContextPath() %>/resources/images/oneofall/2.jpg" style="width:30px; height:40px;"/></li>
-		 		<li><img src="<%= request.getContextPath() %>/resources/images/oneofall/3.jpg" style="width:30px; height:40px;"/></li>
-		 		<li><img src="<%= request.getContextPath() %>/resources/images/oneofall/4.jpg" style="width:30px; height:40px;"/></li>
-			</ul>
-		</div>
-		<!--/.nav-collapse -->
-	</div>
-	</nav>
 
 </body>
-</html>

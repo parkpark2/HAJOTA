@@ -58,28 +58,23 @@
 					for(var i = 0; i < seq_lodge.length; ++i) {
 						 posi[i] = [ lat[i], lon[i] ];
 					 }
-
+					
+/*
 					$.map(data.results, function(item) {
-				/* 		
-						if(${roomsLocationInfo != null}) {
-							posi[i] = [ item.geometry.location.lat,
-								item.geometry.location.lng ];
-						}
-				 */		
-						//alert(item.formatted_address);
-						/* 
+						
 						$("#lat").append(
 								"<option>" + item.geometry.location.lat
 										+ "</option>");
 						$("#lng").append(
 								"<option>" + item.geometry.location.lng
 										+ "</option>");
-						 */
+						 
 						 
 						 for(var i = 0; i < seq_lodge.length; ++i) {
 							 posi[i] = [ lat[i], lon[i] ];
 						 }
 					});
+*/					
 				}
 			} // end of success
 		}); //  end of ajax
@@ -122,8 +117,8 @@
 				position : myLatLng,
 				map : map,
 				content : contentString[i]
-			});			
-			 
+			});
+
 			marker[i].addListener('click', function() {
 				infowindow.setContent(this.content);
 				infowindow.open(map, this);
@@ -142,6 +137,6 @@
  
 	</select>
 -->
-	<div id="map"></div>
+	<div id="map" style="display: inline-block;"></div>
 </body>
 </html>

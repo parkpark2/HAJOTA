@@ -16,9 +16,9 @@
   <script type="text/javascript" src="<%=request.getContextPath() %>/resources/BootStrapStudy/js/bootstrap.js"></script>
   
   <style type="text/css">
-  	#mycontainer	{ width:90%; margin:0 auto; padding:20px; }
+  	#mycontainer	{ width:100%; margin:0 auto; padding:0px; }
 	#myheader		{ background-color:#EBEBE0; height:30px;}
-	#mycontent		{ background-color:#F5F5F5; height:790px; padding-top: 10px; }
+	#mycontent		{ background-color:#F5F5F5; height:800px; }
 	#myfooter		{ background-color:#555555; height:100px; }
 	/* #displayRank 	{ margin:20px; height:200px;} */
 	
@@ -53,14 +53,15 @@
 			<tiles:insertAttribute name="header" />
 		</div>
 		
-		<div>
-			<div id="mycontent" style="display: inline-block; width: 70%; float: left; max-height: 100%;">
+		<div style="margin-top: 40px;">
+			<div id="mycontent" style="display: inline-block; width: 100%; height: 100%; float: left; max-height: 100%;">
 				<tiles:insertAttribute name="roomslist" />
 			</div>
-			
+			<%-- 
 			<div id="mymap" style="display: inline-block; width: 30%; float: left; max-height: 100%;">
 				<tiles:insertAttribute name="map" />
-			</div>
+			</div> --%>
+		
 		</div>
 	</div>
 </body>

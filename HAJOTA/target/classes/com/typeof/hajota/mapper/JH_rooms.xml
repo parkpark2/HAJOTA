@@ -61,7 +61,9 @@
         from tbl_lodge
         where 1 = 1
         and status = 1
-        and location like '%' || #{search_content} || '%'
+        <if test='search_content != null and !"".equals(search_content)'>
+        	and location like '%' || #{search_content} || '%'
+        </if>
         
         <!-- 
         <if test='location != null and !location.equals("전체")'>
