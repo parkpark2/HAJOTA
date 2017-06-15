@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ===== #26. mapper 기본설정 ===== -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<!-- ===== #27. 루트엘리먼트 & 네임스페이스 설정(프로젝트 전체 내에서 고유해야 한다.) ===== -->
+<mapper namespace="SH_manager">
+	
+	<resultMap type="java.util.HashMap" id="Shownoticemap">
+		<result property="SEQ_NOTICE" column="seq_notice" javaType="int" />
+		<result property="ADMIN_ID" column="admin_id" javaType="String" />
+		<result property="SUBJECT" column="subject" javaType="String" />
+		<result property="CONTENT" column="content" javaType="String" />
+		<result property="WRITEDAY" column="writeday" javaType="String" />
+		<result property="STATUS" column="status" javaType="String" />
+	</resultMap>
+	
+	<select id="Shownotice" parameterType="java.util.HashMap" resultMap="Shownoticemap">
+	select seq_notice, admin_id, subject, content, writeday, status
+	 from 
+	 (
+		select rownum as RNO, seq_notice, admin_id, subject, content, writeday, status
+		from 
+		(
+		    select seq_notice, admin_id, subject, content, to_char(writeday,'yyyy-mm-dd') as writeday, status
+			from tbl_notice
+		    where status = 1
+		    <if test="colname != null and search != null">     
+		        and ${colname} like '%'|| #{search} ||'%'
+		    </if>
+		    order by seq_notice desc
+		) V
+	 ) T
+	 where T.RNO >= #{start} and T.RNO <![CDATA[<=]]> #{end}
+	 </select>
+	<!-- ,, -->
+	<select id="getTotalCount" parameterType="java.util.HashMap" resultType="int"> 
+		select count(*)
+		from tbl_notice
+		where status = 1
+		<if test="colname != null and search != null">
+			and ${colname} like '%' || #{search} || '%'
+		</if>	
+	</select>   
+	
+
+	<insert id="noticewrite" parameterType="java.util.HashMap">
+		insert into tbl_notice(seq_notice, admin_id, subject, content, writeday, status)
+		values(seq_notice.nextval, #{admin_id}, #{subject}, #{content}, default, default) 
+	</insert>
+
+	<update id="noticedelete" parameterType="java.util.HashMap">
+		update tbl_notice set status = 0
+		where seq_notice = #{seq_notice}
+	</update>
+	
+</mapper>
