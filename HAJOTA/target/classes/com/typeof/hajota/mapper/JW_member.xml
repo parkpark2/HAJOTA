@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ===== #26. mapper 기본설정 ===== -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<!-- ===== #27. 루트엘리먼트 & 네임스페이스 설정(프로젝트 전체 내에서 고유해야 한다.) ===== -->
+<mapper namespace="member">
+
+<!-- 회원가입하기   -->
+    <insert id="joinEnd" parameterType="java.util.HashMap">
+    	insert into tbl_guest(guest_email, pwd, last_name, first_name, birthday, status)
+        values(#{guest_email}, func_encrypted_pwd(#{pwd}), #{last_name}, #{first_name}, #{birthday}, default)
+    </insert>
+
+
+	<!-- ===== #43. 메인페이지용 이미지 파일명 가져오기 ===== --> 
+	<!-- <select id="getImgfilenameList" resultType="String">
+		select imgfilename
+		from spring_img_advertise
+		order by imgno desc	
+	</select> -->
+	
+	
+	<!-- ===== #48. 로그인 여부 알아오기 ===== -->
+	<select id="loginEnd" parameterType="java.util.HashMap" resultType="int"> 
+		select case( select count(*)
+	                 from tbl_guest
+	                 where guest_email = #{guest_email} and
+	                       func_decrypted_pwd(#{guest_email}, #{pwd}) = substr(#{pwd}, 1, 8) )
+	           when 1 then 1
+	           else( case(select count(*) 
+	                      from tbl_guest
+	                      where guest_email = #{guest_email})
+	                 when 1 then 0
+	                 else -1
+	                 end
+	               )
+	           end as LOGINCHECK
+	  from dual
+	</select>
+	
+	<resultMap type="java.util.HashMap" id="tbl_guest_resultmap">
+    	<result property="GUEST_EMAIL" 	column="guest_email" 	javaType="String" />
+	    <result property="PWD" 			column="pwd" 			javaType="String" />
+	    <result property="FIRST_NAME" 	column="first_name" 	javaType="String" />
+	    <result property="LAST_NAME" 	column="last_name" 		javaType="String" />
+	    <result property="BIRTHDAY" 	column="birthday" 		javaType="String" />
+	    <result property="STATUS" 		column="status" 		javaType="int" />
+    </resultMap>
+	
+	<!-- ===== #51. 로그인 성공한 사용자 정보 가져오기 ===== -->
+	<select id="getLoginMember" parameterType="java.util.HashMap" resultMap="tbl_guest_resultmap"> 
+       select guest_email, pwd, first_name, last_name, birthday, status
+	   from tbl_guest
+	   where status = 1 and guest_email = #{guest_email}
+	</select>
+
+	
+
+
+
+</mapper>

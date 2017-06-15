@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>tiles 를 사용한 메인(시작) 페이지 작성하기</title>
+<title>HAJOTA</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet"
@@ -51,18 +51,22 @@
 </head>
 
 <body>
-		<div id="mycontainer">
+	<div id="section1"
+      style="background: url('<%=request.getContextPath()%>/resources/images/oneofall/index.jpg') no-repeat center center fixed; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;">
 		<div id="myheader">
 			<tiles:insertAttribute name="header" />
 		</div>
+		<div id="mycontainer">		
 	
 		<div id="mycontent">
-			<tiles:insertAttribute name="content" />
+			<tiles:insertAttribute name="search" />
 		</div>
-
 		<div id="myfooter">
 			<tiles:insertAttribute name="footer" />
 		</div>
+		
+	</div>
+	
 	</div>
 </body>
 </html>
