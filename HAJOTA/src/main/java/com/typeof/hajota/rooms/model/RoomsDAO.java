@@ -1,5 +1,7 @@
 package com.typeof.hajota.rooms.model;
 
+import java.util.HashMap;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -13,7 +15,19 @@ public class RoomsDAO implements InterRoomsDAO {
 	@Autowired
 	private SqlSessionTemplate sqlsession;
 
-	
+	public HashMap<String, Object> getlistdetail(String seq) {
+
+		HashMap<String, Object> listdetail = sqlsession.selectOne("HY_rooms.getlistdetail", seq);
+		
+		return listdetail;
+	}
+
+	public int addFile(HashMap<String, String> map) {
+		
+		int n = sqlsession.insert("HY_rooms.addFile", map);
+		
+		return n;
+	}
 	
 }
 
