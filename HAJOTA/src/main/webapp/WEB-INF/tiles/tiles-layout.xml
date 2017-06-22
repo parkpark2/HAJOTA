@@ -48,7 +48,7 @@
 	<definition name="layout-roomslist"     template="/WEB-INF/tiles/layout/layout-tiles3.jsp"> 
       <put-attribute name="header"    value="/WEB-INF/views3/tile/header.jsp" />
       <put-attribute name="roomslist" value="" />
-      <!-- <put-attribute name="map"      value="" /> -->
+      <put-attribute name="map"       value="/WEB-INF/views3/map.jsp" />
    </definition>
    
    <!-- 콘텐츠 항목 -->

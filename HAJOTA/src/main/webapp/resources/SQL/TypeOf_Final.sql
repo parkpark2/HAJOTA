@@ -1,3 +1,11 @@
+select *
+from tbl_lodge;
+
+
+
+
+
+
 
 
 --테이블명 또는 뷰명 무엇을 만들던 자기만의 index를 이름에 넣어서 만들어야 한다.(예 : 선효가 만드는 테이블 => SH_tbl_****)
@@ -210,6 +218,9 @@ CREATE TABLE tbl_payment (
 	status NUMBER(1) DEFAULT 1 NOT NULL /* 상태 */
 );
 
+ALTER TABLE tbl_payment
+ADD (salesdate DATE DEFAULT sysdate NOT NULL);
+
 COMMENT ON TABLE tbl_payment IS '결제 내역 테이블';
 
 COMMENT ON COLUMN tbl_payment.seq_payment IS '결제 시퀀스';
@@ -231,6 +242,8 @@ COMMENT ON COLUMN tbl_payment.total_saleprice IS '총 금액';
 COMMENT ON COLUMN tbl_payment.status IS '상태
 0: 삭제
 1: 예약중';
+
+COMMENT ON COLUMN tbl_payment.salesdate IS '결제일자';
 
 CREATE UNIQUE INDEX PK_tbl_payment
 	ON tbl_payment (
@@ -817,6 +830,33 @@ CREATE UNIQUE INDEX PK_tbl_host_report
 		seq_host_report ASC
 	);
 
+/* 가고 싶은 숙소 테이블 */
+CREATE TABLE tbl_lodge_wish (
+	seq_lodge_wish NUMBER NOT NULL, /* 가고 싶은 숙소 시퀀스 */
+	seq_lodge NUMBER, /* 숙소 시퀀스 */
+	guest_email VARCHAR2(50) /* 게스트 이메일 */
+);
+
+COMMENT ON TABLE tbl_lodge_wish IS '가고 싶은 숙소 테이블';
+
+COMMENT ON COLUMN tbl_lodge_wish.seq_lodge_wish IS '가고 싶은 숙소 시퀀스';
+
+COMMENT ON COLUMN tbl_lodge_wish.seq_lodge IS '숙소 시퀀스';
+
+COMMENT ON COLUMN tbl_lodge_wish.guest_email IS '게스트 이메일';
+
+CREATE UNIQUE INDEX PK_tbl_lodge_wish
+	ON tbl_lodge_wish (
+		seq_lodge_wish ASC
+	);
+
+ALTER TABLE tbl_lodge_wish
+	ADD
+		CONSTRAINT PK_tbl_lodge_wish
+		PRIMARY KEY (
+			seq_lodge_wish
+		);
+
 ALTER TABLE tbl_host_report
 	ADD
 		CONSTRAINT PK_tbl_host_report
@@ -1083,10 +1123,30 @@ ALTER TABLE tbl_host_report
 		REFERENCES tbl_guest (
 			guest_email
 		);
+                
+ALTER TABLE tbl_lodge_wish
+	ADD
+		CONSTRAINT FK_tbl_lodge_wish_seq
+		FOREIGN KEY (
+			seq_lodge
+		)
+		REFERENCES tbl_lodge (
+			seq_lodge
+		);
 
+ALTER TABLE tbl_lodge_wish
+	ADD
+		CONSTRAINT FK_tbl_lodge_wish_email
+		FOREIGN KEY (
+			guest_email
+		)
+		REFERENCES tbl_guest (
+			guest_email
+		);
+		
 
-
--- 시퀀스 생성
+		
+// 시퀀스 생성
 create sequence seq_host_withdraw_reason
 start with 1
 increment by 1
@@ -1184,6 +1244,14 @@ nocycle
 nocache;
 
 create sequence seq_guest_withdraw_reason
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+
+create sequence seq_lodge_wish
 start with 1
 increment by 1
 nomaxvalue

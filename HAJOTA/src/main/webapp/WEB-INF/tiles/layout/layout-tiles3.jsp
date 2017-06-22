@@ -11,57 +11,61 @@
 <title>tiles 를 사용한 게시판 페이지 작성하기</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/resources/BootStrapStudy/css/bootstrap.css">
-  <script type="text/javascript" src="<%=request.getContextPath() %>/resources/js/jquery-2.0.0.js"></script>
-  <script type="text/javascript" src="<%=request.getContextPath() %>/resources/BootStrapStudy/js/bootstrap.js"></script>
   
-  <style type="text/css">
-  	#mycontainer	{ width:100%; margin:0 auto; padding:0px; }
-	#myheader		{ background-color:#EBEBE0; height:30px;}
-	#mycontent		{ background-color:#F5F5F5; height:800px; }
-	#myfooter		{ background-color:#555555; height:100px; }
-	/* #displayRank 	{ margin:20px; height:200px;} */
-	
-	#myheader a {text-decoration:none;}
-	
-	/* mouse over link */
-	#myheader a:hover {color: navy; font-weight: bolder;}
-	/* 
-	  unvisited link 
-	a:link {color: #FF0000;}
-		
-	  visited link 
-	a:visited {color: #00FF00;}
-		
-	  selected link 
-	a:active {color: #0000FF;}
-	*/
-	
-	#myheader .mynav {font-size: 13pt;}
-	.myrank {font-weight:bold; color:red; font-size:13pt;}
-	.mynumber {text-align:center;}
-	
-	
-	#mymap		{ background-color:#F5F5F5; min-height:800px; }
-	
-	</style>
+<style>
+
+body#JH_layout_roomsList_body {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	background-color: #FFFFFF;
+	margin-top: -1%;
+}
+
+div#JH_layout_roomsList {
+	width: 70%;
+	height: 100%;
+	float: inherit;
+	display: inline-block;
+	overflow: auto;
+}
+
+div#JH_layout_map {
+	width: 30%;
+	height: 100%;
+	float: left;
+	display: inline-block;
+	position: fixed;
+}
+
+div#JH_layout_roomsListTop {
+	width: 100%;
+	height: 10%;
+	position: relative;
+}
+
+div#JH_layout_roomsListBody {
+	width: 100%;
+	height: 90%;
+	position: relative;
+}
+
+</style>
+
 </head>
 
-<body>
-	<div id="mycontainer">
-		<div id="myheader">
-			<tiles:insertAttribute name="header" />
+<body id="JH_layout_roomsList_body" >
+	<div id="JH_layout_roomsListTop">
+		<tiles:insertAttribute name="header" />
+	</div>
+
+	<div id="JH_layout_roomsListBody">
+		<div id="JH_layout_roomsList">
+			<tiles:insertAttribute name="roomslist" />
 		</div>
 		
-		<div style="margin-top: 40px;">
-			<div id="mycontent" style="display: inline-block; width: 100%; height: 100%; float: left; max-height: 100%;">
-				<tiles:insertAttribute name="roomslist" />
-			</div>
-			<%-- 
-			<div id="mymap" style="display: inline-block; width: 30%; float: left; max-height: 100%;">
-				<tiles:insertAttribute name="map" />
-			</div> --%>
-		
+		<div id="JH_layout_map">
+			<tiles:insertAttribute name="map" />
 		</div>
 	</div>
 </body>
