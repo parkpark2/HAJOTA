@@ -41,7 +41,7 @@ public class JH_RoomsDAO implements JH_InterRoomsDAO {
 	}
 
 	@Override
-	public List<HashMap<String, Object>> getUnvailableSeqLodgeList(HashMap<String, Object> map) {
+	public List<HashMap<String, Object>> getUnavailableSeqLodgeList(HashMap<String, Object> map) {
 		List<HashMap<String, Object>> seq_lodgeList = sqlsession.selectList("JH_rooms.selectUnavailableSeqLodgeList", map);
 		
 		return seq_lodgeList;
@@ -115,4 +115,39 @@ public class JH_RoomsDAO implements JH_InterRoomsDAO {
 		return count;
 	}
 	*/
+
+	@Override
+	public int checkWishList(HashMap<String, Object> map) {
+		int count = sqlsession.selectOne("JH_rooms.selectCheckWishList", map);
+		
+		return count;
+	}
+
+	@Override
+	public int insertWishList(HashMap<String, Object> map) {
+		int result = sqlsession.insert("JH_rooms.insertWishList", map);
+		
+		return result;
+	}
+
+	@Override
+	public int updateWishList(HashMap<String, Object> map) {
+		int result = sqlsession.update("JH_rooms.updateWishList", map);
+		
+		return result;
+	}
+	
+	@Override
+	public int getWishListStatus(HashMap<String, Object> map) {
+		int status = sqlsession.selectOne("JH_rooms.selectWishListStatus", map);
+		
+		return status;
+	}
+	
+	@Override
+	public List<HashMap<String, Object>> getWishListInList(HashMap<String, Object> map, RowBounds rowBounds) {
+		List<HashMap<String, Object>> roomsWishListInList = sqlsession.selectList("JH_rooms.selectRoomsWishListInList", map, rowBounds);
+		
+		return roomsWishListInList;
+	}
 }

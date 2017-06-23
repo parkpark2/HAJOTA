@@ -18,42 +18,42 @@ public class JH_RoomsService implements JH_InterRoomsService {
 
 	@Override
 	public List<HashMap<String, Object>> getRoomsList(HashMap<String, Object> map) {
-		List<HashMap<String, Object>> roomsList = null;//dao.getRoomsList(map);
+		List<HashMap<String, Object>> roomsList = dao.getRoomsList(map);
 		
 		return roomsList;
 	}
 
 	@Override
 	public List<HashMap<String, Object>> getAvailableRoomsList(HashMap<String, Object> map) {
-		List<HashMap<String, Object>> roomsList = null;//dao.getAvailableRoomsList(map);
+		List<HashMap<String, Object>> roomsList = dao.getAvailableRoomsList(map);
 		
 		return roomsList;
 	}
 	
 	@Override
 	public List<HashMap<String, Object>> getAvailableRoomsList(HashMap<String, Object> map, RowBounds rowBounds) {
-		List<HashMap<String, Object>> roomsList = null;//dao.getAvailableRoomsList(map, rowBounds);
+		List<HashMap<String, Object>> roomsList = dao.getAvailableRoomsList(map, rowBounds);
 		
 		return roomsList;
 	}
 
 	@Override
 	public List<HashMap<String, Object>> getUnavailableSeqLodgeList(HashMap<String, Object> map) {
-		List<HashMap<String, Object>> seq_lodgeList = null;//dao.getUnvailableSeqLodgeList(map);
+		List<HashMap<String, Object>> seq_lodgeList = dao.getUnavailableSeqLodgeList(map);
 		
 		return seq_lodgeList;
 	}
 
 	@Override
 	public List<HashMap<String, Object>> getNearFromCenterRoomsList(HashMap<String, Object> map) {
-		List<HashMap<String, Object>> roomsList = null;//dao.getNearFromCenterRoomsList(map);
+		List<HashMap<String, Object>> roomsList = dao.getNearFromCenterRoomsList(map);
 		
 		return roomsList;
 	}
 
 	@Override
 	public int getAvailableRoomsCount(HashMap<String, Object> map) {
-		int count = 0;//dao.getAvailableRoomsCount(map);
+		int count = dao.getAvailableRoomsCount(map);
 		
 		return count;
 	}
@@ -71,4 +71,39 @@ public class JH_RoomsService implements JH_InterRoomsService {
 		
 		return count;
 	}*/
+
+	@Override
+	public int checkWishList(HashMap<String, Object> map) {
+		int count = dao.checkWishList(map);
+		
+		return count;
+	}
+
+	@Override
+	public int insertWishList(HashMap<String, Object> map) {
+		int result = dao.insertWishList(map);
+		
+		return result;
+	}
+
+	@Override
+	public int updateWishList(HashMap<String, Object> map) {
+		int result = dao.updateWishList(map);
+		
+		return result;
+	}
+
+	@Override
+	public int getWishListStatus(HashMap<String, Object> map) {
+		int status = dao.getWishListStatus(map);
+		
+		return status;
+	}
+
+	@Override
+	public List<HashMap<String, Object>> getWishListInList(HashMap<String, Object> map, RowBounds rowBounds) {
+		List<HashMap<String, Object>> roomsWishListInList = dao.getWishListInList(map, rowBounds);
+		
+		return roomsWishListInList;
+	}
 }

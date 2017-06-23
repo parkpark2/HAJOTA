@@ -1,9 +1,12 @@
 package com.typeof.hajota;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.typeof.hajota.rooms.service.JH_RoomsService;
 
@@ -30,9 +34,8 @@ public class JH_RoomsController {
 
 	// 검색 된 조건에 맞는 숙소 가져오는 리스트
 	@RequestMapping(value = "rooms/list.go", method = RequestMethod.GET)
-	public String roomsList(HttpServletRequest req) {	    
-	    
-	    ////////////////////////////////////////////////////////////////////////
+	public String roomsList(HttpServletRequest req) {
+		
 		String search_content = req.getParameter("search_content");
 		String str_numOfPeople = req.getParameter("numOfPeople");
 		String startDate = req.getParameter("startDate");
@@ -59,18 +62,10 @@ public class JH_RoomsController {
 		req.setAttribute("startDate", startDate);
 		req.setAttribute("endDate", endDate);
 		
-		// TODO : 값 입력받을 수 있게 변경해주어야 함
-		/*
-		startDate = "2010-01-01";
-		endDate = "2017-06-19";
-		*/
-		///////////////////////////////////////////////////////////////////////
-		
 		// 검색어, 사람
 		HashMap<String, Object> map1 = new HashMap<String, Object>();
 		map1.put("search_content", search_content);
 		map1.put("str_numOfPeople", str_numOfPeople);
-		
 		
 		// 날짜
 		HashMap<String, Object> map2 = new HashMap<String, Object>();
@@ -176,24 +171,150 @@ public class JH_RoomsController {
 		// 기간 내 예약할 수 있는 숙소 정보(페이징 처리)
 		List<HashMap<String, Object>> roomsList = service.getAvailableRoomsList(map1, rowBounds);
 	    req.setAttribute("roomsList", roomsList);
-
-		
+	    
+	    List<HashMap<String, Object>> roomsWishListInList = service.getWishListInList(map1, rowBounds);
+	    req.setAttribute("roomsWishListInList", roomsWishListInList);
+	    
 	    return "rooms/list.tiles3";
 	}
 	
-	@RequestMapping(value = "/rooms/gallery.go", method = RequestMethod.GET)
-	public String roomsGallery(HttpServletRequest req) {
+	
+	
+	// 위시 리스트 클릭
+	@RequestMapping(value="rooms/clickWishList.go", method={RequestMethod.GET})
+	// JSON 필수
+	@ResponseBody
+	public HashMap<String, Object> clickWishList(HttpServletRequest req, HttpServletResponse res) {
 		
-		return "rooms/gallery-single.tiles3";
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		
+		int result = -1;
+		
+		// TODO : 세션으로 로그인 한 유저 구해서 고쳐주자
+		// HttpSession session = req.getSession();
+		// MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
+		
+		////////////////////////////////////////////////////////////////////////
+		String guest_email = req.getParameter("guest_email");
+		
+		////////////////////////////////////////////////////////////////////////
+		
+		String seq_lodge = req.getParameter("seq_lodge");
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("guest_email", guest_email);
+		map.put("seq_lodge", seq_lodge);
+		
+		int checkWishList = service.checkWishList(map);
+		
+		// 체크 리스트에 항목이 없으면 추가해주기
+		if(checkWishList == 0) {
+			result = service.insertWishList(map);
+			
+			resultMap.put("status", result);
+		}
+		
+		// 체크 리스트에 항목이 있으면 status 바꾸어 주기
+		else {
+			// 해당 아이디와 숙소에 해당하는 status 찾고
+			int status = service.getWishListStatus(map);
+			
+			System.out.println("status : " + status);
+			// 업데이트 해주기
+			map.put("status", status);
+			result = service.updateWishList(map);
+			
+			if(result == 1) {
+				if(status == 1) {
+					status = 0;
+				}
+				
+				else if(status == 0) {
+					status = 1;
+				}
+				
+				resultMap.put("status", status);
+			}
+		}
+
+		// TODO : result 값 가지고 중간에 alert 띄우자
+		resultMap.put("result", result);
+
+		return resultMap;
 	}
 	
 	
+	
+	// JSON
+	// 맵의 중심 이동시키면 주변 숙소 보이게 하기
 	@RequestMapping(value = "rooms/moveMap.go", method = RequestMethod.GET)
-	public String roomsListMoveMap(HttpServletRequest req) {    
+	@ResponseBody
+	public List<HashMap<String, Object>> roomsListMoveMap(HttpServletRequest req, HttpServletResponse res) {
+
+		////////////////////////////////////////////////////////////////////////
+		String search_content = req.getParameter("search_content");
+		String str_numOfPeople = req.getParameter("numOfPeople");
+		String startDate = req.getParameter("startDate");
+		String endDate = req.getParameter("endDate");
+
+		if (search_content == null) {
+			search_content = "";
+		}
+
+		if ((str_numOfPeople == null) || ("".equals(str_numOfPeople))) {
+			str_numOfPeople = "1";
+		}
+
+		if ((startDate == null) || ("".equals(startDate))) {
+			startDate = "";
+		}
+
+		if ((endDate == null) || ("".equals(endDate))) {
+			endDate = "";
+		}
+
+		req.setAttribute("search_content", search_content);
+		req.setAttribute("numOfPeople", str_numOfPeople);
+		req.setAttribute("startDate", startDate);
+		req.setAttribute("endDate", endDate);
+
+		String afterLat = req.getParameter("afterLat");
+		String afterLon = req.getParameter("afterLon");
+
+		// 거리(km)
+		double distance = 2.0;
+
+		req.setAttribute("afterLat", afterLat);
+		req.setAttribute("afterLon", afterLon);
+
+		///////////////////////////////////////////////////////////////////////
+
+		System.out.println("afterLat : " + afterLat);
+		System.out.println("afterLon : " + afterLon);
+		
+		// 위도, 경도
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("afterLat", afterLat);
+		map.put("afterLon", afterLon);
+		map.put("distance", distance);
+
+		// 기간 내 예약할 수 있는 숙소 정보
+		List<HashMap<String, Object>> roomsList = service.getNearFromCenterRoomsList(map);
+		
+		System.out.println("roomsList : " + roomsList.size());
+
+		return roomsList;
+	}
+	
+	
+	/*
+	// 페이지ㅏㅇ아ㅏ아아아ㅏ아아ㅏ아ㅏ아아ㅏㅏ아아ㅏ아ㅏ아ㅏ아ㅏ아ㅏ아아ㅏ아아ㅣ
+	// 맵의 중심 이동시키면 주변 숙소 보이게 하기
+	@RequestMapping(value = "rooms/moveMap1.go", method = RequestMethod.GET)
+	public String roomsListMoveMap1(HttpServletRequest req) {    
 	    
 	    ////////////////////////////////////////////////////////////////////////
-		
-	    String search_type = "location";
 		String search_content = req.getParameter("search_content");
 		String str_numOfPeople = req.getParameter("numOfPeople");
 		String startDate = req.getParameter("startDate");
@@ -207,17 +328,18 @@ public class JH_RoomsController {
 			str_numOfPeople = "1";
 		}
 		
-		req.setAttribute("search_type", search_type);
+		if((startDate == null) || ("".equals(startDate))) {
+			startDate = "";
+		}
+		
+		if((endDate == null) || ("".equals(endDate))) {
+			endDate = "";
+		}
+		
 		req.setAttribute("search_content", search_content);
 		req.setAttribute("numOfPeople", str_numOfPeople);
 		req.setAttribute("startDate", startDate);
 		req.setAttribute("endDate", endDate);
-		
-		// TODO : 값 입력받을 수 있게 변경해주어야 함
-		/*
-		startDate = "2010-01-01";
-		endDate = "2017-06-19";
-		*/
 		
 		String afterLat = req.getParameter("afterLat");
 		String afterLon = req.getParameter("afterLon");
@@ -237,12 +359,22 @@ public class JH_RoomsController {
 		map.put("distance", distance);
 		
 		// 기간 내 예약할 수 있는 숙소 정보
-		//List<HashMap<String, Object>> roomsList = service.getNearFromCenterRoomsList(map);
 		List<HashMap<String, Object>> roomsList = service.getNearFromCenterRoomsList(map);
 	    req.setAttribute("roomsList", roomsList);
 		
 	    return "rooms/list.tiles3";
 	}
+	
+	*/
+	
+	// 갤러리 보기
+	@RequestMapping(value = "rooms/gallery.go", method = RequestMethod.GET)
+	public String roomsGallery(HttpServletRequest req) {
+		
+		return "rooms/gallery-single.tiles3";
+	}
+	
+	
 	/*
 	// 숙소 입력
 	@RequestMapping(value = "rooms/insertEnd.go", method = RequestMethod.GET)

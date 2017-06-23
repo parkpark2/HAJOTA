@@ -41,6 +41,11 @@ div#JH_list_roomList_paging {
 </style>
 
 <script type="text/javascript">
+	$(document).ready(function() {
+		
+	});
+
+
 	function goLocation(seq, lat, lon) {
 		
 		map.setCenter(new google.maps.LatLng(lat, lon));
@@ -52,10 +57,70 @@ div#JH_list_roomList_paging {
 			}
 		}
 	}
+	/* 
+	function showWishList() {
+		$.ajax({
+			url : "/hajota/rooms/showWishList.go",
+			dataType : "JSON",
+			method : "GET",
+			data : {
+				guest_email : "ajota@ajota.com",
+				seq_lodge : seq_lodge
+			},
+			
+			success : function(data) {
+				var content;
+				
+				if(data.status == 1) {
+					content = "<span>" + "위시" + "</span>";
+				}
+				
+				if(data.status == 0) {
+					content = "<span>" + "낫 위시" + "</span>";
+				}
+				
+				div_wishlist.innerHTML = content;
+			}
+		});
+	} */
+	
+	// TODO : 세션으로 로그인 한 유저 구해서 고쳐주자
+	function clickWishList(seq_lodge) {
+		var div_wishlist = document.getElementById("JH_wishlist_div" + seq_lodge);
+		var seq_lodge = seq_lodge;
+		
+		$.ajax({
+			url : "/hajota/rooms/clickWishList.go",
+			dataType : "JSON",
+			method : "GET",
+			data : {
+				guest_email : "ajota@ajota.com",
+				seq_lodge : seq_lodge
+			},
+			
+			success : function(data) {
+				var content;
+				
+				if(data.status == 1) {
+					content = "<span>" + "위시" + "</span>";
+				}
+				
+				if(data.status == 0) {
+					content = "<span>" + "낫 위시" + "</span>";
+				}
+				
+				div_wishlist.innerHTML = content;
+			}
+		});
+	}
 </script>
 
 </head>
 <body>
+	<form name="checkWishList">
+			
+	</form> 
+	
 	<!-- Begin Gallery Row -->
   	<div id="JH_list_roomList" class="span12">
   	
@@ -82,7 +147,21 @@ div#JH_list_roomList_paging {
 	                    <!-- TODO : 주소명, 이미지 변경하자 -->
 	                    <a href="/hajota/rooms/detailInfo.go?seq_lodge=${rooms.SEQ_LODGE}"><img src="<%=request.getContextPath() %>/resources/images/JHHY/Sample01_00.jpg" alt="Gallery"></a>
 	                    <span class="project-details"><a href="/hajota/rooms/detailInfo.go?seq_lodge=${rooms.SEQ_LODGE}"><strong>${rooms.NAME}</strong><br/>&#8361;${rooms.TOTAL_PRICE}&nbsp;${rooms.TYPE_LODGE}&nbsp;${rooms.TYPE_BUILDING}<br/></a>
-	                    <button type="button" style="margin-top: 2%;" onclick="goLocation(${rooms.SEQ_LODGE}, ${rooms.LAT}, ${rooms.LON});">위치보기</button></span>
+		                    <button type="button" style="margin-top: 2%;" onclick="goLocation(${rooms.SEQ_LODGE}, ${rooms.LAT}, ${rooms.LON});">위치보기</button>&nbsp;&nbsp;&nbsp;
+		                    <button type="button" style="margin-top: 2%;" onclick="clickWishList(${rooms.SEQ_LODGE});">좋아요</button>&nbsp;&nbsp;&nbsp;
+		                    
+		                    <c:forEach var="roomsWishList" items="${roomsWishListInList}">
+			                    <c:if test="${roomsWishList.SEQ_LODGE == rooms.SEQ_LODGE}">
+			                    	<c:if test="${roomsWishList.STATUS == 1}">
+			                    		<div id="JH_wishlist_div${rooms.SEQ_LODGE}" style="display: inline-block;">위시</div>
+			                    	</c:if>
+			                    	
+			                    	<c:if test="${roomsWishList.STATUS == 0}">
+			                    		<div id="JH_wishlist_div${rooms.SEQ_LODGE}" style="display: inline-block;">낫 위시</div>
+			                    	</c:if>
+			                    </c:if>
+		                    </c:forEach>
+	                    </span>	                    
 	                </li>
 				</c:forEach>
 				</ul>

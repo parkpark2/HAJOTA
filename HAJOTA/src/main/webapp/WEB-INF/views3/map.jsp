@@ -54,8 +54,6 @@ img.JH_infowidow_gallary {
 	$(document).ready(function() {
 		callRoomsInfo();
 		
-		var search_content;
-		
 		if(${search_content == null || "".equals(search_content)}) {
 			search_content = "당산역";
 		}
@@ -66,15 +64,13 @@ img.JH_infowidow_gallary {
 		
 		$.ajax({
 			url : "https://maps.googleapis.com/maps/api/geocode/json",
-			dataType : "json",
+			dataType : "JSON",
 			method : "GET",
 			data : {
 				address : search_content,
-				/* address : "당산역 맥도날드", */
 				key : "AIzaSyCuM1N_3sAadL1l71rS0hBLGivpJ589HqQ"
 			},
 			success : function(data) {
-				
 				if (data.status == "OK") {
 					$.map(data.results, function(item) {
 						search_lat = item.geometry.location.lat;
@@ -98,14 +94,15 @@ img.JH_infowidow_gallary {
 		}
 		
 		map = new google.maps.Map(mapCanvas, mapOptions);
-		/* 
-		map.addListener('center_changed', function() {
+		/*
+		// 드래그가 끝나면 한 번만 호출
+		map.addListener('dragend', function() {
 		    window.setTimeout(function() {
-		    	// changedCenter(map);
+		    	changedCenter(map);
+		    	setMarkers(map, lat, lon);
 			}, 1000 / 2);
 		});
 		*/
-		
 		setMarkers(map, lat, lon);
 	}
 	
@@ -126,7 +123,7 @@ img.JH_infowidow_gallary {
 		for (var i = 0; i < lat.length; ++i) {
 			var myLatLng = new google.maps.LatLng(lat[i], lon[i]);
 			
-			// TODO : 디테일 주소 넣어주어야 함
+			// TODO : 디테일 보여주는 주소 넣어주어야 함
 			// 각종 정보 넣어 주면 될 것 같음
 			contentString[i] = 
 				'<div class="JH_infowindow">' +
@@ -174,11 +171,19 @@ img.JH_infowidow_gallary {
 		</c:if>
 	}
 	
+	function setMapOnAll(map) {
+		for(var i = 0; i < marker.length; ++i) {
+			marker[i].setMap(map);
+    	}
+    }
+	
+	function clearMarkers() {
+		setMapOnAll(null);
+    }
+	
 	function changedCenter(map) {
-		
-		var afterLat = $("#afterLat").val(map.getCenter().lat());
-		var afterLon = $("#afterLon").val(map.getCenter().lng());
-		/*
+		 clearMarkers();
+		 
 		$.ajax({
 			url : "/hajota/rooms/moveMap.go",
 			dataType : "JSON",
@@ -187,15 +192,27 @@ img.JH_infowidow_gallary {
 				afterLat : map.getCenter().lat(),
 				afterLon : map.getCenter().lng()
 			},
-			success : function(data) {
-				$("#JH_list_roomList_paging").html(data);
+			
+			success : function(data) {				
+				seq_lodge = [];
+				name = [];
+				type_lodge = [];
+				type_building = [];
+				lat = [];
+				lon = [];
+				total_price = [];
+				
+				$.each(data, function(entryIndex, entry){
+					seq_lodge[entryIndex] = entry.SEQ_LODGE;
+					name[entryIndex] = entry.NAME;
+					type_lodge[entryIndex] = entry.TYPE_LODGE;
+					type_building[entryIndex] = entry.TYPE_BUILDING;
+					lat[entryIndex] = entry.LAT;
+					lon[entryIndex] = entry.LON;
+					total_price[entryIndex] = entry.TOTAL_PRICE;
+				});
 			}
 		});
-		*/
-		var changedCenterForm = document.changedCenterForm;
-		changedCenterForm.action = "/hajota/rooms/moveMap.go";
-		changedCenterForm.method = "GET";
-		changedCenterForm.submit();
 	}
 </script>
 

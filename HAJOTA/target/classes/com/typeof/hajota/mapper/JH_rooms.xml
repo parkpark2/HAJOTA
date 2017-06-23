@@ -10,8 +10,8 @@
 	 		<result property="SEQ_LODGE" 		column="seq_lodge" 		javaType="int" />
 	 		<result property="HOST_EMAIL" 		column="host_email" 	javaType="String" />
 	 		<result property="NAME" 			column="name" 			javaType="String" />
-	 		<result property="TYPE_LODGE" 		column="type_lodge" 	javaType="String" />
-	 		<result property="TYPE_BUILDING"	column="type_building" 	javaType="String" />
+	 		<result property="TYPE_LODGE" 		column="type_lodge" 	javaType="int" />
+	 		<result property="TYPE_BUILDING"	column="type_building" 	javaType="int" />
 	 		<result property="LOCATION" 		column="location" 		javaType="String" />
 	 		<result property="LAT" 				column="lat" 			javaType="double" />
 	 		<result property="LON" 				column="lon" 			javaType="double" />
@@ -25,10 +25,10 @@
 	</resultMap>
 
 	<select id="selectRoomsList" parameterType="java.util.HashMap" resultMap="roomsListMap">
- 		select *
+ 		select seq_lodge
         from tbl_lodge
         where status = 1
-                
+
         <!-- 검색어 -->
         <if test='search_content != null and !"".equals(search_content)'>
         	and location like '%' || #{search_content} || '%'
@@ -68,8 +68,8 @@
 	 		<result property="SEQ_LODGE" 		column="seq_lodge" 		javaType="int" />
 	 		<result property="HOST_EMAIL" 		column="host_email" 	javaType="String" />
 	 		<result property="NAME" 			column="name" 			javaType="String" />
-	 		<result property="TYPE_LODGE" 		column="type_lodge" 	javaType="String" />
-	 		<result property="TYPE_BUILDING"	column="type_building" 	javaType="String" />
+	 		<result property="TYPE_LODGE" 		column="type_lodge" 	javaType="int" />
+	 		<result property="TYPE_BUILDING"	column="type_building" 	javaType="int" />
 	 		<result property="LOCATION" 		column="location" 		javaType="String" />
 	 		<result property="LAT" 				column="lat" 			javaType="double" />
 	 		<result property="LON" 				column="lon" 			javaType="double" />
@@ -118,8 +118,8 @@
 	 		<result property="SEQ_LODGE" 		column="seq_lodge" 		javaType="int" />
 	 		<result property="HOST_EMAIL" 		column="host_email" 	javaType="String" />
 	 		<result property="NAME" 			column="name" 			javaType="String" />
-	 		<result property="TYPE_LODGE" 		column="type_lodge" 	javaType="String" />
-	 		<result property="TYPE_BUILDING"	column="type_building" 	javaType="String" />
+	 		<result property="TYPE_LODGE" 		column="type_lodge" 	javaType="int" />
+	 		<result property="TYPE_BUILDING"	column="type_building" 	javaType="int" />
 	 		<result property="LOCATION" 		column="location" 		javaType="String" />
 	 		<result property="LAT" 				column="lat" 			javaType="double" />
 	 		<result property="LON" 				column="lon" 			javaType="double" />
@@ -271,9 +271,102 @@
  	
  	
  	
- 	위시리스트 테이블에서 이미 눌렀는지 확인
- 	<select id="selectWishlistExist" parameterType="java.util.HashMap" resultType="int">
- 		
- 	</select>
+ 	
  	 -->
+ 	 
+ 	<!-- 위시리스트에 해당 숙소가 이미 있는지 확인 -->
+ 	<select id="selectCheckWishList" parameterType="java.util.HashMap" resultType="int">
+		select count(*) as count
+		from tbl_lodge_wish
+		where 1 = 1
+		
+		<if test='seq_lodge != null and !"".equals(seq_lodge)'>
+        	and seq_lodge = #{seq_lodge}
+        </if>
+		
+		<if test='guest_email != null and !"".equals(guest_email)'>
+        	and guest_email = #{guest_email}
+        </if>
+ 	</select>
+ 	
+ 	
+ 	
+ 	<!-- 위시리스트에 해당 숙소를 삽입 -->
+ 	<insert id="insertWishList" parameterType="java.util.HashMap">
+ 		insert into tbl_lodge_wish(seq_lodge_wish, seq_lodge, guest_email, status)
+		values (seq_lodge_wish.nextval, #{seq_lodge}, #{guest_email}, default)
+ 	</insert>
+ 	
+ 	
+ 	<!-- 위시리스트에 숙소가 있으면 (status == 1) 없음으로 (status == 0) 반대도 동일 -->
+ 	<update id="updateWishList" parameterType="java.util.HashMap">
+ 		update tbl_lodge_wish
+ 		
+ 		<if test="status == 0">
+ 			set status = 1
+ 		</if>
+ 		
+ 		<if test="status == 1">
+ 			set status = 0
+ 		</if>
+ 		
+ 		where 1 = 1
+		
+		<if test='seq_lodge != null and !"".equals(seq_lodge)'>
+        	and seq_lodge = #{seq_lodge}
+        </if>
+		
+		<if test='guest_email != null and !"".equals(guest_email)'>
+        	and guest_email = #{guest_email}
+        </if>
+ 	</update>
+
+
+ 	
+ 	<!-- 위시리스트에 있는 해당 숙소의 상태 불러오기 -->
+ 	<select id="selectWishListStatus" parameterType="java.util.HashMap" resultType="int">
+		select status
+		from tbl_lodge_wish
+		where 1 = 1
+		
+		<if test='seq_lodge != null and !"".equals(seq_lodge)'>
+        	and seq_lodge = #{seq_lodge}
+        </if>
+		
+		<if test='guest_email != null and !"".equals(guest_email)'>
+        	and guest_email = #{guest_email}
+        </if>
+ 	</select>
+ 	
+ 	
+ 	<!-- 보여주는 목록 내에서 위시리스트 목록 불러오기 -->
+ 	<resultMap type="java.util.HashMap" id="roomsWishListMap">
+	 		<result property="SEQ_LODGE" 		column="seq_lodge" 		javaType="int" />
+	 		<result property="STATUS" 			column="status" 		javaType="int" />
+	</resultMap>
+
+	<select id="selectRoomsWishListInList" parameterType="java.util.HashMap" resultMap="roomsWishListMap">
+ 		select A.seq_lodge, nvl(B.status, 0) as status
+        from tbl_lodge A left join tbl_lodge_wish B on A.seq_lodge = B.seq_lodge
+        where A.status = 1
+
+        <!-- 검색어 -->
+        <if test='search_content != null and !"".equals(search_content)'>
+        	and location like '%' || #{search_content} || '%'
+        	or name like '%' || #{search_content} || '%'
+        </if>
+        
+        <!-- 인원수 -->
+        <if test='search_content != null and !"".equals(search_content)'>
+        	and num_of_people <![CDATA[>=]]> #{str_numOfPeople}
+        </if>
+        
+        <!-- 회원 -->
+        <if test='guest_email != null and !"".equals(guest_email)'>
+        	and guest_email = #{guest_email}
+        </if>
+        
+        order by A.seq_lodge desc
+ 	</select>
+ 	
 </mapper>

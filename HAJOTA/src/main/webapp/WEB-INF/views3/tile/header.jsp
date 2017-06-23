@@ -525,12 +525,30 @@ JH_search_calender, div_html {
 
 <script>
 	function goSearch() {
+		var search_content = $("#search_content").val();
+		var numOfPeople = $("#numOfPeople").val();
+		var startDate = $("#startDate").val();
+		var endDate = $("#endDate").val();
+		
+		if(search_content.trim() == "" || numOfPeople.trim() == "" || startDate.trim() == "" || endDate.trim() == "") {
+			// TODO : 수정하자
+			alert("모든 항목을 입력하셔야 합니다.");
+			return;
+		}
+
 		var searchFrm = document.searchFrm;
 		
 		searchFrm.action = "/hajota//rooms/list.go";
 		searchFrm.method = "GET";
 		searchFrm.submit();
 	}
+	
+	$(document).ready(function() {
+		$("#search_content").val("${search_content}");
+		$("#numOfPeople").val("${numOfPeople}");
+		$("#startDate").val("${startDate}");
+		$("#endDate").val("${endDate}");
+	});
 </script>
 
 </head>
@@ -546,8 +564,8 @@ JH_search_calender, div_html {
 					<div class="JH_search_dropdown_input">
 						<input type="text" id="search_content" name="search_content" placeholder="장소, 지역" style="width: 140px; height: 50px;"/>
 					</div>
-					 
-					<!-- 누르면 드롭박스화 하여 버튼으로 인원수 입력하게 하자!!! -->
+					 <!-- 
+					누르면 드롭박스화 하여 버튼으로 인원수 입력하게 하자!!!
 					<div class="JH_search_dropdown_div">
 						<dropdown id="JH_search_dropdown_calender"
 							class="JH_search_dropdown"> <input
@@ -555,7 +573,7 @@ JH_search_calender, div_html {
 						<label for="JH_search_dropdown_toggle_numOfPerson"
 							class="JH_search_dropdown_animate">인원 수</label>
 						<ul class="JH_search_dropdown_animate">
-							<!-- 값을 집어넣는 부분 -->
+							값을 집어넣는 부분
 							<li class="JH_search_dropdown_animate" style="margin-left: -14.6%;">
 								<div>
 								
@@ -582,7 +600,7 @@ JH_search_calender, div_html {
 						<label for="JH_search_dropdown_toggle_checkindate"
 							class="JH_search_dropdown_animate">체크인날짜</label>
 						<ul class="JH_search_dropdown_animate" style="clear:both; float: left;">
-							<!-- 값을 집어넣는 부분 -->
+							값을 집어넣는 부분
 							<li class="JH_search_dropdown_animate" style="margin-left: -14.6%;">
   <div class="fa-events-icons-ready div_html">
   <div class="JH_search_calender">
@@ -664,7 +682,7 @@ JH_search_calender, div_html {
 </div>
     </div>
     </div>
-							<!-- <input type="date" class="JH_inputSearch" id="startDate" name="startDate"/> -->
+							<input type="date" class="JH_inputSearch" id="startDate" name="startDate"/>
 							</li>
 						</ul>
 						</dropdown>
@@ -679,14 +697,21 @@ JH_search_calender, div_html {
 						<label for="JH_search_dropdown_toggle_checkoutdate"
 							class="JH_search_dropdown_animate">체크아웃날짜</label>
 						<ul class="JH_search_dropdown_animate">
-							<!-- 값을 집어넣는 부분 -->
+							값을 집어넣는 부분
 							<li class="JH_search_dropdown_animate"
-								style="margin-left: -14.6%;">dddd <!-- <input type="date" class="JH_inputSearch" id="endDate" name="endDate"/> -->
+								style="margin-left: -14.6%;">dddd <input type="date" class="JH_inputSearch" id="endDate" name="endDate"/>
 							</li>
 						</ul>
 						</dropdown>
 					</div>
-					
+					 -->
+					 
+					 <div style="margin-top: 100px;">
+						 <input type="text" class="JH_inputSearch" id="numOfPeople" name="numOfPeople"/>
+						 <input type="date" class="JH_inputSearch" id="startDate" name="startDate"/>
+						 <input type="date" class="JH_inputSearch" id="endDate" name="endDate"/>
+					 </div>
+					 
 					<div class="JH_search_dropdown_button">
 						<a href="#" onclick="goSearch();" class="JH_search_action-button JH_search_button_animate JH_search_button_color">검색</a>
 					</div>
