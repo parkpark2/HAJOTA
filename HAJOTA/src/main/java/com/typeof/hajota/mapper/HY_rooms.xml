@@ -47,7 +47,8 @@
 
 	<select id="getlistdetail" parameterType="String" resultMap="totalroomdetail_resultmap">
 	
-	select seq_lodge , host_email , name , type_lodge , type_building , location
+	select seq_lodge , host_email , name , case when type_lodge = 1 then '집전체' when type_lodge = 2 then '개인실' else '다인실' end as type_lodge 
+      , case when type_building = 1 then '아파트' when type_building = 2 then '개인주택' else '빌딩' end as type_building, location
        ,lat,lon, img_main , num_of_people , padd_price , deposit_price , clean_price , 
        total_price , status , NUM_OF_BATHROOM , NUM_OF_BEDROOM , NUM_OF_BED ,
        CHECKIN_TIME ,CHECKOUT_TIME , ELEVATOR , WIFI , AIR_CONTROLLER , HEATING

@@ -40,21 +40,12 @@ img.JH_infowidow_gallary {
 	var search_lat;
 	var search_lon;
 	
-	var seq_lodge = [];
-	var name = [];
-	var type_lodge = [];
-	var type_building = [];
-	var lat = [];
-	var lon = [];
-	var total_price = [];
-	
 	var map;
 	var marker = [];
 	
 	$(document).ready(function() {
-		callRoomsInfo();
 		
-		if(${search_content == null || "".equals(search_content)}) {
+		if('${search_content == null || "".equals(search_content)}') {
 			search_content = "당산역";
 		}
 		
@@ -94,6 +85,7 @@ img.JH_infowidow_gallary {
 		}
 		
 		map = new google.maps.Map(mapCanvas, mapOptions);
+		
 		/*
 		// 드래그가 끝나면 한 번만 호출
 		map.addListener('dragend', function() {
@@ -103,7 +95,8 @@ img.JH_infowidow_gallary {
 			}, 1000 / 2);
 		});
 		*/
-		setMarkers(map, lat, lon);
+		
+		setMarkers(map);
 	}
 	
 	google.maps.event.addDomListener(window, 'load', initialize);
@@ -111,7 +104,7 @@ img.JH_infowidow_gallary {
 	var infowindow = new google.maps.InfoWindow();
 
 	// 마커 부분
-	function setMarkers(map, lat, lon) {
+	function setMarkers(map) {
 		var contentString = [];
 <%-- 		
 		var myIcon = new google.maps.MarkerImage("<%= request.getContextPath() %>/resources/images/JHHY/maker.png",
@@ -120,56 +113,34 @@ img.JH_infowidow_gallary {
 			    null,
 			    new google.maps.Size(150, 100));
  --%>
-		for (var i = 0; i < lat.length; ++i) {
-			var myLatLng = new google.maps.LatLng(lat[i], lon[i]);
+		<c:forEach var="rooms" items="${roomsList}" varStatus="status">
+			var myLatLng = new google.maps.LatLng("${rooms.LAT}", "${rooms.LON}");
 			
-			// TODO : 디테일 보여주는 주소 넣어주어야 함
-			// 각종 정보 넣어 주면 될 것 같음
-			contentString[i] = 
-				'<div class="JH_infowindow">' +
-				'<a href="/hajota/rooms/detailInfo.go?seq_lodge=' + seq_lodge[i] + '">' +
+			contentString["${status.index}"] = '<div class="JH_infowindow">' +
+				'<a href="/hajota/rooms/detailInfo.go?seq_lodge=' + "${rooms.SEQ_LODGE}" + '">' +
 				'<img class="JH_infowidow_gallary" alt="infowindowGallary" src="<%=request.getContextPath() %>/resources/images/JHHY/Sample01_00.jpg" />' +
 				'</a>' +
 				'<span class="project-details">' +
-				'<a href="/hajota/rooms/detailInfo.go?seq_lodge=' + seq_lodge[i] + '">' + 
-				'<strong>' + name[i] + '</strong>' + '<br/>' +
-				'&#8361;' + total_price[i] + '&nbsp;' + type_lodge[i] + '&nbsp;' + type_building[i] + '<br/>' + '</a>' +
-                '</span>' +
+				'<a href="/hajota/rooms/detailInfo.go?seq_lodge=' + "${rooms.SEQ_LODGE}" + '">' + 
+				'<strong>' + "${rooms.NAME}" + '</strong>' + '<br/>' +
+				'&#8361;' + "${rooms.TOTAL_PRICE}" + '&nbsp;' + "${rooms.TYPE_LODGE}" + '&nbsp;' + "${rooms.TYPE_BUILDING}" + '<br/>' + '</a>' +
+	            '</span>' +
 				'</div>';
 			
-			marker[i] = new google.maps.Marker({
+			marker["${status.index}"] = new google.maps.Marker({
 				position : myLatLng,
 				map : map,
 				/* icon : myIcon, */
-				seq_lodge : seq_lodge[i],
-				content : contentString[i]
+				seq_lodge : "${rooms.SEQ_LODGE}",
+				content : contentString["${status.index}"]
 			});
 
-			marker[i].addListener('click', function() {
+			marker["${status.index}"].addListener('click', function() {
 				map.setCenter(this.position);
 				infowindow.setContent(this.content);
 				infowindow.open(map, this);
 			});
-		}
-	}
-	
-	function callRoomsInfo() {
-		<c:if test="${roomsList == null}">
-			alert("검색 항목 없음");
-		</c:if>
-		
-		<c:if test="${roomsList != null}">
-			<c:forEach var="rooms" items="${roomsList}" varStatus="status">
-				seq_lodge[${status.index}] = "${rooms.SEQ_LODGE}";
-				name[${status.index}] = "${rooms.NAME}";
-				//alert('name[${status.index}]'+"${rooms.NAME}");
-				type_lodge[${status.index}] = "${rooms.TYPE_LODGE}";
-				type_building[${status.index}] = "${rooms.TYPE_BUILDING}";
-				lat[${status.index}] = "${rooms.LAT}";
-				lon[${status.index}] = "${rooms.LON}";
-				total_price[${status.index}] = "${rooms.TOTAL_PRICE}";
-			</c:forEach>
-		</c:if>
+		</c:forEach>
 	}
 	
 	function setMapOnAll(map) {
@@ -181,7 +152,7 @@ img.JH_infowidow_gallary {
 	function clearMarkers() {
 		setMapOnAll(null);
     }
-	
+	/*
 	function changedCenter(map) {
 		 clearMarkers();
 		 
@@ -194,7 +165,7 @@ img.JH_infowidow_gallary {
 				afterLon : map.getCenter().lng()
 			},
 			
-			success : function(data) {				
+			success : function(data) {
 				seq_lodge = [];
 				name = [];
 				type_lodge = [];
@@ -215,6 +186,7 @@ img.JH_infowidow_gallary {
 			}
 		});
 	}
+	 */
 </script>
 
 </head>
