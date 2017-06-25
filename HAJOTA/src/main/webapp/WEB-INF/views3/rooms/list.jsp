@@ -145,8 +145,8 @@ div#JH_list_roomList_paging {
 	                    </span>
 	                    
 	                    <!-- TODO : 주소명, 이미지 변경하자 -->
-	                    <a href="/hajota/rooms/detailInfo.go?seq_lodge=${rooms.SEQ_LODGE}"><img src="<%=request.getContextPath() %>/resources/images/JHHY/Sample01_00.jpg" alt="Gallery"></a>
-	                    <span class="project-details"><a href="/hajota/rooms/detailInfo.go?seq_lodge=${rooms.SEQ_LODGE}"><strong>${rooms.NAME}</strong><br/>&#8361;${rooms.TOTAL_PRICE}&nbsp;${rooms.TYPE_LODGE}&nbsp;${rooms.TYPE_BUILDING}<br/></a>
+	                    <a href="/hajota/listdetailtest.go?seq_lodge=${rooms.SEQ_LODGE}"><img src="<%=request.getContextPath() %>/resources/images/JHHY/Sample01_00.jpg" alt="Gallery"></a>
+	                    <span class="project-details"><a href="/hajota/listdetailtest.go?seq_lodge=${rooms.SEQ_LODGE}"><strong>${rooms.NAME}</strong><br/>&#8361;${rooms.TOTAL_PRICE}&nbsp;${rooms.TYPE_LODGE}&nbsp;${rooms.TYPE_BUILDING}<br/></a>
 		                    <button type="button" style="margin-top: 2%;" onclick="goLocation(${rooms.SEQ_LODGE}, ${rooms.LAT}, ${rooms.LON});">위치보기</button>&nbsp;&nbsp;&nbsp;
 		                    <button type="button" style="margin-top: 2%;" onclick="clickWishList(${rooms.SEQ_LODGE});">좋아요</button>&nbsp;&nbsp;&nbsp;
 		                    

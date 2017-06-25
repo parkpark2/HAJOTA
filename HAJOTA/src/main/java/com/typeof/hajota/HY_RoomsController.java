@@ -147,7 +147,7 @@ public class HY_RoomsController {
     @RequestMapping(value="/listdetailtest.go", method={RequestMethod.GET})
        public String listdetailtest(HttpServletRequest req) {
           
-        String seq = "1";
+        String seq = (String)req.getParameter("seq_lodge");
         
         HashMap<String, Object> listdetail = service.getlistdetail(seq);
         
