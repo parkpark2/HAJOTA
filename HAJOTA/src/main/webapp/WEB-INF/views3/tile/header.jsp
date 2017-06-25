@@ -538,7 +538,7 @@ JH_search_calender, div_html {
 
 		var searchFrm = document.searchFrm;
 		
-		searchFrm.action = "/hajota//rooms/list.go";
+		searchFrm.action = "/hajota/rooms/list.go";
 		searchFrm.method = "GET";
 		searchFrm.submit();
 	}

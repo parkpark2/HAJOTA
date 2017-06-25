@@ -162,6 +162,7 @@ img.JH_infowidow_gallary {
 			<c:forEach var="rooms" items="${roomsList}" varStatus="status">
 				seq_lodge[${status.index}] = "${rooms.SEQ_LODGE}";
 				name[${status.index}] = "${rooms.NAME}";
+				//alert('name[${status.index}]'+"${rooms.NAME}");
 				type_lodge[${status.index}] = "${rooms.TYPE_LODGE}";
 				type_building[${status.index}] = "${rooms.TYPE_BUILDING}";
 				lat[${status.index}] = "${rooms.LAT}";

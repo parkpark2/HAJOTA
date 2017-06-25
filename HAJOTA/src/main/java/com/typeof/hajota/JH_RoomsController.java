@@ -3,6 +3,7 @@ package com.typeof.hajota;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -40,6 +41,47 @@ public class JH_RoomsController {
 		String str_numOfPeople = req.getParameter("numOfPeople");
 		String startDate = req.getParameter("startDate");
 		String endDate = req.getParameter("endDate");
+		
+		
+		//////////////////////////////////////////////////////////////////
+		// TODO : YYYY-MM-DD 양식에 맞게 넣을 수 있도록 header의 search와
+		//        main의 search의 규격을 맞춰주자
+		String year = "", month = "", day = "";
+		
+		StringTokenizer st1 = new StringTokenizer(startDate, "/");
+		
+		if(st1.countTokens() != 0) {
+			if(st1.hasMoreTokens()) {
+				month = st1.nextToken();
+				if(st1.hasMoreTokens()) {
+					day = st1.nextToken();
+					if(st1.hasMoreTokens()) {
+						year = st1.nextToken();
+						startDate = year + "-" + month + "-" + day;
+					}
+				}
+			}
+		}
+		
+		StringTokenizer st2 = new StringTokenizer(endDate, "/");
+		
+		if(st2.countTokens() != 0) {
+			if(st2.hasMoreTokens()) {
+				month = st2.nextToken();
+				if(st2.hasMoreTokens()) {
+					day = st2.nextToken();
+					if(st2.hasMoreTokens()) {
+						year = st2.nextToken();
+						endDate = year + "-" + month + "-" + day;
+					}
+				}
+			}
+		}
+		//////////////////////////////////////////////////////////////////
+		
+		System.out.println("startDate : " + startDate);
+		System.out.println("endDate : " + endDate);
+		
 		
 		if(search_content == null) {
 			search_content = "";
