@@ -157,7 +157,13 @@ public class HY_RoomsController {
           // /Board/src/main/webapp/WEB-INF/views/main/test.jsp 파일을 생성한다.
        }
     
-    
+    @RequestMapping(value="/hyhostinsert.go", method={RequestMethod.GET})
+    public String hyhostinsert(HttpServletRequest req) {
+    	
+	 
+    	return "hyhostinsert.tiles6";
+    	// /Board/src/main/webapp/WEB-INF/views/main/test.jsp 파일을 생성한다.
+    }
    
 
 }
