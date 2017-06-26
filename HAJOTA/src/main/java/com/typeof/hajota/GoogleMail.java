@@ -24,7 +24,7 @@ public class GoogleMail {
 		//    무엇으로 사용할 것인지 설정을 해주어야 한다.
 		//    우리는 Google gmail 를 사용하도록 하겠다.
 		//    그러므로 gmail 계정이 있어야 한다.
-		prop.put("mail.smtp.user", "khman0959@gmail.com");
+		prop.put("mail.smtp.user", "rigeltess@gmail.com");
 		
 		// 3. SMTP 서버 정보 설정
 		//    Google gmail 를 사용하는 경우 "smtp.gmail.com" 
@@ -54,7 +54,7 @@ public class GoogleMail {
 		msg.setSubject(subject);
 		
 		// 보내는 사람의 메일주소
-		String sender = "khman0959@gmail.com";
+		String sender = "rigeltess@gmail.com";
 		Address fromAddr = new InternetAddress(sender);
 		msg.setFrom(fromAddr);
 		

@@ -7,7 +7,6 @@ from tbl_lodge;
 
 
 
-
 --테이블명 또는 뷰명 무엇을 만들던 자기만의 index를 이름에 넣어서 만들어야 한다.(예 : 선효가 만드는 테이블 => SH_tbl_****)
 --만들다가 다른쪽 테이블,뷰 등을 바꾸거나 추가적인것을 원한다면 그사람과 이야기를 한 후에 바꾸도록 한다.
 --항상 주석을 달고 누가봐도 알아볼수있게 최대한 정리해서 만든다.
@@ -25,6 +24,85 @@ from tbl_lodge;
 -----------------------------------------------------------------------------------------------------------------------------------------------------
 --유블랑형 구역!
 
+	select case( select count(*)
+		 				   from tbl_guest
+		 				   where guest_email = 'you@naver.com' and
+		 				   func_decrypted_pwd('you@naver.com', 'qwer1234!') = substr('qwer1234!', 1, 8) )
+		 		 when 1 then 1
+		 		 else( case(select count(*)
+		 		 				 from tbl_guest
+		 		 				 where guest_email = 'you@naver.com')
+		 		 			when 1 then 0
+		 		 			else -1
+		 		 			end	 
+		 		 	 		)
+		 		 	 		end as LOGINCHECK
+		 		 	 		from dual;	
+
+
+select case( select count(*)
+               from tbl_guest
+               where guest_email='caley@naver.com' and
+                     func_decrypted_pwd('caley@naver.com', 'qwer1234!') = substr('qwer1234!', 1, 8) )
+         when 1 then 1
+         else( case(select count(*) 
+                    from tbl_guest
+                    where guest_email='caley@naver.com')
+               when 1 then 0
+               else -1
+               end
+              )
+         end as LOGINCHECK
+  from dual;
+
+
+update tbl_guest set status=0
+where guest_eamil = 'insangnim1@naver.com'
+
+
+
+insert into tbl_guest_withdraw_reason (seq_guest_withdraw_reason, withdraw_reason)
+values (seq_guest_withdraw_reason.nextval, '내 계정이 해킹당했습니다.');
+
+insert into tbl_guest_withdraw_reason (seq_guest_withdraw_reason, withdraw_reason)
+values (seq_guest_withdraw_reason.nextval, 'HAJOTA에 너무 많은 시간을 사용합니다.');
+
+insert into tbl_guest_withdraw_reason (seq_guest_withdraw_reason, withdraw_reason)
+values (seq_guest_withdraw_reason.nextval, '개인 정보가 우려됩니다.');
+
+insert into tbl_guest_withdraw_reason (seq_guest_withdraw_reason, withdraw_reason)
+values (seq_guest_withdraw_reason.nextval, '군대에 가야 합니다.');
+
+insert into tbl_guest_withdraw_reason (seq_guest_withdraw_reason, withdraw_reason)
+values (seq_guest_withdraw_reason.nextval, 'HAJOTA에 실망했어요. 저 A형 이에요.');
+
+commit
+
+update tbl_guest set status = 1;
+
+select *
+from tbl_guest_withdraw
+
+desc tbl_guest_withdraw_reason
+
+desc tbl_guest_withdraw
+
+select *
+from tbl_guest;
+
+select *
+from host_member;
+
+select *
+from user_procedures;
+
+select last_name || first_name
+from tbl_guest;
+
+
+select count(*)
+where you@naver.com = you@naver.com
+from tbl_guest;
 -----------------------------------------------------------------------------------------------------------------------------------------------------
 --김희쑥대머리 구역!
 
