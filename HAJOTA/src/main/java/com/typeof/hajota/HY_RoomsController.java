@@ -55,87 +55,115 @@ public class HY_RoomsController {
     @RequestMapping(value="/addtest.go", method={RequestMethod.POST})
        public String addtest(MultipartHttpServletRequest req , HttpSession session , HttpServletResponse res) {
        
-       List<MultipartFile> attachList = req.getFiles("attach");
-       
-       
-       
-       List<HashMap<String, String>> mapProductimageList = new ArrayList<HashMap<String, String>>();
-       /*   
-         ===== #135. 사용자가 쓴 글에 파일이 첨부가 된것인지
-                       아니면 파일첨부가 안된것인지 구분을 지어주어야 한다. =====
-       */
-       // **** 첨부파일이 있는지 없는지? ****
-       if(attachList != null) {
-            // WAS 의 webapp 의 절대경로를 알아와야 한다. 
-            session = req.getSession();
-            String root = session.getServletContext().getRealPath("/"); 
-            String path = root + "resources"+File.separator+"files";
-            // path 가 첨부파일들을 저장할 WAS(톰캣)의 폴더가 된다. 
-            
-            String newFileName = "";
-            // WAS(톰캣) 디스크에 저장할 파일명 
-            
-            byte[] bytes = null;
-            // 첨부파일을 WAS(톰캣) 디스크에 저장할때 사용되는 용도 
-            
-            long fileSize = 0;
-            // 파일크기를 읽어오기 위한 용도
-            
-            
-            for(int i=0; i<attachList.size(); i++) {
-               try {
-                   bytes = attachList.get(i).getBytes();
-                   
-                   newFileName = fileManager.doFileUpload(bytes, attachList.get(i).getOriginalFilename(), path);
-                   
-                   fileSize = attachList.get(i).getSize();
-                   
-                  // === >>>> thumbnail 파일 생성을 위한 작업 <<<<    =========  //
-                  
-                  // ===================================================  //
-                   
-                   HashMap<String, String> mapProductimage = new HashMap<String, String>();
-                   
-                   
-                   mapProductimage.put("imagefilename", newFileName);
-                   mapProductimage.put("imageorgFilename", attachList.get(i).getOriginalFilename());
-                   mapProductimage.put("imagefileSize", String.valueOf(fileSize));
-                   
-                   
-                   mapProductimageList.add(mapProductimage);
-                   
-               } catch (Exception e) {
-                  
-               }
-               
-            }// end of for-------------------------
-            
-         }// end of if------------------------------
+    	// WAS 의 webapp 의 절대경로를 알아와야 한다. 
+        session = req.getSession();
+        String root = session.getServletContext().getRealPath("/"); 
+        String path = root + "resources"+File.separator+"files";
+        // path 가 첨부파일들을 저장할 WAS(톰캣)의 폴더가 된다. 
+        
+        String newFileName = "";
+        // WAS(톰캣) 디스크에 저장할 파일명 
+        
+        byte[] bytes = null;
+        // 첨부파일을 WAS(톰캣) 디스크에 저장할때 사용되는 용도 
+        
+        long fileSize = 0;
+        // 파일크기를 읽어오기 위한 용도
+      
+      MultipartFile mainimage = req.getFile("mainimage");
+      HashMap<String, String> mainmap = new HashMap<String, String>();
+      
+      if(mainimage != null){
          
-         
-        // **** 폼에서 입력받은 제품입력정보 값을 
-        //      Service 단으로 넘겨서 테이블에 insert 하기로 한다.
+         try {
+            bytes = mainimage.getBytes();
             
-             // 이미지파일첨부가 없는 경우 또는 이미지파일첨부가 있는 경우로 나누어서
-            // Service 단으로 호출하기
-            int n = 0;
-            int m = 0;
-            int count = 0;
+            newFileName = fileManager.doFileUpload(bytes, mainimage.getOriginalFilename(), path);
             
+            fileSize = mainimage.getSize();
+            
+            mainmap.put("mainimagename", newFileName);
+            mainmap.put("mainimageFilename", mainimage.getOriginalFilename());
+            mainmap.put("mainimagefileSize", String.valueOf(fileSize));
+            
+        } catch (Exception e) {
+           // TODO: handle exception
+        }
+        
          
-               for(int i=0; i<mapProductimageList.size(); i++) {
-                  m = service.addFile(mapProductimageList.get(i));
-                  if(m==1) count++;
-               }
-               
-               if(mapProductimageList.size() == count) {
-                  n=1;
-               }
-               else {
-                  n=0;
-               }
+      }
+      
+      System.out.println(newFileName);
+      System.out.println(mainimage.getOriginalFilename());
+      System.out.println(String.valueOf(fileSize));
+      
+      List<MultipartFile> attachList = req.getFiles("attach");
+      List<HashMap<String, String>> mapProductimageList = new ArrayList<HashMap<String, String>>();
+      
+      /*   
+        ===== #135. 사용자가 쓴 글에 파일이 첨부가 된것인지
+                      아니면 파일첨부가 안된것인지 구분을 지어주어야 한다. =====
+      */
+      // **** 첨부파일이 있는지 없는지? ****
+      if(attachList != null) {
            
-                  req.setAttribute("n", n);      
+           
+           
+           for(int i=0; i<attachList.size(); i++) {
+              try {
+                  bytes = attachList.get(i).getBytes();
+                  
+                  newFileName = fileManager.doFileUpload(bytes, attachList.get(i).getOriginalFilename(), path);
+                  
+                  fileSize = attachList.get(i).getSize();
+                  
+                 // === >>>> thumbnail 파일 생성을 위한 작업 <<<<    =========  //
+                 
+                 // ===================================================  //
+                  
+                  HashMap<String, String> mapProductimage = new HashMap<String, String>();
+                  
+                  
+                  mapProductimage.put("imagefilename", newFileName);
+                  mapProductimage.put("imageorgFilename", attachList.get(i).getOriginalFilename());
+                  mapProductimage.put("imagefileSize", String.valueOf(fileSize));
+                  
+                  
+                  mapProductimageList.add(mapProductimage);
+                  
+              } catch (Exception e) {
+                 
+              }
+              
+           }// end of for-------------------------
+           
+        }// end of if------------------------------
+        
+        
+       // **** 폼에서 입력받은 제품입력정보 값을 
+       //      Service 단으로 넘겨서 테이블에 insert 하기로 한다.
+           
+            // 이미지파일첨부가 없는 경우 또는 이미지파일첨부가 있는 경우로 나누어서
+           // Service 단으로 호출하기
+           int n = 0;
+           int m = 0;
+           int count = 0;
+                    
+                 
+        
+              for(int i=0; i<mapProductimageList.size(); i++) {
+                 m = service.addFile(mapProductimageList.get(i));
+                 if(m==1) count++;
+              }
+              
+              if(mapProductimageList.size() == count) {
+                 n=1;
+              }
+              else {
+                 n=0;
+              }
+          
+                 req.setAttribute("n", n);   
            
             
        

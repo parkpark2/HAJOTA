@@ -133,9 +133,17 @@ function goinsert(){
 function resize(obj) {
 	  obj.style.height = "1px";
 	  obj.style.height = (12+obj.scrollHeight)+"px";
-	}
+}
 
-    </script>
+function insertLodge() {
+	var msform = document.msform;
+	
+	msform.action = "/hajota/rooms/insertEnd.go";
+	msform.method = "POST";
+	msform.submit();
+}
+
+</script>
 
   
 </head>
@@ -157,7 +165,7 @@ function resize(obj) {
   <fieldset>
     <h2 class="fs-title">숙소1</h2>
     <h3 class="fs-subtitle">This is step 1</h3>
-    <input type="text" name="email" placeholder="Email(이메일)" />
+    <!-- <input type="text" name="email" placeholder="Email(이메일)" /> -->
     <input type="text" id="roomsname" name="roomsname" placeholder="roomsname(숙소이름)" />
          숙소타입 : <select name="TYPE_LODGE">
 	<option value="0" selected>타입선택</option>
@@ -196,8 +204,9 @@ function resize(obj) {
     <h3 class="fs-subtitle">We will never sell it</h3>
     상세주소 : <input type="text" id="sample4_postcode" placeholder="우편번호" readonly>
 				 <input type="button" onclick="sample4_execDaumPostcode()" value="우편번호 찾기"><br>
-				 <input type="text" id="sample4_roadAddress" placeholder="도로명주소" readonly>
+				 <input type="text" id="sample4_roadAddress" name="roadAddress" placeholder="도로명주소" readonly>
 				 <input type="text" id="sample4_jibunAddress" placeholder="지번주소" readonly>
+				 <input type="text" id="" name="detailAddress" placeholder="상세주소">
 				 <input type="text" id="LAT" value="">
 				 <input type="text" id="LNG" value="">
 				 <span id="guide" style="color:#999"></span>
@@ -210,30 +219,30 @@ function resize(obj) {
     <h2 class="fs-title">숙소3</h2>
     <h3 class="fs-subtitle">Your presence on the social network</h3>
     화장실 개수 : <select name="bathroomcount">
-			  <option>1</option>
-			  <option>2</option>
-			  <option>3</option>
-			  <option>4</option>
-			  <option>4+</option>
+			  <option value="1">1</option>
+			  <option value="2">2</option>
+			  <option value="3">3</option>
+			  <option value="4">4</option>
+			  <option value="5">5+</option>
 			  </select> <br/>
 	침실 개수 : <select name="bedroomcount">
-			  <option>1</option>
-			  <option>2</option>
-			  <option>3</option>
-			  <option>4</option>
-			  <option>5</option>
-			  <option>6</option>
-			  <option>7+</option>
+			  <option value="1">1</option>
+			  <option value="2">2</option>
+			  <option value="3">3</option>
+			  <option value="4">4</option>
+			  <option value="5">5</option>
+			  <option value="6">6</option>
+			  <option value="7">7+</option>
 			</select> <br/>
 	침대 개수 : <select name="bedcount">
-			  <option>1</option>
-			  <option>2</option>
-			  <option>3</option>
-			  <option>4</option>
-			  <option>5</option>
-			  <option>6</option>
-			  <option>7</option>
-			  <option>8+</option>
+			  <option value="1">1</option>
+			  <option value="2">2</option>
+			  <option value="3">3</option>
+			  <option value="4">4</option>
+			  <option value="5">5</option>
+			  <option value="6">6</option>
+			  <option value="7">7</option>
+			  <option value="8">8+</option>
 			</select> <br/>
 	<input type="text" name="Hcheckin" placeholder="Hcheckin(숙소 체크인시간 )" /> <br/>
 	<input type="text" name="Hcheckout" placeholder="Hcheckout(숙소 체크아웃 시간 )" /> <br/>
@@ -287,9 +296,9 @@ function resize(obj) {
   <fieldset>
     <h2 class="fs-title">숙소6</h2>
     <h3 class="fs-subtitle">This is step 123123</h3>
-   	숙소설명 :  <textarea class="autosize" > </textarea><br/>
-	환불 정책 : <textarea class="autosize" > </textarea> <br/>
-	숙소 규칙 : <textarea class="autosize" > </textarea> <br/> 
+   	숙소 설명 :  <textarea class="autosize" name=""> </textarea><br/>
+	환불 정책 : <textarea class="autosize" name=""> </textarea> <br/>
+	숙소 규칙 : <textarea class="autosize" name=""> </textarea> <br/> 
 	<input type="button" name="previous" class="previous action-button" value="Previous" />
     <input type="button" name="next" class="next action-button" value="Next" />
   </fieldset>
@@ -301,10 +310,10 @@ function resize(obj) {
 	지역 설명 : <textarea class="autosize" > </textarea> <br/>
 	메인이미지 :  <input type='file' name='mainimage' class='btn btn-default' /> <br/>
 	서브 이미지 : <label for="spinnerOqty">파일갯수 : </label>
-             <input id="spinnerOqty" value="0" style="width: 30px; height: 20px;">
+             <input id="spinnerOqty" value="0" min="0" max="4" style="width: 30px; height: 20px;">
     		 <div id="divfileattach"></div><br/>
     <input type="button" name="previous" class="previous action-button" value="Previous" />
-    <input type="submit" name="submit" class="submit action-button" value="Submit" />
+    <input type="submit" name="submit" class="submit action-button" value="Submit" onclick="insertLodge();"/>
   </fieldset>
   
    

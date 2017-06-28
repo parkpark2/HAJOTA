@@ -82,8 +82,8 @@ div#JH_list_roomList_paging {
 				div_wishlist.innerHTML = content;
 			}
 		});
-	} */
-	
+	}
+	 */
 	// TODO : 세션으로 로그인 한 유저 구해서 고쳐주자
 	function clickWishList(seq_lodge) {
 		var div_wishlist = document.getElementById("JH_wishlist_div" + seq_lodge);
@@ -94,7 +94,7 @@ div#JH_list_roomList_paging {
 			dataType : "JSON",
 			method : "GET",
 			data : {
-				guest_email : "ajota@ajota.com",
+				email : "ajota@ajota.com",
 				seq_lodge : seq_lodge
 			},
 			

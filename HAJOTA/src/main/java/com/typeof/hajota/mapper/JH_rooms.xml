@@ -8,7 +8,7 @@
 	<!-- 등록된 룸 리스트 -->
 	<resultMap type="java.util.HashMap" id="roomsListMap">
 	 		<result property="SEQ_LODGE" 		column="seq_lodge" 		javaType="int" />
-	 		<result property="HOST_EMAIL" 		column="host_email" 	javaType="String" />
+	 		<result property="EMAIL" 			column="email" 			javaType="String" />
 	 		<result property="NAME" 			column="name" 			javaType="String" />
 	 		<result property="TYPE_LODGE" 		column="type_lodge" 	javaType="int" />
 	 		<result property="TYPE_BUILDING"	column="type_building" 	javaType="int" />
@@ -17,7 +17,7 @@
 	 		<result property="LON" 				column="lon" 			javaType="double" />
 	 		<result property="IMG_MAIN" 		column="img_main" 		javaType="String" />
 	 		<result property="NUM_OF_PEOPLE" 	column="num_of_people" 	javaType="int" />
-	 		<result property="PADD_PRICE" 		column="padd_price" 	javaType="int" />
+	 		<result property="ROOM_PRICE" 		column="room_price" 	javaType="int" />
 	 		<result property="DEPOSIT_PRICE" 	column="deposit_price" 	javaType="int" />
 	 		<result property="CLEAN_PRICE" 		column="clean_price" 	javaType="int" />
 	 		<result property="TOTAL_PRICE" 		column="total_price" 	javaType="int" />
@@ -66,7 +66,7 @@
  	<!-- 사용할 수 있는 숙소 정보 보기 -->
  	<resultMap type="java.util.HashMap" id="availableRoomsListMap">
 	 		<result property="SEQ_LODGE" 		column="seq_lodge" 		javaType="int" />
-	 		<result property="HOST_EMAIL" 		column="host_email" 	javaType="String" />
+	 		<result property="EMAIL"	 		column="email"		 	javaType="String" />
 	 		<result property="NAME" 			column="name" 			javaType="String" />
 	 		<result property="TYPE_LODGE" 		column="type_lodge" 	javaType="int" />
 	 		<result property="TYPE_BUILDING"	column="type_building" 	javaType="int" />
@@ -75,7 +75,7 @@
 	 		<result property="LON" 				column="lon" 			javaType="double" />
 	 		<result property="IMG_MAIN" 		column="img_main" 		javaType="String" />
 	 		<result property="NUM_OF_PEOPLE" 	column="num_of_people" 	javaType="int" />
-	 		<result property="PADD_PRICE" 		column="padd_price" 	javaType="int" />
+	 		<result property="ROOM_PRICE" 		column="room_price" 	javaType="int" />
 	 		<result property="DEPOSIT_PRICE" 	column="deposit_price" 	javaType="int" />
 	 		<result property="CLEAN_PRICE" 		column="clean_price" 	javaType="int" />
 	 		<result property="TOTAL_PRICE" 		column="total_price" 	javaType="int" />
@@ -116,7 +116,7 @@
  	<!-- 맵 중심에서 거리 내 숙소 보기 -->
  	<resultMap type="java.util.HashMap" id="nearFromCenterRoomsList">
 	 		<result property="SEQ_LODGE" 		column="seq_lodge" 		javaType="int" />
-	 		<result property="HOST_EMAIL" 		column="host_email" 	javaType="String" />
+	 		<result property="EMAIL" 			column="email" 			javaType="String" />
 	 		<result property="NAME" 			column="name" 			javaType="String" />
 	 		<result property="TYPE_LODGE" 		column="type_lodge" 	javaType="int" />
 	 		<result property="TYPE_BUILDING"	column="type_building" 	javaType="int" />
@@ -126,7 +126,7 @@
 	 		<result property="IMG_MAIN" 		column="img_main" 		javaType="String" />
 	 		<result property="NUM_OF_PEOPLE" 	column="num_of_people" 	javaType="int" />
 	 		<result property="PADD_PRICE" 		column="padd_price" 	javaType="int" />
-	 		<result property="DEPOSIT_PRICE" 	column="deposit_price" 	javaType="int" />
+	 		<result property="ROOM_PRICE" 		column="room_price" 	javaType="int" />
 	 		<result property="CLEAN_PRICE" 		column="clean_price" 	javaType="int" />
 	 		<result property="TOTAL_PRICE" 		column="total_price" 	javaType="int" />
 	 		<result property="STATUS" 			column="status" 		javaType="int" />
@@ -214,8 +214,8 @@
  	
  	숙소 입력
  	<insert id="insertLodge" parameterType="java.util.HashMap">
- 		insert into tbl_lodge(seq_lodge, host_email, name, type_lodge, type_building, location, lat, lon, img_main, num_of_people, padd_price, deposit_price, clean_price, total_price, status)
-		values (seq_lodge.nextval, #{host_email}, #{name}, #{type_lodge}, #{type_building}, #{location}, #{lat}, #{lon}, seq_lodge.currval || #{img_main}, #{num_of_people}, #{padd_price}, #{deposit_price}, #{clean_price}, #{total_price}, 1)
+ 		insert into tbl_lodge(seq_lodge, email, name, type_lodge, type_building, location, lat, lon, img_main, num_of_people, ROOM_PRICE, deposit_price, clean_price, total_price, status)
+		values (seq_lodge.nextval, #{email}, #{name}, #{type_lodge}, #{type_building}, #{location}, #{lat}, #{lon}, seq_lodge.currval || #{img_main}, #{num_of_people}, #{room_price}, #{deposit_price}, #{clean_price}, #{total_price}, 1)
  	</insert>
  	
  	<insert id="insertLodgeIntro" parameterType="java.util.HashMap">
@@ -242,7 +242,7 @@
  		update tbl_lodge
  		set name = #{name}, type_lodge = #{type_lodge}, type_building = #{type_building},
  		location = #{location}, lat = #{lat}, lon = #{lon}, img_main = #{seq_lodge} || #{img_main}, num_of_people = #{num_of_people},
- 		padd_price = #{padd_price}, deposit_price = #{deposit_price}, clean_price = #{clean_price}, total_price = #{total_price}
+ 		ROOM_PRICE = #{room_price}, deposit_price = #{deposit_price}, clean_price = #{clean_price}, total_price = #{total_price}
  		where seq_lodge = #{seq_lodge}
  	</update>
  	
@@ -284,8 +284,8 @@
         	and seq_lodge = #{seq_lodge}
         </if>
 		
-		<if test='guest_email != null and !"".equals(guest_email)'>
-        	and guest_email = #{guest_email}
+		<if test='email != null and !"".equals(email)'>
+        	and email = #{email}
         </if>
  	</select>
  	
@@ -293,8 +293,8 @@
  	
  	<!-- 위시리스트에 해당 숙소를 삽입 -->
  	<insert id="insertWishList" parameterType="java.util.HashMap">
- 		insert into tbl_lodge_wish(seq_lodge_wish, seq_lodge, guest_email, status)
-		values (seq_lodge_wish.nextval, #{seq_lodge}, #{guest_email}, default)
+ 		insert into tbl_lodge_wish(seq_lodge_wish, seq_lodge, email, status)
+		values (seq_lodge_wish.nextval, #{seq_lodge}, #{email}, default)
  	</insert>
  	
  	
@@ -316,8 +316,8 @@
         	and seq_lodge = #{seq_lodge}
         </if>
 		
-		<if test='guest_email != null and !"".equals(guest_email)'>
-        	and guest_email = #{guest_email}
+		<if test='email != null and !"".equals(email)'>
+        	and email = #{email}
         </if>
  	</update>
 
@@ -333,8 +333,8 @@
         	and seq_lodge = #{seq_lodge}
         </if>
 		
-		<if test='guest_email != null and !"".equals(guest_email)'>
-        	and guest_email = #{guest_email}
+		<if test='email != null and !"".equals(email)'>
+        	and email = #{email}
         </if>
  	</select>
  	
@@ -362,8 +362,8 @@
         </if>
         
         <!-- 회원 -->
-        <if test='guest_email != null and !"".equals(guest_email)'>
-        	and guest_email = #{guest_email}
+        <if test='email != null and !"".equals(email)'>
+        	and email = #{email}
         </if>
         
         order by A.seq_lodge desc
