@@ -45,13 +45,7 @@ img.JH_infowidow_gallary {
 	
 	$(document).ready(function() {
 		
-		if('${search_content == null || "".equals(search_content)}') {
-			search_content = "당산역";
-		}
-		
-		else {
-			search_content = "${search_content}";
-		}
+		search_content = "${search_content}";
 		
 		$.ajax({
 			url : "https://maps.googleapis.com/maps/api/geocode/json",

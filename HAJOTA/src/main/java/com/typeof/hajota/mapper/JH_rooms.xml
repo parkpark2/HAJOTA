@@ -209,13 +209,11 @@
  	</select> -->
  	
  	
- 	<!-- 
  	
- 	
- 	숙소 입력
+ 	<!-- 숙소 입력 -->
  	<insert id="insertLodge" parameterType="java.util.HashMap">
- 		insert into tbl_lodge(seq_lodge, email, name, type_lodge, type_building, location, lat, lon, img_main, num_of_people, ROOM_PRICE, deposit_price, clean_price, total_price, status)
-		values (seq_lodge.nextval, #{email}, #{name}, #{type_lodge}, #{type_building}, #{location}, #{lat}, #{lon}, seq_lodge.currval || #{img_main}, #{num_of_people}, #{room_price}, #{deposit_price}, #{clean_price}, #{total_price}, 1)
+ 		insert into tbl_lodge(seq_lodge, email, name, type_lodge, type_building, location, location_detail, lat, lon, img_main, num_of_people, room_price, deposit_price, clean_price, total_price, status)
+		values (seq_lodge.nextval, #{email}, #{name}, #{type_lodge}, #{type_building}, #{location}, #{location_detail}, #{lat}, #{lon}, #{mainimagename}, #{num_of_people}, #{room_price}, #{deposit_price}, #{clean_price}, #{total_price}, default)
  	</insert>
  	
  	<insert id="insertLodgeIntro" parameterType="java.util.HashMap">
@@ -230,10 +228,15 @@
  	
  	<insert id="insertLodgeDetail2" parameterType="java.util.HashMap">
  		insert into tbl_lodge_detail2(seq_lodge, elevator, wifi, air_controller, heating, washing_machine, hair_dryer, tv, essential_item)
-		values(seq_lodge.currval, #{seq_lodge}, #{elevator}, #{wifi}, #{air_controller}, #{heating}, #{washing_machine}, #{hair_dryer}, #{essential_item})
+		values(seq_lodge.currval, #{elevator}, #{wifi}, #{air_controller}, #{heating}, #{washing_machine}, #{hair_dryer}, #{tv}, #{essential_item})
  	</insert>
  	
- 	
+ 	<insert id="insertLodgeImage" parameterType="java.util.HashMap">
+		insert into TBL_LODGE_IMAGE(seq_lodge_image, seq_lodge , image)
+		values(SEQ_LODGE_IMAGE.nextval , seq_lodge.currval, #{imagefilename})
+	</insert>
+	
+ 	<!--
  	
  	
  	
@@ -263,7 +266,7 @@
  	<update id="updateLodgeDetail2" parameterType="java.util.HashMap">
  		update tbl_lodge_detail2
  		set elevator = #{elevator}, wifi = #{wifi}, air_controller = #{air_controller}, heating = #{heating},
- 		washing_machine = #{washing_machine}, hair_dryer = #{hair_dryer}, essential_item = #{essential_item}
+ 		washing_machine = #{washing_machine}, hair_dryer = #{hair_dryer}, tv = #{tv}, essential_item = #{essential_item}
 		where seq_lodge = #{seq_lodge}
  	</update>
  	 -->
@@ -369,4 +372,67 @@
         order by A.seq_lodge desc
  	</select>
  	
+ 	
+ 	
+ 	<!-- HY version -->
+ 	<!-- 숙소 모든정보를 받는 VO의 개념 -->
+	<resultMap type="java.util.HashMap" id="totalroomdetail_resultmap">
+    	<result property="roomno" 		column="seq_lodge" 		javaType="int" />
+	    <result property="email" 	column="email" 		javaType="String" />
+	    <result property="roomname" 	column="name" 	javaType="String" />
+	    <result property="lodgetype" 	column="type_lodge" 	javaType="int" />
+	    <result property="LAT" 	column="lat" 	javaType="String" />
+	    <result property="LNG" 	column="lon" 	javaType="String" />
+	    <result property="buildingtype" 	column="type_building" 		javaType="int" />
+	    <result property="mainimage" column="img_main" 	javaType="String" />
+	    <result property="maxpeople" column="num_of_people" 	javaType="int" />
+	    <result property="roomprice" column="room_price" 	javaType="int" />
+	    <result property="depositprice" column="deposit_price" 	javaType="int" />
+	    <result property="cleanprice" column="clean_price" 	javaType="int" />
+	    <result property="totalprice" column="total_price" 	javaType="int" />
+	    <result property="roomstatus" column="status" 	javaType="int" />
+	    <result property="bathroomcnt" column="NUM_OF_BATHROOM" 	javaType="int" />
+	    <result property="bedroomcnt" column="NUM_OF_BEDROOM" 	javaType="int" />
+	    <result property="bedcnt" column="NUM_OF_BED" 	javaType="int" />
+	    <result property="Hcheckin" column="CHECKIN_TIME" 	javaType="String" />
+	    <result property="Hcheckout" column="CHECKOUT_TIME" 	javaType="String" />
+	    <result property="elevator" column="ELEVATOR" 	javaType="String" />
+	    <result property="wifi" column="WIFI" 	javaType="String" />
+	    <result property="aircontroller" column="AIR_CONTROLLER" 	javaType="String" />
+	    <result property="heating" column="HEATING" 	javaType="String" />
+	    <result property="washingmachine" column="WASHING_MACHINE" 	javaType="String" />
+	    <result property="hairdryer" column="HAIR_DRYER" 	javaType="String" />
+	    <result property="tv" column="TV" 	javaType="String" />
+	    <result property="essentialitem" column="ESSENTIAL_ITEM" 	javaType="String" />
+	    <result property="roomsexplain" column="ROOMS_EXPLAIN" 	javaType="String" />
+	    <result property="roomsrule" column="ROOMS_RULE" 	javaType="String" />
+	    <result property="refundpolicy" column="REFUND_POLICY" 	javaType="String" />
+	    <result property="safetyfunction" column="SAFETY_FUNCTION" 	javaType="String" />
+	    <result property="localinfomation" column="LOCAL_INFORMATION" 	javaType="String" />
+	    <result property="hostname" column="HOSTNAME" 	javaType="String" />
+	    
+    </resultMap>
+
+
+	<select id="getlistdetail" parameterType="java.util.HashMap" resultMap="totalroomdetail_resultmap">
+	
+	select seq_lodge , email , name , type_lodge, type_building, location
+       ,lat, lon, img_main , num_of_people , room_price , deposit_price , clean_price , 
+       total_price , status , NUM_OF_BATHROOM , NUM_OF_BEDROOM , NUM_OF_BED ,
+       CHECKIN_TIME ,CHECKOUT_TIME ,
+       case when ELEVATOR = 1 then 'on' else 'null' end as ELEVATOR,
+       case when WIFI = 1 then 'on' else 'null' end as WIFI,
+       case when AIR_CONTROLLER = 1 then 'on' else 'null' end as AIR_CONTROLLER,
+       case when HEATING = 1 then 'on' else 'null' end as HEATING,
+       case when WASHING_MACHINE = 1 then 'on' else 'null' end as WASHING_MACHINE,
+       case when HAIR_DRYER = 1 then 'on' else 'null' end as HAIR_DRYER,
+       case when TV = 1 then 'on' else 'null' end as TV,
+       case when ESSENTIAL_ITEM = 1 then 'on' else 'null' end as ESSENTIAL_ITEM,
+       case when HAIR_DRYER = 1 then 'on' else 'null' end as HAIR_DRYER,
+       ROOMS_EXPLAIN, ROOMS_RULE , REFUND_POLICY , SAFETY_FUNCTION , LOCAL_INFORMATION
+       ,HOSTNAME
+    from view_tbl_lodge_totaldetail
+	where seq_lodge = #{seq_lodge}
+	
+	</select>
 </mapper>

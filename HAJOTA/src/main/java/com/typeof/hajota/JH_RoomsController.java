@@ -1,5 +1,6 @@
 package com.typeof.hajota;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.typeof.hajota.rooms.service.JH_RoomsService;
 
@@ -32,6 +35,9 @@ public class JH_RoomsController {
 	//	===== #33. 의존객체 주입하기(DI : Dependency Injection) ===== 
 	@Autowired
 	private JH_RoomsService service;
+	
+	@Autowired
+	private FileManager fileManager;
 	
 	// 검색 된 조건에 맞는 숙소 가져오는 리스트
 	@RequestMapping(value = "rooms/list.go", method = RequestMethod.GET)
@@ -604,9 +610,17 @@ public class JH_RoomsController {
 	
 	// 숙소 입력 페이지
 	@RequestMapping(value="rooms/insert.go", method={RequestMethod.GET})
-    public String hyhostinsert(HttpServletRequest req) {
+    public String hyhostinsert(HttpServletRequest req, HttpSession session, HttpServletResponse res) {
+	 
+    	return "hyhostinsert.notiles";
+    	// /Board/src/main/webapp/WEB-INF/views/main/test.jsp 파일을 생성한다.
+    }
+	
+	// 숙소 입력 확인 페이지
+	@RequestMapping(value="rooms/insertEnd.go", method={RequestMethod.POST})
+    public String hyhostinsertEnd(MultipartHttpServletRequest req, HttpSession session, HttpServletResponse res) {
 		
-		// 1 페이지 일년만 일찍태어났으면 ㅋㅋㅋ  배고파서 현기증난달말이에요 빨리 라운지 고고고 
+		// 1 페이지 
 		String roomsname = req.getParameter("roomsname");
 		String str_type_lodge = req.getParameter("TYPE_LODGE");
 		String str_type_building = req.getParameter("TYPE_BUILDING");
@@ -626,10 +640,22 @@ public class JH_RoomsController {
 		String str_Hcheckout = req.getParameter("Hcheckout");
 		
 		// 4 페이지
-		String str_paddprice = req.getParameter("paddprice");
+		String str_roomprice = req.getParameter("roomprice");
 		String str_depositprice = req.getParameter("depositprice");
 		String str_cleanprice = req.getParameter("cleanprice");
 		String str_totalprice = req.getParameter("totalprice");
+		
+		System.out.println(roomsname);
+		System.out.println(str_type_lodge);
+		System.out.println(str_type_building);
+		System.out.println(str_maxpeople);
+		System.out.println(detailAddress);
+		System.out.println(str_lat);
+		System.out.println(str_lng);
+		System.out.println(str_roomprice);
+		System.out.println(str_depositprice);
+		System.out.println(str_cleanprice);
+		System.out.println(str_totalprice);		
 		
 		// 5 페이지
 		String str_elevator = req.getParameter("elevator");
@@ -639,7 +665,7 @@ public class JH_RoomsController {
 		String str_washingmachin = req.getParameter("washingmachin");
 		String str_hairdry = req.getParameter("hairdry");
 		String str_television = req.getParameter("television");
-		String essentialitem = req.getParameter("essentialitem");
+		String str_essentialitem = req.getParameter("essentialitem");
 		
 		// 6 페이지
 		String rooms_explain = req.getParameter("rooms_explain");
@@ -650,24 +676,251 @@ public class JH_RoomsController {
 		String safety_function = req.getParameter("safety_function");
 		String local_information = req.getParameter("local_information");
 		
+
+		System.out.println(rooms_explain);
+		System.out.println(refund_policy);
+		System.out.println(rooms_rule);
+		System.out.println(safety_function);
+		System.out.println(local_information);
+		
+		System.out.println(str_elevator);
+		System.out.println(str_wifi);
+		System.out.println(str_heater);
+		System.out.println(str_washingmachin);
+		System.out.println(str_hairdry);
+		
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		HashMap<String, String> loginUser = (HashMap<String, String>)session.getAttribute("loginuser");
+		
+		String email = loginUser.get("email");
+		*/
+		String email = "hajota@hajota.com";
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("email", email);
+		
+		map.put("name", roomsname);
+		map.put("type_lodge", str_type_lodge);
+		map.put("type_building", str_type_building);
+		map.put("num_of_people", str_maxpeople);
+		
+		map.put("location", roadAddress);
+		map.put("location_detail", detailAddress);
+		map.put("lat", str_lat);
+		map.put("lon", str_lng);
+		
+		map.put("num_of_bathroom", str_bathroomcount);
+		map.put("num_of_bedroom", str_bedroomcount);
+		map.put("num_of_bed", str_bedcount);
+		map.put("checkin_time", str_Hcheckin);
+		map.put("checkout_time", str_Hcheckout);
+		
+		map.put("room_price", str_roomprice);
+		map.put("deposit_price", str_depositprice);
+		map.put("clean_price", str_cleanprice);
+		map.put("total_price", str_totalprice);
+		
+		if("on".equalsIgnoreCase(str_elevator)) {
+			map.put("elevator", "1");
+		}
+		
+		else {
+			map.put("elevator", "0");
+		}
 		
 		
+		if("on".equalsIgnoreCase(str_wifi)) {
+			map.put("wifi", "1");
+		}
+		
+		else {
+			map.put("wifi", "0");
+		}
 		
 		
+		if("on".equalsIgnoreCase(str_airconditioner)) {
+			map.put("air_controller", "1");
+		}
+		
+		else {
+			map.put("air_controller", "0");
+		}
 		
 		
-	 
-    	return "hyhostinsert.notiles";
-    	// /Board/src/main/webapp/WEB-INF/views/main/test.jsp 파일을 생성한다.
+		if("on".equalsIgnoreCase(str_heater)) {
+			map.put("heating", "1");
+		}
+		
+		else {
+			map.put("heating", "0");
+		}
+		
+		
+		if("on".equalsIgnoreCase(str_washingmachin)) {
+			map.put("washing_machine", "1");
+		}
+		
+		else {
+			map.put("washing_machine", "0");
+		}
+		
+		
+		if("on".equalsIgnoreCase(str_hairdry)) {
+			map.put("hair_dryer", "1");
+		}
+		
+		else {
+			map.put("hair_dryer", "0");
+		}
+		
+		
+		if("on".equalsIgnoreCase(str_television)) {
+			map.put("tv", "1");
+		}
+		
+		else {
+			map.put("tv", "0");
+		}
+		
+		
+		if("on".equalsIgnoreCase(str_essentialitem)) {
+			map.put("essential_item", "1");
+		}
+		
+		else {
+			map.put("essential_item", "0");
+		}
+		
+		map.put("rooms_explain", rooms_explain);
+		map.put("refund_policy", refund_policy);
+		map.put("rooms_rule", rooms_rule);
+		
+		map.put("safety_function", safety_function);
+		map.put("local_information", local_information);
+		
+		// WAS 의 webapp 의 절대경로를 알아와야 한다. 
+        session = req.getSession();
+        String root = session.getServletContext().getRealPath("/"); 
+        String path = root + "resources"+File.separator+"files";
+        // path 가 첨부파일들을 저장할 WAS(톰캣)의 폴더가 된다. 
+        
+        String newFileName = "";
+        // WAS(톰캣) 디스크에 저장할 파일명 
+        
+        byte[] bytes = null;
+        // 첨부파일을 WAS(톰캣) 디스크에 저장할때 사용되는 용도 
+        
+        long fileSize = 0;
+        // 파일크기를 읽어오기 위한 용도
+      
+        // TODO : 메인 이미지는 무조건 넣기로
+        MultipartFile mainimage = req.getFile("mainimage");
+        HashMap<String, Object> mainmap = new HashMap<String, Object>();
+      
+        if(mainimage != null){
+         
+        	try {
+	            bytes = mainimage.getBytes();
+	            
+	            newFileName = fileManager.doFileUpload(bytes, mainimage.getOriginalFilename(), path);
+	            
+	            fileSize = mainimage.getSize();
+	            
+	            mainmap.put("mainimagename", newFileName);
+	            mainmap.put("mainimageFilename", mainimage.getOriginalFilename());
+	            mainmap.put("mainimagefileSize", String.valueOf(fileSize));
+	            
+        	} catch (Exception e) {
+        		// TODO: handle exception
+        	}
+        }
+
+		map.put("mainimagename", newFileName);
+
+		List<MultipartFile> attachList = req.getFiles("attach");
+		List<HashMap<String, String>> mapProductimageList = new ArrayList<HashMap<String, String>>();
+
+		/*
+		 * ===== #135. 사용자가 쓴 글에 파일이 첨부가 된것인지 아니면 파일첨부가 안된것인지 구분을 지어주어야 한다.
+		 * =====
+		 */
+		// **** 첨부파일이 있는지 없는지? ****
+		if (attachList != null) {
+
+			for (int i = 0; i < attachList.size(); i++) {
+				try {
+					bytes = attachList.get(i).getBytes();
+
+					newFileName = fileManager.doFileUpload(bytes, attachList.get(i).getOriginalFilename(), path);
+
+					fileSize = attachList.get(i).getSize();
+
+					// === >>>> thumbnail 파일 생성을 위한 작업 <<<< ========= //
+
+					// =================================================== //
+
+					HashMap<String, String> mapProductimage = new HashMap<String, String>();
+
+					mapProductimage.put("imagefilename", newFileName);
+					mapProductimage.put("imageorgFilename", attachList.get(i).getOriginalFilename());
+					mapProductimage.put("imagefileSize", String.valueOf(fileSize));
+
+					mapProductimageList.add(mapProductimage);
+
+				} catch (Exception e) {
+
+				}
+
+			} // end of for-------------------------
+
+		} // end of if------------------------------
+
+		int n = service.setRoom(map);
+
+		// **** 폼에서 입력받은 제품입력정보 값을
+		// Service 단으로 넘겨서 테이블에 insert 하기로 한다.
+
+		// 이미지파일첨부가 없는 경우 또는 이미지파일첨부가 있는 경우로 나누어서
+		// Service 단으로 호출하기
+		int m = 0;
+		int count = 0;
+
+		for (int i = 0; i < mapProductimageList.size(); i++) {
+			m = service.addFile(mapProductimageList.get(i));
+			if (m == 1)
+				count++;
+		}
+
+		if (mapProductimageList.size() == count) {
+			n = 1;
+		} else {
+			n = 0;
+		}
+    	
+        // todo : 경로 수정 하자
+    	return "rooms/list.tiles3";
     }
 	
-	
-	// 숙소 입력 확인
-	@RequestMapping(value = "rooms/insertEnd.go", method = RequestMethod.POST)
-	public String insertRoomEnd(HttpServletRequest req) {
+	// 숙소 수정 페이지
+	@RequestMapping(value="rooms/modify.go", method={RequestMethod.GET})
+    public String hyhostupdate(HttpServletRequest req, HttpSession session, HttpServletResponse res) {
+		String str_seq_lodge = req.getParameter("seq_lodge");
 		
-	    
-		return "JH/rooms/insertMSG.notiles";
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("seq_lodge", str_seq_lodge);
+		
+		HashMap<String, Object> roomInfo = service.getRoom(map);
+		
+		req.setAttribute("roomInfo", roomInfo);
+	 
+    	return "hyhostmodify.notiles";
+    }
+	
+	@RequestMapping(value="rooms/modifyEnd.go", method={RequestMethod.POST})
+    public String hyhostupdateEnd(MultipartHttpServletRequest req, HttpSession session, HttpServletResponse res) {
+		return "";
 	}
 	
 	// TODO : 숙소수정

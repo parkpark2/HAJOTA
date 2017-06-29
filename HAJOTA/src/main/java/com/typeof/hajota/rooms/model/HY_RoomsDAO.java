@@ -21,12 +21,12 @@ public class HY_RoomsDAO implements InterRoomsDAO {
       
       return listdetail;
    }
-
+/*
    public int addFile(HashMap<String, String> map) {
       
       int n = sqlsession.insert("HY_rooms.addFile", map);
       
       return n;
    }
-   
+   */
 }

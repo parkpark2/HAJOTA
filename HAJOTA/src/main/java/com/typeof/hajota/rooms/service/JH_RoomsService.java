@@ -57,20 +57,13 @@ public class JH_RoomsService implements JH_InterRoomsService {
 		
 		return count;
 	}
-	/*
+	
 	@Override
 	public int setRoom(HashMap<String, Object> map) {
 		int count = dao.setRoom(map);
 		
 		return count;
 	}
-	
-	@Override
-	public int modifyRoom(HashMap<String, Object> map) {
-		int count = dao.modifyRoom(map);
-		
-		return count;
-	}*/
 
 	@Override
 	public int checkWishList(HashMap<String, Object> map) {
@@ -106,4 +99,26 @@ public class JH_RoomsService implements JH_InterRoomsService {
 		
 		return roomsWishListInList;
 	}
+
+	@Override
+	public int addFile(HashMap<String, String> map) {
+		int n = dao.addFile(map);
+
+		return n;
+	}
+
+	@Override
+	public HashMap<String, Object> getRoom(HashMap<String, Object> map) {
+		HashMap<String, Object> roomInfo = dao.getRoom(map);
+		
+		return roomInfo;
+	}
+	
+	/*
+	@Override
+	public int modifyRoom(HashMap<String, Object> map) {
+		int count = dao.modifyRoom(map);
+		
+		return count;
+	}*/
 }

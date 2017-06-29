@@ -21,12 +21,12 @@ public class HY_RoomsService implements InterRoomsService {
       
       return listdetail;
    }
-
+/*
    public int addFile(HashMap<String, String> map) {
 
       int n = dao.addFile(map);
       
       return n;
    }
-   
+*/   
 }

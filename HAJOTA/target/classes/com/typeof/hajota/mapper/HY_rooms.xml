@@ -9,7 +9,7 @@
 <!-- 숙소 모든정보를 받는 VO의 개념 -->
 	<resultMap type="java.util.HashMap" id="totalroomdetail_resultmap">
     	<result property="roomno" 		column="seq_lodge" 		javaType="int" />
-	    <result property="hostemail" 	column="host_email" 		javaType="String" />
+	    <result property="email" 	column="email" 		javaType="String" />
 	    <result property="roomname" 	column="name" 	javaType="String" />
 	    <result property="lodgetype" 	column="type_lodge" 	javaType="String" />
 	    <result property="LAT" 	column="lat" 	javaType="String" />
@@ -17,7 +17,7 @@
 	    <result property="buildingtype" 	column="type_building" 		javaType="String" />
 	    <result property="mainimage" column="img_main" 	javaType="String" />
 	    <result property="maxpeople" column="num_of_people" 	javaType="int" />
-	    <result property="paddprice" column="padd_price" 	javaType="int" />
+	    <result property="roomprice" column="room_price" 	javaType="int" />
 	    <result property="depositprice" column="deposit_price" 	javaType="int" />
 	    <result property="cleanprice" column="clean_price" 	javaType="int" />
 	    <result property="totalprice" column="total_price" 	javaType="int" />
@@ -47,9 +47,9 @@
 
 	<select id="getlistdetail" parameterType="String" resultMap="totalroomdetail_resultmap">
 	
-	select seq_lodge , host_email , name , case when type_lodge = 1 then '집전체' when type_lodge = 2 then '개인실' else '다인실' end as type_lodge 
+	select seq_lodge , email , name , case when type_lodge = 1 then '집전체' when type_lodge = 2 then '개인실' else '다인실' end as type_lodge 
       , case when type_building = 1 then '아파트' when type_building = 2 then '개인주택' else '빌딩' end as type_building, location
-       ,lat,lon, img_main , num_of_people , padd_price , deposit_price , clean_price , 
+       ,lat,lon, img_main , num_of_people , room_price , deposit_price , clean_price , 
        total_price , status , NUM_OF_BATHROOM , NUM_OF_BEDROOM , NUM_OF_BED ,
        CHECKIN_TIME ,CHECKOUT_TIME , ELEVATOR , WIFI , AIR_CONTROLLER , HEATING
        , WASHING_MACHINE , HAIR_DRYER , TV , ESSENTIAL_ITEM , ROOMS_EXPLAIN,
@@ -59,10 +59,10 @@
 	where seq_lodge = #{seq}
 	
 	</select>
-	
+	<!-- 
 	<insert id="addFile" parameterType="java.util.HashMap">
 	insert into TBL_LODGE_IMAGE(seq_lodge_image, seq_lodge , image)
-	values(SEQ_LODGE_IMAGE.nextval , '12' , #{imagefilename})
+	values(SEQ_LODGE_IMAGE.nextval , #{seq_lodge} , #{imagefilename})
 	</insert>
-
+ -->
 </mapper>

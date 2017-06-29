@@ -39,9 +39,15 @@ public interface JH_InterRoomsDAO {
 	// 현재 리스트에서 위시리스트 보여주는 메소드
 	List<HashMap<String, Object>> getWishListInList(HashMap<String, Object> map, RowBounds rowBounds);
 
-/*	// 숙소 입력 메소드
+	// 숙소 입력 메소드
 	int setRoom(HashMap<String, Object> map);
-
+	/*
 	// 숙소 수정 메소드
 	int modifyRoom(HashMap<String, Object> map);*/
+
+	// 숙소 서브 이미지 입력 메소드
+	int addFile(HashMap<String, String> map);
+
+	// 시퀀스로 해당 숙소 정보 불러오는 메소드
+	HashMap<String, Object> getRoom(HashMap<String, Object> map);
 }

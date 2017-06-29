@@ -52,8 +52,9 @@ public class HY_RoomsController {
           return "hostinsert.tiles6";
           // /Board/src/main/webapp/WEB-INF/views/main/test.jsp 파일을 생성한다.
        }
-    @RequestMapping(value="/addtest.go", method={RequestMethod.POST})
-       public String addtest(MultipartHttpServletRequest req , HttpSession session , HttpServletResponse res) {
+    /*
+    //@RequestMapping(value="/addtest.go", method={RequestMethod.POST})
+       public int addtest(MultipartHttpServletRequest req , HttpSession session , HttpServletResponse res) {
        
     	// WAS 의 webapp 의 절대경로를 알아와야 한다. 
         session = req.getSession();
@@ -100,10 +101,10 @@ public class HY_RoomsController {
       List<MultipartFile> attachList = req.getFiles("attach");
       List<HashMap<String, String>> mapProductimageList = new ArrayList<HashMap<String, String>>();
       
-      /*   
+         
         ===== #135. 사용자가 쓴 글에 파일이 첨부가 된것인지
                       아니면 파일첨부가 안된것인지 구분을 지어주어야 한다. =====
-      */
+      
       // **** 첨부파일이 있는지 없는지? ****
       if(attachList != null) {
            
@@ -167,10 +168,10 @@ public class HY_RoomsController {
            
             
        
-          return "addtest.tiles6";
+          return n;
           // /Board/src/main/webapp/WEB-INF/views/main/test.jsp 파일을 생성한다.
        }
-    
+    */
    
    
     @RequestMapping(value="/listdetailtest.go", method={RequestMethod.GET})
