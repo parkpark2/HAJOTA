@@ -9,26 +9,25 @@
  		
  	});
 
- 	function bye() {
- 		var byeFrm = document.byeFrm;
+ 	function signOut() {
+ 		var signOutFrm = document.signOutFrm;
  		
- 		byeFrm.action = "/hajota/signOutEnd.go";
- 		byeFrm.method = "POST";
- 		byeFrm.submit();
+ 		signOutFrm.action = "/hajota/HostsignOutEnd.go";
+ 		signOutFrm.method = "POST";
+ 		signOutFrm.submit();
  	}
 
 </script> 	
 
 탈퇴 이유를 선택해주세요.<br/>
 
-<form name="byeFrm">
+<form name="signOutFrm">
 
 <c:if test="${list != null || not empty list}">
 <select id="reason_value" name="reason_value">
 <c:forEach var="reason" items="${list}">
 
-	<option value="${reason.SEQ_GUEST_WITHDRAW_REASON}">${reason.WITHDRAW_REASON}</option>
-	
+	<option value="${reason.SEQ_WITHDRAW_REASON}">${reason.WITHDRAW_REASON}</option>
 
 </c:forEach>
  	</select>
@@ -36,5 +35,5 @@
  	
 </form>
 
-<button type="button" onclick="bye();">탈퇴하기</button>
+<button type="button" onclick="signOut();">탈퇴하기</button>
 

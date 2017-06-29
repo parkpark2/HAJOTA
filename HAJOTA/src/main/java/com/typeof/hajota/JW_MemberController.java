@@ -24,20 +24,27 @@ public class JW_MemberController {
 	private JW_MemberService service;
 
 	
-	@RequestMapping(value="/index.go")
+	@RequestMapping(value="/index.go", method={RequestMethod.GET})
 	public String test(){
 		
 		
 		return "main/index.tiles";
 	}
 	
-	@RequestMapping(value="/indexChinese.go")
+	@RequestMapping(value="/indexChinese.go", method={RequestMethod.GET})
 	public String test1(){
 		
 		
 		return "main/indexChinese.tilesC";
 	}
-	
+/*	
+	@RequestMapping(value="/test2.go", method={RequestMethod.GET})
+	public String test2(){
+		
+		System.out.println("adfasdfasdfadfasdfasdf");
+		
+		return "test2.notiles";
+	}
     
     // ===== #44. 로그인 폼 페이지 요청 =====
     @RequestMapping(value="/login.go", method={RequestMethod.GET})
@@ -142,7 +149,7 @@ public class JW_MemberController {
     	
     	// /HAJOTA/src/main/webapp/WEB-INF/notiles/msg.jsp 파일을 생성한다
     }
-
+*/
 	
 	
 

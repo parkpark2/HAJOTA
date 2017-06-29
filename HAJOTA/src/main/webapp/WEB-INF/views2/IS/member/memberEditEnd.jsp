@@ -8,6 +8,6 @@
 <script type="text/javascript">
 		<c:if test="${n == 1}">
 			alert("정보수정완료!");
-			<%-- location.href="<%= request.getContextPath() %>/login/loginform.go"; --%>       
+			location.href="<%= request.getContextPath() %>/index.go";  
 		</c:if>
 </script>    

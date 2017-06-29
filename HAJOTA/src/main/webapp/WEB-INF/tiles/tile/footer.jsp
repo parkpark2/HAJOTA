@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-  <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-text-green">HAJOTA.co</a></p>
+<p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-text-green">HAJOTA.co</a></p>
 </body>
 </html>

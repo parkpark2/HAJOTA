@@ -19,17 +19,17 @@ public class IS_MemberService {
 	private IS_MemberDAO dao;
 
 	// 로그인 여부 알아오기
-	public int loginEnd(HashMap<String, String> map) {
+	public int loginEnd(HashMap<String, Object> map) {
 		int n = dao.loginEnd(map);
 		return n;
 	}
-	
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
 	// 로그인 성공한 사용자 정보 가져오기
-	
-	public HashMap<String, Object> getLoginMember(HashMap<String, String> map) {
-		HashMap<String, Object> loginuser = dao.getLoginMember(map);
+	public HashMap<String, String> getLoginMember(String email) {
+		HashMap<String, String> loginuser = dao.getLoginMember(email);
 		return loginuser;
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
 	
 	public int memberEnter(HashMap<String, Object> map) {
 		int n = dao.memberEnter(map);
@@ -42,28 +42,53 @@ public class IS_MemberService {
 		int n = dao.editUser(map);
 		return n;
 	}
-
-	// 비밀번호 변경
-	public int editUserEnd(HashMap<String, String> map) {
-		int n = dao.editUserEnd(map);
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// 개인정보수정 비밀번호/연락처 변경
+	public int memberEditEnd(HashMap<String, String> map) {
+		int n = dao.memberEditEnd(map);
 		return n;
 	}
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// 회원탈퇴
 	public int signOutEnd(HashMap<String, String> map) {
 		int n = dao.signOutEnd(map);
 		return n;
 	}
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// DB에서 SEQ_GUEST_WITHDRAW_REASON / WITHDRAW_REASON 값 가져오기
 	public List<HashMap<String, String>> signOut() {
 		List<HashMap<String, String>> list = dao.signOut();
 		return list;
 	}
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// 회원탈퇴 사유 통계를 위한 value 값 insert 해주기
 	public int reasonInsert(HashMap<String, String> map) {
 		int n = dao.reasonInsert(map);
 		return n;
 	}
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// DB에서 SEQ_HOST_WITHDRAW_REASON / WITHDRAW_REASON 값 가져오기
+	public List<HashMap<String, Object>> HostsignOut() {
+		List<HashMap<String, Object>> list = dao.HostsignOut();
+		return list;
+	}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// 회원가입
+	public int memberRegister(HashMap<String, Object> map) {
+		int n = dao.memberRegister(map);
+		return n;
+	}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////	
+	// 사용가능한 언어
+	public int language(HashMap<String, Object> langmap) {
+		int n = dao.language(langmap);
+		return n;
+	}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*
+	public List<HashMap<String, Object>> HnGcheck() {
+		List<HashMap<String, Object>> withdrawlist = dao.HnGcheck();
+		return withdrawlist;
+	}
+*/	
 }

@@ -10,11 +10,10 @@
 			alert("로그인 성공 !!");
 			location.href="<%= request.getContextPath() %>/index.go";       
 		</c:if>
-
+		
 		<c:if test="${n == 0}">
-			alert("암호가 틀립니다 !!");
-			javascript:history.back();
-			// 이전 페이지로 이동
+		alert("암호가 틀렸습니다 !!");
+		javascript:history.back();
 		</c:if>
 			
 		<c:if test="${n == -1}">
