@@ -17,6 +17,137 @@
 <script>
 
 $(document).ready(function(){
+	$("#roomsname").val("${roomInfo.roomname}");
+	$("#TYPE_LODGE").val("${roomInfo.lodgetype}");
+	$("#TYPE_BUILDING").val("${roomInfo.buildingtype}");
+	$("#maxpeople").val("${roomInfo.maxpeople}");
+	
+	$("#roadAddress").val("${roomInfo.location}");
+	$("#detailAddress").val("${roomInfo.detailAddress}");
+	$("#LAT").val("${roomInfo.LAT}");
+	$("#LNG").val("${roomInfo.LNG}");
+	
+	$("#bathroomcount").val("${roomInfo.bathroomcnt}");
+	$("#bedroomcount").val("${roomInfo.bedroomcnt}");
+	$("#bedcount").val("${roomInfo.bedcnt}");
+	$("#Hcheckin").val("${roomInfo.Hcheckin}");
+	$("#Hcheckout").val("${roomInfo.Hcheckout}");
+	
+	$("#roomprice").val("${roomInfo.roomprice}");
+	$("#depositprice").val("${roomInfo.depositprice}");
+	$("#cleanprice").val("${roomInfo.cleanprice}");
+	$("#totalprice").val("${roomInfo.totalprice}");
+	
+	/* 
+	if("on".equalsIgnoreCase(str_elevator)) {
+		map.put("elevator", "1");
+	}
+	
+	else {
+		map.put("elevator", "0");
+	}
+	
+	
+	if("on".equalsIgnoreCase(str_wifi)) {
+		map.put("wifi", "1");
+	}
+	
+	else {
+		map.put("wifi", "0");
+	}
+	
+	
+	if("on".equalsIgnoreCase(str_airconditioner)) {
+		map.put("air_controller", "1");
+	}
+	
+	else {
+		map.put("air_controller", "0");
+	}
+	
+	
+	if("on".equalsIgnoreCase(str_heater)) {
+		map.put("heating", "1");
+	}
+	
+	else {
+		map.put("heating", "0");
+	}
+	
+	
+	if("on".equalsIgnoreCase(str_washingmachin)) {
+		map.put("washing_machine", "1");
+	}
+	
+	else {
+		map.put("washing_machine", "0");
+	}
+	
+	
+	if("on".equalsIgnoreCase(str_hairdry)) {
+		map.put("hair_dryer", "1");
+	}
+	
+	else {
+		map.put("hair_dryer", "0");
+	}
+	
+	
+	if("on".equalsIgnoreCase(str_television)) {
+		map.put("tv", "1");
+	}
+	
+	else {
+		map.put("tv", "0");
+	}
+	
+	
+	if("on".equalsIgnoreCase(str_essentialitem)) {
+		map.put("essential_item", "1");
+	}
+	
+	else {
+		map.put("essential_item", "0");
+	}
+	 */
+	
+	$("#elevator").val('true');
+	$("#wifi").val("${roomInfo.wifi}");
+	$("#airconditioner").val("${roomInfo.aircontroller}");
+	$("#heater").val("${roomInfo.heating}");
+	$("#washingmachin").val("${roomInfo.washingmachine}");
+	$("#hairdry").val("${roomInfo.hairdryer}");
+	$("#television").val("${roomInfo.tv}");
+	$("#essentialitem").val("${roomInfo.essentialitem}");
+	
+	$("#rooms_explain").val("${roomInfo.roomsexplain}");
+	$("#refund_policy").val("${roomInfo.refundpolicy}");
+	$("#rooms_rule").val("${roomInfo.roomsrule}");
+	
+	$("#safety_function").val("${roomInfo.safetyfunction}");
+	$("#local_information").val("${roomInfo.localinfomation}");
+	
+	$("#mainimage").val("${roomInfo.mainimage}");
+	
+	// 서브 이미지
+	/* $("#name").val("${roomInfo.email}"); */
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	$("#spinnerOqty").spinner({
 	      spin: function( event, ui ) {
@@ -141,7 +272,7 @@ function insertLodge() {
 function gosubmit(){
 	var msform = document.msform;
 	
-	msform.action = "/hajota/rooms/insertEnd.go";
+	msform.action = "/hajota/rooms/modifyEnd.go";
 	msform.method = "POST";
 	msform.submit();
 }

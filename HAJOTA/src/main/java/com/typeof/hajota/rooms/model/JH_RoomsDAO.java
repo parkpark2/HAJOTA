@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -17,6 +18,13 @@ public class JH_RoomsDAO implements JH_InterRoomsDAO {
 	//	===== #29. 의존객체 주입하기(DI : Dependency Injection) =====
 	@Autowired
 	private SqlSessionTemplate sqlsession;
+	
+	@Autowired
+	private SqlSessionFactory sqlSessionFactory;
+
+	public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
+		this.sqlSessionFactory = sqlSessionFactory;
+	}
 
 	// 모든 숙소 리스트 가져오는 메소드
 	@Override
@@ -60,13 +68,11 @@ public class JH_RoomsDAO implements JH_InterRoomsDAO {
 		
 		return count;
 	}
-	/*
+	
 	// 숙소 예약
 	@Override
 	public int setRoom(HashMap<String, Object> map) {
-		// autoCommit 취소
-		sqlsession.getSqlSessionFactory().openSession(false);
-		
+		// autoCommit 취소 아님
 		int count = sqlsession.insert("JH_rooms.insertLodge", map);
 		
 		if(count == 1) {
@@ -77,17 +83,13 @@ public class JH_RoomsDAO implements JH_InterRoomsDAO {
 				
 				if(count == 1) {
 					count = sqlsession.insert("JH_rooms.insertLodgeDetail2", map);
-					
-					if(count == 1) {
-						sqlsession.commit(true);
-					}
 				}
 			}			
 		}
 		
 		return count;
 	}
-	
+	/*
 	// 숙소 예약
 	@Override
 	public int modifyRoom(HashMap<String, Object> map) {
@@ -149,5 +151,19 @@ public class JH_RoomsDAO implements JH_InterRoomsDAO {
 		List<HashMap<String, Object>> roomsWishListInList = sqlsession.selectList("JH_rooms.selectRoomsWishListInList", map, rowBounds);
 		
 		return roomsWishListInList;
+	}
+
+	@Override
+	public int addFile(HashMap<String, String> map) {
+		int n = sqlsession.insert("JH_rooms.insertLodgeImage", map);
+
+		return n;
+	}
+
+	@Override
+	public HashMap<String, Object> getRoom(HashMap<String, Object> map) {
+		HashMap<String, Object> roomInfo = sqlsession.selectOne("JH_rooms.getlistdetail", map);
+		
+		return roomInfo;
 	}
 }

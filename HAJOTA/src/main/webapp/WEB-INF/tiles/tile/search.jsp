@@ -22,6 +22,8 @@
 		var numOfPeople = $("#numOfPeople").val();
 		var startDate = $("#startDate").val();
 		var endDate = $("#endDate").val();
+		
+		$("#pageNo").val("1");
 
 		if (search_content.trim() == "" || numOfPeople.trim() == ""
 				|| startDate.trim() == "" || endDate.trim() == "") {
@@ -65,6 +67,7 @@
 						placeholder="체크아웃" size="10" />&nbsp; <a
 						class="btn btn-lg btn-default" href="#" role="button"
 						onclick="goSearch();">View Latest News »</a>
+					<input type="hidden" id="pageNo" name="pageNo"/>
 				</p>
 			</form>
 		</div>
