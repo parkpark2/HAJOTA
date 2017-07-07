@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ===== #26. mapper 기본설정 ===== -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+ 
+<!-- ===== #27. 루트엘리먼트 & 네임스페이스 설정(프로젝트 전체 내에서 고유해야 한다.) ===== -->
+<mapper namespace="IS_member">
+
+<!-- ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ -->
+<resultMap type="java.util.HashMap" id="tbl_member_resultmap">
+	<result property="EMAIL"			column="email"			javaType="String" />
+	<result property="SEQ_MEMBER"		column="seq_member"		javaType="String" />
+	<result property="PWD"				column="pwd"			javaType="String" />
+	<result property="LAST_NAME"		column="last_name"		javaType="String" />
+	<result property="FIRST_NAME"		column="first_name"		javaType="String" />
+	<result property="BIRTHDAY"			column="birthday"		javaType="String" />
+	<result property="TEL"				column="tel"			javaType="String" />
+	<result property="GRADE"			column="grade"			javaType="int" />
+	<result property="REGIDATE"			column="regidate"		javaType="String" />
+	<result property="STATUS"			column="status"			javaType="int" />
+</resultMap>
+<!-- ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ -->
+
+<!-- 회원가입 -->
+<insert id="memberRegister">
+	insert into tbl_member(email, seq_member, pwd, last_name, first_name, birthday, tel, grade, regidate, status)
+	values(#{email}, seq_member.nextval, #{pwd}, #{last_name}, #{first_name}, #{birthday}, #{tel}, default, default, default) 	
+</insert>
+
+<!-- 사용가능한 언어 -->
+<insert id="language">
+	insert into tbl_language(email, seq_language_type)
+	values(#{email}, #{lang}) 	
+</insert>
+
+<!-- 로그인 성공한 사용자 정보 가져오기 -->
+ 	<select id="getLoginMember" parameterType="java.util.HashMap" resultMap="tbl_member_resultmap">
+		select email, seq_member, pwd, last_name, first_name, birthday, tel, grade, regidate, status
+		from tbl_member
+		where status = 1 and email = #{email}
+	</select>
+
+<!-- 개인정보수정 비밀번호/연락처 변경 -->
+  	<update id="memberEditEnd" parameterType="java.util.HashMap">
+ 		update tbl_member set pwd=#{pwd}, tel=#{tel}
+ 		where email=#{email}
+ 	</update> 	 
+
+<!-- ===== #48. 로그인 여부 알아오기 ===== -->
+   <select id="loginEnd" parameterType="java.util.HashMap" resultType="int"> 
+   select case( select count(*)
+                   from tbl_member
+                   where email= #{email} and pwd = #{pwd})  
+          when 1 then 1
+          else(case(select count(*) 
+                    from tbl_member
+                    where email= #{email})
+               when 1 then 0
+               else -1
+               end
+               )
+          end as LOGINCHECK
+  from dual
+   </select>
+
+<!-- ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ -->
+<resultMap type="java.util.HashMap" id="tbl_withdraw_reason">
+ 	<result property="SEQ_WITHDRAW_REASON"		column="seq_withdraw_reason"			javaType="int" />
+	<result property="WITHDRAW_REASON"			column="withdraw_reason"				javaType="String" />
+</resultMap>
+<!-- ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ -->
+
+
+	<!-- 게스트 탈퇴 이메일/탈퇴사유 가져오기 -->
+	<select id="HostgetSignOut" parameterType="java.util.HashMap" resultMap="tbl_withdraw_reason">
+ 		select *
+			from tbl_withdraw_reason
+			where 1 <![CDATA[<=]]> seq_withdraw_reason and seq_withdraw_reason <![CDATA[<=]]> 4
+			order by seq_withdraw_reason asc
+ 		<!-- select C.seq_withdraw_reason, C.withdraw_reason
+			from (select A.email, B.withdraw_reason, A.seq_withdraw_reason
+			      from tbl_withdraw A join tbl_withdraw_reason B
+			      on A.seq_withdraw_reason = B.seq_withdraw_reason) C join tbl_member D
+			      on C.email = D.email
+			where D.grade = 9 -->
+ 	</select>
+
+
+	<!-- 호스트 탈퇴 이메일/탈퇴사유 가져오기 -->
+ 	<select id="getSignOut" parameterType="java.util.HashMap" resultMap="tbl_withdraw_reason">
+ 		select C.seq_withdraw_reason, C.withdraw_reason
+			from (select A.email, B.withdraw_reason, A.seq_withdraw_reason
+			      from tbl_withdraw A join tbl_withdraw_reason B
+			      on A.seq_withdraw_reason = B.seq_withdraw_reason) C join tbl_member D
+			      on C.email = D.email
+			where D.grade = 8
+ 	</select>
+
+
+		
+	
+
+ 
+<!-- 회원탈퇴 -->
+  	<update id="signOutEnd" parameterType="java.util.HashMap">
+ 		update tbl_member set status = 0
+ 		where email=#{email}
+ 	</update>
+
+<!-- 회원탈퇴 사유 통계를 위한 value 값 insert 해주기 -->
+ 	<insert id="reasonInsert" parameterType="java.util.HashMap">
+ 		insert into tbl_withdraw(email, seq_withdraw_reason)
+ 		values (#{email}, #{value})
+ 	</insert>
+
+
+
+
+
+
+
+ 
+</mapper>

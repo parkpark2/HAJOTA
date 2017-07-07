@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ===== mapper 기본설정 ===== -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<!-- ===== 루트엘리먼트 & 네임스페이스 설정(프로젝트 전체 내에서 고유해야 한다.) ===== -->
+<mapper namespace="manager">
+	
+	<!-- member Hashmap -->
+	<resultMap type="java.util.HashMap" id="Showmembermap">
+		<result property="EMAIL"       column="email"       javaType="String" />
+		<result property="SEQ_MEMBER"  column="seq_member" 	javaType="String" />
+		<result property="PWD" 		   column="pwd" 		javaType="String" />		
+		<result property="LAST_NAME"   column="last_name"   javaType="String" />
+		<result property="FIRST_NAME"  column="first_name"  javaType="String" />
+		<result property="BIRTHDAY"    column="birthday"    javaType="String" />
+		<result property="TEL"         column="tel"         javaType="String" />
+		<result property="GRADE"       column="grade"    	javaType="String" />
+		<result property="REGDATE"     column="regidate"    javaType="String" />
+		<result property="STATUS"      column="status"      javaType="String" />
+	</resultMap>
+	
+	
+	<!-- 게스트 목록 보여주기 -->
+	<select id="ShowguestList" parameterType="java.util.HashMap" resultMap="Showmembermap">
+	select seq_member, email, last_name, first_name, birthday, tel, regidate, status
+	 from 
+	 (
+		select rownum as RNO, seq_member, email, first_name, last_name, birthday, tel, regidate, status
+		from 
+		(
+		    select seq_member, email, first_name, last_name, to_char(birthday,'yyyy-mm-dd') as birthday, tel, regidate, status
+			from tbl_member
+		    where grade = 9
+		    <if test="colname != null and search != null">     
+		        and ${colname} like '%'|| #{search} ||'%'
+		    </if>
+		    order by seq_member desc
+		) V
+	 ) T
+	 where T.RNO >= #{start} and T.RNO <![CDATA[<=]]> #{end}
+	 order by RNO
+	 </select>
+
+	<!-- 게스트 회원수를 세주는 sql -->
+	<select id="getGuestCount" parameterType="java.util.HashMap" resultType="int"> 
+		select count(*)
+		from tbl_member
+		where grade = 9
+		<if test="colname != null and search != null">
+			and ${colname} like '%' || #{search} || '%'
+		</if>	
+	</select> 
+	
+	<!-- 게스트 탈퇴시키기 -->
+	<update id="guestDelete" parameterType="java.util.HashMap">
+		update tbl_member set status = 0
+	    where email = #{email}
+	</update>
+	
+	<!-- 게스트 복구시키기 -->
+	<update id="guestRecover" parameterType="java.util.HashMap">
+		update tbl_member set status = 1
+	    where email = #{email}
+	</update>
+	
+
+	<!-- 호스트 목록 보여주기 -->
+	<select id="ShowhostList" parameterType="java.util.HashMap" resultMap="Showmembermap">
+	select seq_member, email, last_name, first_name, birthday, tel, regidate, status
+	 from 
+	 (
+		select rownum as RNO, seq_member, email, first_name, last_name, birthday, tel, regidate, status
+		from 
+		(
+		    select seq_member, email, first_name, last_name, to_char(birthday,'yyyy-mm-dd') as birthday, tel, regidate, status
+			from tbl_member
+		    where grade = 8
+		    <if test="colname != null and search != null">     
+		        and ${colname} like '%'|| #{search} ||'%'
+		    </if>
+		    order by seq_member desc
+		) V
+	 ) T
+	 where T.RNO >= #{start} and T.RNO <![CDATA[<=]]> #{end}
+	 order by RNO
+	 </select>
+
+	<!-- 호스트 회원수를 세주는 sql -->
+	<select id="gethostCount" parameterType="java.util.HashMap" resultType="int"> 
+		select count(*)
+		from tbl_member
+		where grade = 8
+		<if test="colname != null and search != null">
+			and ${colname} like '%' || #{search} || '%'
+		</if>	
+	</select> 
+	
+	<!-- 호스트 탈퇴시키기 -->
+	<update id="hostDelete" parameterType="java.util.HashMap">
+		update tbl_member set status = 0
+	    where email = #{email}
+	</update>
+	
+	<!-- 호스트 복구시키기 -->
+	<update id="hostRecover" parameterType="java.util.HashMap">
+		update tbl_member set status = 1
+	    where email = #{email}
+	</update>
+	
+	<!-- 쿠폰 Hashmap -->
+	<resultMap type="java.util.HashMap" id="Showeventmap">
+		<result property="SEQ_COUPON"  column="seq_coupon"  javaType="String" />
+		<result property="EMAIL"       column="email"       javaType="String" />
+		<result property="NAME" 	   column="name" 		javaType="String" />		
+		<result property="STARTDAY"    column="startday"    javaType="String" />
+		<result property="ENDDAY"      column="endday"      javaType="String" />
+		<result property="PERCENT"     column="percent"     javaType="Int" />
+		<result property="STATUS"      column="status"      javaType="String" />
+	</resultMap>
+
+	<!-- 쿠폰현황 목록 보여주기 -->
+	<select id="ShoweventList" parameterType="java.util.HashMap" resultMap="Showeventmap">
+	select seq_coupon, email, name, startday, endday, percent, status
+	 from 
+	 (
+		select rownum as RNO, seq_coupon, email, name, startday, endday, percent, status
+		from 
+		(
+		    select seq_coupon, email, name, to_char(startday,'yyyy-mm-dd') as startday, to_char(endday,'yyyy-mm-dd') as endday, percent, status
+			from tbl_coupon
+		    where 1 = 1
+		    <if test="colname != null and search != null">     
+		        and ${colname} like '%'|| #{search} ||'%'
+		    </if>
+		    order by seq_coupon desc
+		) V
+	 ) T
+	 where T.RNO >= #{start} and T.RNO <![CDATA[<=]]> #{end}
+	 order by RNO
+	 </select>
+
+	<!-- 이벤트현황 총 횟수 구하기 sql -->
+	<select id="getEventCount" parameterType="java.util.HashMap" resultType="int"> 
+		select count(*)
+		from tbl_coupon
+		where 1 = 1
+		<if test="colname != null and search != null">
+			and ${colname} like '%' || #{search} || '%'
+		</if>	
+	</select> 
+	
+	<!-- 이벤트게임 Hashmap -->
+	<resultMap type="java.util.HashMap" id="ShowGamemap">
+		<result property="SEQ_EVENT"   column="seq_event"   javaType="String" />
+		<result property="NAME" 	   column="name" 		javaType="String" />		
+		<result property="COUNT"       column="count"       javaType="Int" />
+		<result property="STATUS"      column="status"      javaType="String" />
+	</resultMap>
+
+	<!-- 이벤트게임 현황을 보여주기 -->
+	 <select id="ShoweventGame" parameterType="java.util.HashMap" resultMap="ShowGamemap">
+	  select seq_event, name, count, status
+	  from tbl_event	
+	 </select>
+	 
+	 <!-- 이벤트게임 정지시키기 -->
+	<update id="eventDelete" parameterType="java.util.HashMap">
+		update tbl_event set status = 0
+	    where seq_event = #{seq_event}
+	</update>
+	
+	<!-- 이벤트게임 복구시키기 -->
+	<update id="eventRecover" parameterType="java.util.HashMap">
+		update tbl_event set status = 1
+	    where seq_event = #{seq_event}
+	</update>
+	
+	<!-- 돌려돌려돌림판 사용가능현황 sql -->
+	<select id="ShowdolGame" parameterType="java.util.HashMap" resultType="int"> 
+		select status
+		from tbl_event
+		where seq_event = 1			
+	</select> 
+	
+	<!-- 사다리게임 사용가능현황 sql -->
+	<select id="ShowsadaliGame" parameterType="java.util.HashMap" resultType="int"> 
+		select status
+		from tbl_event
+		where seq_event = 2		
+	</select> 
+	
+	<!-- 돌려돌려돌림판 Hashmap -->
+	<resultMap type="java.util.HashMap" id="DolGamemap">
+		<result property="SEQ_EVENTDOL"   column="seq_eventdol"   javaType="String" />
+		<result property="EMAIL" 	   	  column="email" 		  javaType="String" />		
+	</resultMap>
+	
+	<!-- 돌려돌려돌림판 참여유무 -->
+	<select id="dolWanrle" parameterType="java.util.HashMap" resultType="int"> 
+		select count(*)
+		from tbl_eventdol
+		where email = #{email}	
+	</select> 
+	
+	<!-- 돌려돌려돌림판에서 쿠폰을 얻어갔을때 참여했던 기록저장 -->
+	<select id="InsertDolGame" parameterType="java.util.HashMap"> 
+		insert into tbl_eventdol(seq_eventdol, email)
+		values(seq_eventdol.nextval, #{email})
+	</select>
+	
+	<!-- 돌려돌려돌림판에서 얻은 쿠폰 저장하기 -->
+	<select id="getCoupon" parameterType="java.util.HashMap"> 
+		insert into tbl_coupon(seq_coupon, email, name, startday, endday, percent, status)
+		values(seq_coupon.nextval, #{email}, '이벤트쿠폰', sysdate, sysdate+10, substr(#{percent},1,2), default)
+	</select>
+	
+	<!-- 사다리게임 Hashmap -->
+	<resultMap type="java.util.HashMap" id="SadaliGamemap">
+		<result property="SEQ_EVENTSADALI"   column="seq_eventsadali" javaType="String" />
+		<result property="EMAIL" 	   	  	 column="email" 		  javaType="String" />		
+	</resultMap>
+	
+	<!-- 사다리게임 참여유무 -->
+	<select id="sadaliWanrle" parameterType="java.util.HashMap" resultType="int"> 
+		select count(*)
+		from tbl_eventsadali
+		where email = #{email}	
+	</select> 
+	
+	<!-- 사다리게임에서 쿠폰을 얻어갔을때 참여했던 기록저장 -->
+	<select id="InsertSadaliGame" parameterType="java.util.HashMap"> 
+		insert into tbl_eventsadali(seq_eventsadali, email)
+		values(seq_eventsadali.nextval, #{email})
+	</select>
+	
+	<!-- 오늘 생일인 회원 뽑아오기 -->
+	 <select id="ShowbirthUserList" parameterType="java.util.HashMap" resultMap="Showmembermap">
+	    select seq_member, email, last_name, first_name, to_char(birthday,'yyyy-mm-dd') as birthday
+		from tbl_member
+	    where status = 1 
+	    	  and grade = 9
+			  and to_char(birthday,'mm-dd') = to_char(sysdate,'mm-dd')
+		order by seq_member desc	  
+	 </select>
+	
+	<!-- 생일인 사람이 있는지 확인 -->
+	<select id="getbirthUsercount" parameterType="java.util.HashMap" resultType="int"> 
+      select count(*) as cnt
+      from tbl_member
+      where status = 1 and email = #{email}
+    </select>
+	
+	<!-- 돌려돌려돌림판에 참여하면 실행횟수 증가 시키기 -->
+	<update id="plusDolGame" parameterType="java.util.HashMap">
+		update tbl_event set count = count + 1
+	    where seq_event = 1
+	</update>
+	
+	<!-- 사다리게임에 참여하면 실행횟수 증가 시키기 -->
+	<update id="plusSadaliGame" parameterType="java.util.HashMap">
+		update tbl_event set count = count + 1
+	    where seq_event = 2
+	</update> 
+
+	<resultMap type="java.util.HashMap" id="tbl_login_infomap">
+	    <result property="CNT" 		column="cnt" 	 javaType="int" />
+	    <result property="TIME" 	column="time" 	 javaType="String" />
+    </resultMap>
+
+	<!-- 오늘 시간대 별로 로그인한 회원수 구하기 -->
+	<select id="loginTimeCount" parameterType="java.util.HashMap" resultMap="tbl_login_infomap"> 	
+		select substr(a.time, 12, 13) as time, nvl(b.cnt, 0) as cnt
+		from (select to_char(to_date(to_char(sysdate, 'yyyy-mm-dd'), 'yyyy-mm-dd') + ((level - 1) / 24), 'yyyy-mm-dd hh24') as time from dual connect by level <![CDATA[<=]]> 24) a
+		left outer join 
+		(select time, count(time) as cnt 
+		from (select to_char(logintime, 'yyyy-mm-dd hh24') as time 
+		from tbl_login_info where to_char(logintime, 'yyyy-mm-dd') = to_char(sysdate, 'yyyy-mm-dd')) group by time) b
+		on a.time = b.time
+		order by time asc
+	</select>	
+	
+	<resultMap type="java.util.HashMap" id="tbl_join_guestmap">
+	    <result property="CNT" 		column="cnt" 	 javaType="int" />
+	    <result property="MONTH" 	column="month" 	 javaType="String" />
+    </resultMap>
+	
+	<!-- 매달 가입한 게스트의 총수 -->
+	<select id="joinGuestChart" parameterType="java.util.HashMap" resultMap="tbl_join_guestmap"> 
+		select C.grade, nvl(A.month, B.month) as month, nvl(B.count, 0) as CNT
+	    from (select (level + 7) as grade from dual connect by level <![CDATA[<=]]> 2) C full outer join
+        (select level as month from dual connect by level <![CDATA[<=]]> 12) A on 1 = 1 full outer join
+        (select grade, month, count(month) as count
+        from (select grade, extract(year from regidate) as year, extract(month from regidate) as month from tbl_member)
+        where year = 2017 and grade in (8, 9)
+        group by month, grade) B on A.month = B.month and C.grade = B.grade
+		order by C.grade, A.month asc
+	</select>
+	
+</mapper>

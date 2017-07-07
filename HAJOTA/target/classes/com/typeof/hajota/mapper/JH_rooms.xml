@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ===== #26. mapper 기본설정 ===== -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<!-- ===== #27. 루트엘리먼트 & 네임스페이스 설정(프로젝트 전체 내에서 고유해야 한다.) ===== -->
+<mapper namespace="JH_rooms">
+	<!-- 등록된 룸 리스트 -->
+	<resultMap type="java.util.HashMap" id="roomsListMap">
+	 		<result property="SEQ_LODGE" 		column="seq_lodge" 			javaType="int" />
+	 		<result property="EMAIL" 			column="email" 				javaType="String" />
+	 		<result property="NAME" 			column="name" 				javaType="String" />
+	 		<result property="TYPE_LODGE" 		column="type_lodge" 		javaType="int" />
+	 		<result property="TYPE_BUILDING"	column="type_building" 		javaType="int" />
+	 		<result property="LOCATION" 		column="location" 			javaType="String" />
+	 		<result property="LOCATION_DETAIL"	column="location_detail"	javaType="String" />
+	 		<result property="LAT" 				column="lat" 				javaType="double" />
+	 		<result property="LON" 				column="lon" 				javaType="double" />
+	 		<result property="IMG_MAIN" 		column="img_main" 			javaType="String" />
+	 		<result property="NUM_OF_PEOPLE" 	column="num_of_people"	 	javaType="int" />
+	 		<result property="ROOM_PRICE" 		column="room_price" 		javaType="int" />
+	 		<result property="DEPOSIT_PRICE" 	column="deposit_price"	 	javaType="int" />
+	 		<result property="CLEAN_PRICE" 		column="clean_price" 		javaType="int" />
+	 		<result property="TOTAL_PRICE" 		column="total_price" 		javaType="int" />
+	 		<result property="STATUS" 			column="status" 			javaType="int" />
+	</resultMap>
+
+	<select id="selectRoomsList" parameterType="java.util.HashMap" resultMap="roomsListMap">
+ 		select seq_lodge
+        from tbl_lodge
+        where status = 1
+
+        <!-- 검색어 -->
+        <if test='search_content != null and !"".equals(search_content)'>
+        	and (location like '%' || #{search_content} || '%'
+        	or name like '%' || #{search_content} || '%')
+        </if>
+        
+        <!-- 인원수 -->
+        <if test='search_content != null and !"".equals(search_content)'>
+        	and num_of_people <![CDATA[>=]]> #{str_numOfPeople}
+        </if>
+        
+        order by seq_lodge desc
+ 	</select>
+ 	
+ 	<!-- 예약 되어 있는 숙소 시퀀스 보기 -->
+ 	<resultMap type="java.util.HashMap" id="unavailableSeqLodeListMap">
+	 		<result property="SEQ_LODGE" 		column="seq_lodge" 		javaType="int" />
+	</resultMap>
+
+	<select id="selectUnavailableSeqLodgeList" parameterType="java.util.HashMap" resultMap="unavailableSeqLodeListMap">
+ 		select distinct seq_lodge 
+        from tbl_payment
+        where 1 = 1
+        	and status = 1
+        	
+        <if test='((startDate != null) and (!"".equals(startDate))) and ((endDate != null) and (!"".equals(endDate)))'>
+        	and (#{startDate} <![CDATA[<=]]> checkin_date and checkout_date <![CDATA[<=]]> #{endDate})
+        </if>
+        
+        order by seq_lodge desc
+ 	</select>
+ 	
+ 	<!-- 사용할 수 있는 숙소 정보 보기 -->
+ 	<resultMap type="java.util.HashMap" id="availableRoomsListMap">
+	 	<result property="SEQ_LODGE" 			column="seq_lodge" 			javaType="int" />
+ 		<result property="EMAIL"	 			column="email"		 		javaType="String" />
+ 		<result property="NAME" 				column="name" 				javaType="String" />
+ 		<result property="TYPE_LODGE" 			column="type_lodge" 		javaType="String" />
+ 		<result property="TYPE_BUILDING"		column="type_building" 		javaType="String" />
+ 		<result property="LOCATION" 			column="location" 			javaType="String" />
+ 		<result property="LOCATION_DETAIL"		column="location_detail"	javaType="String" />
+ 		<result property="LAT" 					column="lat" 				javaType="double" />
+ 		<result property="LON" 					column="lon" 				javaType="double" />
+ 		<result property="IMG_MAIN" 			column="img_main" 			javaType="String" />
+ 		<result property="NUM_OF_PEOPLE" 		column="num_of_people" 		javaType="int" />
+ 		<result property="ROOM_PRICE" 			column="room_price" 		javaType="int" />
+ 		<result property="DEPOSIT_PRICE" 		column="deposit_price" 		javaType="int" />
+ 		<result property="CLEAN_PRICE" 			column="clean_price" 		javaType="int" />
+ 		<result property="TOTAL_PRICE" 			column="total_price" 		javaType="int" />
+ 		<result property="STATUS" 				column="status" 			javaType="int" />
+ 		<result property="NUM_OF_BATHROOM"		column="num_of_bathroom" 	javaType="int" />
+ 		<result property="NUM_OF_BEDROOM" 		column="num_of_bedroom" 	javaType="int" />
+ 		<result property="NUM_OF_BED" 			column="num_of_bed" 		javaType="int" />
+ 		<result property="CHECKIN_HOUR"			column="checkin_hour" 		javaType="int" />
+ 		<result property="CHECKIN_MIN"			column="checkin_min" 		javaType="int" />
+ 		<result property="CHECKOUT_HOUR"		column="checkout_hour" 		javaType="int" />
+ 		<result property="CHECKOUT_MIN"			column="checkout_min" 		javaType="int" />
+ 		<result property="ELEVATOR"				column="elevator" 			javaType="int" />
+ 		<result property="WIFI" 				column="wifi" 				javaType="int" />
+ 		<result property="AIR_CONTROLLER"		column="air_controller" 	javaType="int" />
+ 		<result property="HEATING" 				column="heating" 			javaType="int" />
+ 		<result property="WASHING_MACHINE"		column="washing_machine" 	javaType="int" />
+ 		<result property="HAIR_DRYER"			column="hair_dryer" 		javaType="int" />
+ 		<result property="TV"	 				column="tv" 				javaType="int" />
+ 		<result property="ESSENTIAL_ITEM"		column="essential_item" 	javaType="int" />
+ 		<result property="ROOMS_EXPLAIN"		column="rooms_explain" 		javaType="String" />
+ 		<result property="ROOMS_RULE"			column="rooms_rule" 		javaType="String" />
+ 		<result property="REFUND_POLICY"		column="refund_policy"	 	javaType="String" />
+ 		<result property="SAFETY_FUNCTION"		column="safety_function" 	javaType="String" />
+ 		<result property="LOCAL_INFORMATION"	column="local_information" 	javaType="String" />
+	</resultMap>
+
+	<select id="selectAvailableRoomsList" parameterType="java.util.HashMap" resultMap="availableRoomsListMap">
+ 		select *
+		from (
+			select  rownum as rno,
+					seq_lodge, email, name,
+					case when type_lodge = 1 then '집전체' when type_lodge = 2 then '개인실' else '다인실' end as type_lodge,  
+     					case when type_building = 1 then '아파트' when type_building = 2 then '개인주택' else '빌딩' end as type_building,
+					location, location_detail, lat, lon, img_main, num_of_people,
+	 				room_price, deposit_price, clean_price, total_price, status, num_of_bathroom, num_of_bedroom, num_of_bed,
+	 				checkin_hour, checkin_min, checkout_hour, checkout_min, elevator, wifi, air_controller, heating, washing_machine,
+	 				hair_dryer, tv, essential_item
+			from (
+						select *
+				 		from
+				 				<if test='afterLat != null and !"".equals(afterLat)'>
+					 				(select seq_lodge, email, name, type_lodge, type_building, location, location_detail, lat, lon, img_main, num_of_people, room_price, deposit_price, clean_price, total_price, status, DISTNACE_WGS84(#{afterLat}, #{afterLon}, lat, lon) as distance
+							        from tbl_lodge
+							        where status = 1
+					                and (lat between #{afterLat} - 0.019 and #{afterLat} + 0.019)
+					                and (lon between #{afterLon} - 0.022 and #{afterLon} + 0.022)
+									order by DISTANCE) A
+								</if>
+								
+								<if test='afterLat == null or "".equals(afterLat)'>
+									tbl_lodge A
+								</if>
+						join tbl_lodge_detail B
+						on A.seq_lodge = B.seq_lodge
+						join tbl_lodge_detail2 C
+						on A.seq_lodge = C.seq_lodge
+						where 1 = 1
+				        	and status = 1
+        
+        <!-- 검색어 -->
+        <if test='search_content != null and !"".equals(search_content)'>
+        	and (location like '%' || #{search_content} || '%'
+        	or name like '%' || #{search_content} || '%')
+        </if>
+        
+        <!-- 인원수 -->
+        <if test='str_numOfPeople != null and !"".equals(str_numOfPeople)'>
+        	and num_of_people <![CDATA[>=]]> #{str_numOfPeople}
+        </if>
+        
+        <!-- 인덱스로 검색 -->
+        <if test='seq_lodgeArr != null'>
+        	and not (A.seq_lodge in
+        	<foreach collection="seq_lodgeArr" item="item" index="i" open="(" close=")" separator="," >   
+        		${seq_lodgeArr[i]}
+        	</foreach>
+        	)
+        </if>
+        ))
+        
+        where rno > ${start}
+		and rno <![CDATA[<]]> ${end}
+        
+        order by rno
+ 	</select>
+ 	
+ 	
+ 	
+ 	<!-- 맵 중심에서 거리 내 숙소 보기 -->
+ 	<resultMap type="java.util.HashMap" id="nearFromCenterRoomsList">
+	 	<result property="SEQ_LODGE" 			column="seq_lodge" 			javaType="int" />
+ 		<result property="EMAIL"	 			column="email"		 		javaType="String" />
+ 		<result property="NAME" 				column="name" 				javaType="String" />
+ 		<result property="TYPE_LODGE" 			column="type_lodge" 		javaType="String" />
+ 		<result property="TYPE_BUILDING"		column="type_building" 		javaType="String" />
+ 		<result property="LOCATION" 			column="location" 			javaType="String" />
+ 		<result property="LOCATION_DETAIL"		column="location_detail"	javaType="String" />
+ 		<result property="LAT" 					column="lat" 				javaType="double" />
+ 		<result property="LON" 					column="lon" 				javaType="double" />
+ 		<result property="IMG_MAIN" 			column="img_main" 			javaType="String" />
+ 		<result property="NUM_OF_PEOPLE" 		column="num_of_people" 		javaType="int" />
+ 		<result property="ROOM_PRICE" 			column="room_price" 		javaType="int" />
+ 		<result property="DEPOSIT_PRICE" 		column="deposit_price" 		javaType="int" />
+ 		<result property="CLEAN_PRICE" 			column="clean_price" 		javaType="int" />
+ 		<result property="TOTAL_PRICE" 			column="total_price" 		javaType="int" />
+ 		<result property="STATUS" 				column="status" 			javaType="int" />
+ 		<result property="NUM_OF_BATHROOM"		column="num_of_bathroom" 	javaType="int" />
+ 		<result property="NUM_OF_BEDROOM" 		column="num_of_bedroom" 	javaType="int" />
+ 		<result property="NUM_OF_BED" 			column="num_of_bed" 		javaType="int" />
+ 		<result property="CHECKIN_HOUR"			column="checkin_hour" 		javaType="int" />
+ 		<result property="CHECKIN_MIN"			column="checkin_min" 		javaType="int" />
+ 		<result property="CHECKOUT_HOUR"		column="checkout_hour" 		javaType="int" />
+ 		<result property="CHECKOUT_MIN"			column="checkout_min" 		javaType="int" />
+ 		<result property="ELEVATOR"				column="elevator" 			javaType="int" />
+ 		<result property="WIFI" 				column="wifi" 				javaType="int" />
+ 		<result property="AIR_CONTROLLER"		column="air_controller" 	javaType="int" />
+ 		<result property="HEATING" 				column="heating" 			javaType="int" />
+ 		<result property="WASHING_MACHINE"		column="washing_machine" 	javaType="int" />
+ 		<result property="HAIR_DRYER"			column="hair_dryer" 		javaType="int" />
+ 		<result property="TV"	 				column="tv" 				javaType="int" />
+ 		<result property="ESSENTIAL_ITEM"		column="essential_item" 	javaType="int" />
+ 		<result property="ROOMS_EXPLAIN"		column="rooms_explain" 		javaType="String" />
+ 		<result property="ROOMS_RULE"			column="rooms_rule" 		javaType="String" />
+ 		<result property="REFUND_POLICY"		column="refund_policy"	 	javaType="String" />
+ 		<result property="SAFETY_FUNCTION"		column="safety_function" 	javaType="String" />
+ 		<result property="LOCAL_INFORMATION"	column="local_information" 	javaType="String" />
+	</resultMap>
+
+	<select id="selectNearFromCenterRoomsList" parameterType="java.util.HashMap" resultMap="nearFromCenterRoomsList">
+		select *
+			from (
+	 		select rno, seq_lodge, email, case when length(name) > 10 then substr(name, 0, 10) || '..' else name end as name,
+	 				case when type_lodge = 1 then '집전체' when type_lodge = 2 then '개인실' else '다인실' end as type_lodge,  
+	      			case when type_building = 1 then '아파트' when type_building = 2 then '개인주택' else '빌딩' end as type_building, 
+	 				location, location_detail, lat, lon, img_main, num_of_people, room_price, deposit_price, clean_price, total_price, status, distance
+			from (select rownum as rno, seq_lodge, email, name, type_lodge, type_building, location, location_detail, lat, lon, img_main, num_of_people, room_price, deposit_price, clean_price, total_price, status, DISTNACE_WGS84(#{afterLat}, #{afterLon}, lat, lon) as distance
+		        from tbl_lodge
+		        where status = 1
+	                and (lat between #{afterLat} - 0.019 and #{afterLat} + 0.019)
+	                and (lon between #{afterLon} - 0.022 and #{afterLon} + 0.022)
+	                
+	                <!-- 검색어 -->
+			        <if test='search_content != null and !"".equals(search_content)'>
+			        	and (location like '%' || #{search_content} || '%'
+			        	or name like '%' || #{search_content} || '%')
+			        </if>
+			        
+			        <!-- 인원수 -->
+			        <if test='str_numOfPeople != null and !"".equals(str_numOfPeople)'>
+			        	and num_of_people <![CDATA[>=]]> #{str_numOfPeople}
+			        </if>
+			        
+			        <!-- 인덱스로 검색 -->
+			        <if test='seq_lodgeArr != null'>
+			        	and not (seq_lodge in
+			        	<foreach collection="seq_lodgeArr" item="item" index="i" open="(" close=")" separator="," >   
+			        		${seq_lodgeArr[i]}
+			        	</foreach>
+			        	)
+			        </if>
+			        	                
+	                order by DISTANCE)
+			where distance <![CDATA[<=]]> #{distance}
+			and rno > ${start}
+			and rno <![CDATA[<]]> ${end}
+			order by rno) A join tbl_lodge_detail2 B
+		on A.seq_lodge = B.seq_lodge
+ 	</select>
+ 	
+	<!-- 근처의 이용 가능한 숙소의 전체 수 알기 -->
+	<select id="selectNearFromCenterRoomsCount" parameterType="java.util.HashMap" resultType="int">
+		select count(*) as count
+		from (
+ 			select seq_lodge
+			from (select seq_lodge, DISTNACE_WGS84(#{afterLat}, #{afterLon}, lat, lon) as distance
+		        from tbl_lodge
+		        where status = 1
+	                and (lat between #{afterLat} - 0.019 and #{afterLat} + 0.019)
+	                and (lon between #{afterLon} - 0.022 and #{afterLon} + 0.022)
+	                
+	                <!-- 검색어 -->
+			        <if test='search_content != null and !"".equals(search_content)'>
+			        	and (location like '%' || #{search_content} || '%'
+			        	or name like '%' || #{search_content} || '%')
+			        </if>
+			        
+			        <!-- 인원수 -->
+			        <if test='str_numOfPeople != null and !"".equals(str_numOfPeople)'>
+			        	and num_of_people <![CDATA[>=]]> #{str_numOfPeople}
+			        </if>
+			        
+			        <!-- 인덱스로 검색 -->
+			        <if test='seq_lodgeArr != null'>
+			        	and not (seq_lodge in
+			        	<foreach collection="seq_lodgeArr" item="item" index="i" open="(" close=")" separator="," >   
+			        		${seq_lodgeArr[i]}
+			        	</foreach>
+			        	)
+			        </if>
+			        )
+			where distance <![CDATA[<=]]> #{distance}) A join tbl_lodge_detail2 B
+		on A.seq_lodge = B.seq_lodge
+ 	</select>
+ 	
+ 	
+ 	<!-- 이용 가능한 숙소의 전체 수 알기 -->
+	<select id="selectAvailableRoomsCount" parameterType="java.util.HashMap" resultType="int">
+		select count(*) as count
+ 		from tbl_lodge A join tbl_lodge_detail B
+		on A.seq_lodge = B.seq_lodge
+		join tbl_lodge_detail2 C
+		on A.seq_lodge = C.seq_lodge
+		where 1 = 1
+        	and status = 1
+        
+        <!-- 검색어 -->
+        <if test='search_content != null and !"".equals(search_content)'>
+        	and (A.location like '%' || #{search_content} || '%'
+        	or A.name like '%' || #{search_content} || '%')
+        </if>
+        
+        <!-- 인원수 -->
+        <if test='str_numOfPeople != null and !"".equals(str_numOfPeople)'>
+        	and A.num_of_people <![CDATA[>=]]> #{str_numOfPeople}
+        </if>
+        
+        <!-- 인덱스로 검색 -->
+        <if test='seq_lodgeArr != null'>
+        	and not (A.seq_lodge in
+        	<foreach collection="seq_lodgeArr" item="item" index="i" open="(" close=")" separator="," >   
+        		${seq_lodgeArr[i]}
+        	</foreach>
+        	)
+        </if>
+        
+        order by A.seq_lodge desc
+ 	</select>
+ 	
+ 		
+ 	<!-- 숙소 입력 -->
+ 	<insert id="insertLodge" parameterType="java.util.HashMap">
+ 		insert into tbl_lodge(seq_lodge, email, name, type_lodge, type_building, location, location_detail, lat, lon, img_main, num_of_people, room_price, deposit_price, clean_price, total_price, status)
+		values (seq_lodge.nextval, #{email}, #{name}, #{type_lodge}, #{type_building}, #{location}, #{location_detail}, #{lat}, #{lon}, #{mainimagename}, #{num_of_people}, #{room_price}, #{deposit_price}, #{clean_price}, #{total_price}, default)
+ 	</insert>
+ 	
+ 	<insert id="insertLodgeIntro" parameterType="java.util.HashMap">
+ 		insert into tbl_lodge_intro(seq_lodge, rooms_explain, rooms_rule, refund_policy, safety_function, local_information)
+		values(seq_lodge.currval, #{rooms_explain}, #{rooms_rule}, #{refund_policy}, #{safety_function}, #{local_information})
+ 	</insert>
+ 	
+ 	<insert id="insertLodgeDetail" parameterType="java.util.HashMap">
+ 		insert into tbl_lodge_detail(seq_lodge, num_of_bathroom, num_of_bedroom, num_of_bed, checkin_hour, checkin_min, checkout_hour, checkout_min)
+		values(seq_lodge.currval, #{num_of_bathroom}, #{num_of_bedroom}, #{num_of_bed}, #{checkin_hour}, #{checkin_min}, #{checkout_hour}, #{checkout_min})
+ 	</insert>
+ 	
+ 	<insert id="insertLodgeDetail2" parameterType="java.util.HashMap">
+ 		insert into tbl_lodge_detail2(seq_lodge, elevator, wifi, air_controller, heating, washing_machine, hair_dryer, tv, essential_item)
+		values(seq_lodge.currval, #{elevator}, #{wifi}, #{air_controller}, #{heating}, #{washing_machine}, #{hair_dryer}, #{tv}, #{essential_item})
+ 	</insert>
+ 	
+ 	<insert id="insertLodgeImage" parameterType="java.util.HashMap">
+		insert into TBL_LODGE_IMAGE(seq_lodge_image, seq_lodge , image)
+		values(SEQ_LODGE_IMAGE.nextval , seq_lodge.currval, #{imagefilename})
+	</insert>
+	
+ 	<!--
+ 	
+ 	
+ 	
+ 	숙소 수정
+ 	<update id="updateLodge" parameterType="java.util.HashMap">
+ 		update tbl_lodge
+ 		set name = #{name}, type_lodge = #{type_lodge}, type_building = #{type_building},
+ 		location = #{location}, lat = #{lat}, lon = #{lon}, img_main = #{seq_lodge} || #{img_main}, num_of_people = #{num_of_people},
+ 		ROOM_PRICE = #{room_price}, deposit_price = #{deposit_price}, clean_price = #{clean_price}, total_price = #{total_price}
+ 		where seq_lodge = #{seq_lodge}
+ 	</update>
+ 	
+ 	<update id="updateLodgeIntro" parameterType="java.util.HashMap">
+ 		update tbl_lodge_intro
+ 		set rooms_explain = #{rooms_explain}, rooms_rule = #{rooms_rule}, refund_policy = #{refund_policy},
+ 		safety_function = #{safety_function}, local_information = #{local_information}
+		where seq_lodge = #{seq_lodge}
+ 	</update>
+ 	
+ 	<update id="updateLodgeDetail" parameterType="java.util.HashMap">
+ 		update tbl_lodge_detail
+		set num_of_bathroom = #{num_of_bathroom}, num_of_bedroom = #{num_of_bedroom}, num_of_bed = #{num_of_bed},
+		checkin_hour = #{checkin_hour}, checkin_min = #{checkin_min}, checkout_hour = #{checkout_hour}, checkout_min = #{checkout_min}
+		where seq_lodge = #{seq_lodge}
+ 	</update>
+ 	
+ 	<update id="updateLodgeDetail2" parameterType="java.util.HashMap">
+ 		update tbl_lodge_detail2
+ 		set elevator = #{elevator}, wifi = #{wifi}, air_controller = #{air_controller}, heating = #{heating},
+ 		washing_machine = #{washing_machine}, hair_dryer = #{hair_dryer}, tv = #{tv}, essential_item = #{essential_item}
+		where seq_lodge = #{seq_lodge}
+ 	</update>
+ 	 -->
+ 	<!-- 
+ 	
+ 	
+ 	
+ 	
+ 	 -->
+ 	 
+ 	<!-- 위시리스트에 해당 숙소가 이미 있는지 확인 -->
+ 	<select id="selectCheckWishList" parameterType="java.util.HashMap" resultType="int">
+		select count(*) as count
+		from tbl_lodge_wish
+		where 1 = 1
+		
+		<if test='seq_lodge != null and !"".equals(seq_lodge)'>
+        	and seq_lodge = #{seq_lodge}
+        </if>
+		
+		<if test='email != null and !"".equals(email)'>
+        	and email = #{email}
+        </if>
+ 	</select>
+ 	
+ 	
+ 	
+ 	<!-- 위시리스트에 해당 숙소를 삽입 -->
+ 	<insert id="insertWishList" parameterType="java.util.HashMap">
+ 		insert into tbl_lodge_wish(seq_lodge_wish, seq_lodge, email, status)
+		values (seq_lodge_wish.nextval, #{seq_lodge}, #{email}, default)
+ 	</insert>
+ 	
+ 	
+ 	<!-- 위시리스트에 숙소가 있으면 (status == 1) 없음으로 (status == 0) 반대도 동일 -->
+ 	<update id="updateWishList" parameterType="java.util.HashMap">
+ 		update tbl_lodge_wish
+ 		
+ 		<if test="status == 0">
+ 			set status = 1
+ 		</if>
+ 		
+ 		<if test="status == 1">
+ 			set status = 0
+ 		</if>
+ 		
+ 		where 1 = 1
+		
+		<if test='seq_lodge != null and !"".equals(seq_lodge)'>
+        	and seq_lodge = #{seq_lodge}
+        </if>
+		
+		<if test='email != null and !"".equals(email)'>
+        	and email = #{email}
+        </if>
+ 	</update>
+
+
+ 	
+ 	<!-- 위시리스트에 있는 해당 숙소의 상태 불러오기 -->
+ 	<select id="selectWishListStatus" parameterType="java.util.HashMap" resultType="int">
+		select status
+		from tbl_lodge_wish
+		where 1 = 1
+		
+		<if test='seq_lodge != null and !"".equals(seq_lodge)'>
+        	and seq_lodge = #{seq_lodge}
+        </if>
+		
+		<if test='email != null and !"".equals(email)'>
+        	and email = #{email}
+        </if>
+ 	</select>
+ 	
+ 	
+ 	<!-- 보여주는 목록 내에서 위시리스트 목록 불러오기 -->
+ 	<resultMap type="java.util.HashMap" id="roomsWishListMap">
+	 		<result property="SEQ_LODGE" 		column="seq_lodge" 		javaType="int" />
+	 		<result property="STATUS" 			column="status" 		javaType="int" />
+	</resultMap>
+
+	<select id="selectRoomsWishListInList" parameterType="java.util.HashMap" resultMap="roomsWishListMap">
+ 		select A.seq_lodge, nvl(B.status, 0) as status
+        from tbl_lodge A left join tbl_lodge_wish B on A.seq_lodge = B.seq_lodge
+        where A.status = 1
+
+        <!-- 검색어 -->
+        <if test='search_content != null and !"".equals(search_content)'>
+        	and (location like '%' || #{search_content} || '%'
+        	or name like '%' || #{search_content} || '%')
+        </if>
+        
+        <!-- 인원수 -->
+        <if test='search_content != null and !"".equals(search_content)'>
+        	and num_of_people <![CDATA[>=]]> #{str_numOfPeople}
+        </if>
+        
+        <!-- 회원 -->
+        <if test='email != null and !"".equals(email)'>
+        	and email = #{email}
+        </if>
+        
+        order by A.seq_lodge desc
+ 	</select>
+ 	
+	
+	<!-- 하나의 숙소에 대한 모든 정보 불러오기 -->
+	<resultMap type="java.util.HashMap" id="roomInfoMapBySeq">
+ 		<result property="SEQ_LODGE" 			column="seq_lodge" 			javaType="int" />
+ 		<result property="EMAIL"	 			column="email"		 		javaType="String" />
+ 		<result property="NAME" 				column="name" 				javaType="String" />
+ 		<result property="TYPE_LODGE" 			column="type_lodge" 		javaType="String" />
+ 		<result property="TYPE_BUILDING"		column="type_building" 		javaType="String" />
+ 		<result property="LOCATION" 			column="location" 			javaType="String" />
+ 		<result property="LOCATION_DETAIL"		column="location_detail"	javaType="String" />
+ 		<result property="LAT" 					column="lat" 				javaType="double" />
+ 		<result property="LON" 					column="lon" 				javaType="double" />
+ 		<result property="IMG_MAIN" 			column="img_main" 			javaType="String" />
+ 		<result property="NUM_OF_PEOPLE" 		column="num_of_people" 		javaType="int" />
+ 		<result property="ROOM_PRICE" 			column="room_price" 		javaType="int" />
+ 		<result property="DEPOSIT_PRICE" 		column="deposit_price" 		javaType="int" />
+ 		<result property="CLEAN_PRICE" 			column="clean_price" 		javaType="int" />
+ 		<result property="TOTAL_PRICE" 			column="total_price" 		javaType="int" />
+ 		<result property="STATUS" 				column="status" 			javaType="int" />
+ 		<result property="NUM_OF_BATHROOM"		column="num_of_bathroom" 	javaType="int" />
+ 		<result property="NUM_OF_BEDROOM" 		column="num_of_bedroom" 	javaType="int" />
+ 		<result property="NUM_OF_BED" 			column="num_of_bed" 		javaType="int" />
+ 		<result property="CHECKIN_HOUR"			column="checkin_hour" 		javaType="int" />
+ 		<result property="CHECKIN_MIN"			column="checkin_min" 		javaType="int" />
+ 		<result property="CHECKOUT_HOUR"		column="checkout_hour" 		javaType="int" />
+ 		<result property="CHECKOUT_MIN"			column="checkout_min" 		javaType="int" />
+ 		<result property="ELEVATOR"				column="elevator" 			javaType="int" />
+ 		<result property="WIFI" 				column="wifi" 				javaType="int" />
+ 		<result property="AIR_CONTROLLER"		column="air_controller" 	javaType="int" />
+ 		<result property="HEATING" 				column="heating" 			javaType="int" />
+ 		<result property="WASHING_MACHINE"		column="washing_machine" 	javaType="int" />
+ 		<result property="HAIR_DRYER"			column="hair_dryer" 		javaType="int" />
+ 		<result property="TV"	 				column="tv" 				javaType="int" />
+ 		<result property="ESSENTIAL_ITEM"		column="essential_item" 	javaType="int" />
+ 		<result property="ROOMS_EXPLAIN"		column="rooms_explain" 		javaType="String" />
+ 		<result property="ROOMS_RULE"			column="rooms_rule" 		javaType="String" />
+ 		<result property="REFUND_POLICY"		column="refund_policy"	 	javaType="String" />
+ 		<result property="SAFETY_FUNCTION"		column="safety_function" 	javaType="String" />
+ 		<result property="LOCAL_INFORMATION"	column="local_information" 	javaType="String" />
+	</resultMap>
+	
+	<select id="selectRoomInfoBySeq" parameterType="java.util.HashMap" resultMap="roomInfoMapBySeq">
+		select  seq_lodge, email, case when length(name) > 10 then substr(name, 0, 10) || '..' else name end as name,
+ 				case when type_lodge = 1 then '집전체' when type_lodge = 2 then '개인실' else '다인실' end as type_lodge,  
+      			case when type_building = 1 then '아파트' when type_building = 2 then '개인주택' else '빌딩' end as type_building, 
+ 				location, location_detail, lat, lon, img_main, num_of_people, room_price, deposit_price, clean_price, total_price, status,
+ 				num_of_bathroom, num_of_bedroom, num_of_bedroom, num_of_bed, checkin_hour, checkin_min, checkout_hour, checkout_min,
+ 				elevator, wifi, air_controller, heating, washing_machine, hair_dryer, tv, essential_item, rooms_explain,
+ 				rooms_rule, refund_policy, safety_function, local_information 
+		from    tbl_lodge A join tbl_lodge_detail B
+		        on A.seq_lodge = B.seq_lodge
+		join    tbl_lodge_detail2 C
+		        on A.seq_lodge = C.seq_lodge
+		join    tbl_lodge_intro D
+		        on A.seq_lodge = D.seq_lodge
+		where	A.seq_lodge = #{seq_lodge} 
+	</select>
+	
+	
+	<!-- 최근에 입력한 숙소의 시퀀스 알아오기 -->
+	<resultMap type="java.util.HashMap" id="latelySeqLodge">
+	 		<result property="SEQ_LODGE" 			column="seq_lodge" 			javaType="int" />
+	</resultMap>
+	
+	<select id="selectLatelySeqLodge" resultMap="latelySeqLodge">
+		select seq_lodge
+		from tbl_lodge
+		where rownum = 1
+		order by seq_lodge desc
+	</select>
+</mapper>

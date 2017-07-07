@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ===== #26. mapper 기본설정 ===== -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<!-- ===== #27. 루트엘리먼트 & 네임스페이스 설정(프로젝트 전체 내에서 고유해야 한다.) ===== -->
+<mapper namespace="HY_rooms">
+
+<!-- 숙소 모든정보를 받는 VO의 개념 -->
+	<resultMap type="java.util.HashMap" id="totalroomdetail_resultmap">
+    	<result property="roomno" 		column="seq_lodge" 		javaType="int" />
+	    <result property="email" 	column="email" 		javaType="String" />
+	    <result property="roomname" 	column="name" 	javaType="String" />
+	    <result property="lodgetype" 	column="type_lodge" 	javaType="String" />
+	    <result property="LAT" 	column="lat" 	javaType="String" />
+	    <result property="LNG" 	column="lon" 	javaType="String" />
+	    <result property="buildingtype" 	column="type_building" 		javaType="String" />
+	    <result property="mainimage" column="img_main" 	javaType="String" />
+	    <result property="maxpeople" column="num_of_people" 	javaType="int" />
+	    <result property="depositprice" column="deposit_price" 	javaType="int" />
+	    <result property="cleanprice" column="clean_price" 	javaType="int" />
+	    <result property="roomprice" column="room_price" 	javaType="int" />
+	    <result property="totalprice" column="total_price" 	javaType="int" />
+	    <result property="roomstatus" column="status" 	javaType="int" />
+	    <result property="bathroomcnt" column="NUM_OF_BATHROOM" 	javaType="int" />
+	    <result property="bedroomcnt" column="NUM_OF_BEDROOM" 	javaType="int" />
+	    <result property="bedcnt" column="NUM_OF_BED" 	javaType="int" />
+	    <result property="Hcheckin" column="CHECKIN_TIME" 	javaType="String" />
+	    <result property="Hcheckout" column="CHECKOUT_TIME" 	javaType="String" />
+	    <result property="elevator" column="ELEVATOR" 	javaType="int" />
+	    <result property="wifi" column="WIFI" 	javaType="int" />
+	    <result property="aircontroller" column="AIR_CONTROLLER" 	javaType="int" />
+	    <result property="heating" column="HEATING" 	javaType="int" />
+	    <result property="washingmachine" column="WASHING_MACHINE" 	javaType="int" />
+	    <result property="hairdryer" column="HAIR_DRYER" 	javaType="int" />
+	    <result property="tv" column="TV" 	javaType="int" />
+	    <result property="essentialitem" column="ESSENTIAL_ITEM" 	javaType="int" />
+	    <result property="roomsexplain" column="ROOMS_EXPLAIN" 	javaType="String" />
+	    <result property="roomsrule" column="ROOMS_RULE" 	javaType="String" />
+	    <result property="refundpolicy" column="REFUND_POLICY" 	javaType="String" />
+	    <result property="safetyfunction" column="SAFETY_FUNCTION" 	javaType="String" />
+	    <result property="localinfomation" column="LOCAL_INFORMATION" 	javaType="String" />
+	    <result property="hostname" column="HOSTNAME" 	javaType="String" />
+	    
+    </resultMap>
+
+
+	<select id="getlistdetail" parameterType="String" resultMap="totalroomdetail_resultmap">
+	
+	select seq_lodge , email , name 
+		, case when type_lodge = 1 then '집전체' when type_lodge = 2 then '개인실' else '다인실' end as type_lodge 
+		, case when type_building = 1 then '아파트' when type_building = 2 then '개인주택' else '빌딩' end as type_building 
+		, location,lat,lon, img_main , num_of_people , deposit_price , clean_price , room_price,
+          total_price , status , NUM_OF_BATHROOM , NUM_OF_BEDROOM , NUM_OF_BED ,
+          CHECKIN_TIME ,CHECKOUT_TIME , ELEVATOR , WIFI , AIR_CONTROLLER , HEATING
+        , WASHING_MACHINE , HAIR_DRYER , TV , ESSENTIAL_ITEM , ROOMS_EXPLAIN,
+          ROOMS_RULE , REFUND_POLICY , SAFETY_FUNCTION , LOCAL_INFORMATION
+        , HOSTNAME
+    from view_tbl_lodge_totaldetail
+	where seq_lodge = #{seq}
+	
+	</select>
+	
+	<insert id="addFile" parameterType="java.util.HashMap">
+	insert into TBL_LODGE_IMAGE(seq_lodge_image, seq_lodge , image)
+	values(SEQ_LODGE_IMAGE.nextval , '12' , #{imagefilename})
+	</insert>
+
+
+	<!-- 쿠폰 이름 , 종료날 , 퍼센트 가져올 맵 -->
+	<resultMap type="java.util.HashMap" id="selectcupon">
+	<result property="name" column="NAME" javaType="String" />
+	<result property="endday" column="ENDDAY" javaType="String" />
+	<result property="percent" column="PERCENT" javaType="String" />
+	</resultMap>
+
+	<!-- 쿠폰 이름 , 종료날 , 퍼센트 가져올 쿼리문 -->
+	<select id="getcuponlist" parameterType="java.util.HashMap" resultMap="selectcupon">
+	select NAME , to_char(ENDDAY , 'yyyy-mm-dd') as ENDDAY , PERCENT 
+	from TBL_COUPON
+	where email = #{email} and status = 1
+	</select>
+
+	<!-- 리뷰 맵 -->
+	<resultMap type="java.util.HashMap" id="selectreview">
+	<result property="seqreview" column="SEQ_REVIEW" javaType="String" />
+	<result property="Remail" column="EMAIL" javaType="String" />
+	<result property="seqpayment" column="SEQ_PAYMENT" javaType="String" />
+	<result property="Rscore" column="SCORE" javaType="String" />
+	<result property="Rcontent" column="CONTENT" javaType="String" />
+	<result property="Rstatus" column="STATUS" javaType="String" />
+	</resultMap>
+
+
+	<!-- 리뷰 가져올 쿼리문 -->
+	<select id="getreviewlist" parameterType="String" resultMap="selectreview">
+	
+	select  SEQ_REVIEW , EMAIL , SCORE , CONTENT , STATUS
+	from 
+	(
+	select A.seq_payment , A.seq_lodge , B.SEQ_REVIEW , B.EMAIL  , B.SCORE , B.CONTENT , B.STATUS
+	from TBL_PAYMENT A join tbl_review B
+	on A.seq_payment = B.seq_payment
+	)
+	V
+	<!-- where seq_lodge = #{seq_lodge} -->
+	</select>
+
+
+	<!-- 리뷰 가져올 쿼리문 -->
+	<select id="getreviewcount" parameterType="String" resultType="int">
+	
+	select  count(SEQ_REVIEW)
+	from 
+	(
+	select A.seq_payment , A.seq_lodge , B.SEQ_REVIEW , B.EMAIL  , B.SCORE , B.CONTENT , B.STATUS
+	from TBL_PAYMENT A join tbl_review B
+	on A.seq_payment = B.seq_payment
+	)
+	V
+	<!-- where seq_lodge = #{seq_lodge} -->
+	</select>
+
+	<insert id="insertreport" parameterType="java.util.HashMap">
+		 insert into tbl_report_review(seq_report_review , seq_review , email , content)
+  		 values(seq_report_review.nextval ,#{reviewno},#{email},#{content} )
+	</insert>
+
+
+
+
+</mapper>

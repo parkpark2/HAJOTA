@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ===== #26. mapper 기본설정 ===== -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<!-- ===== #27. 루트엘리먼트 & 네임스페이스 설정(프로젝트 전체 내에서 고유해야 한다.) ===== -->
+<mapper namespace="member">
+
+	<!-- 회원가입하기   -->
+    <insert id="joinEnd" parameterType="java.util.HashMap">
+    	insert into tbl_member(email, seq_member, pwd, last_name, first_name , birthday, tel, grade, regidate, status)
+        values(#{email}, seq_member.nextval, #{pwd}, #{last_name}, #{first_name}, #{birthday}, #{tel}, default, default, default)
+    </insert>
+
+
+	<!-- ===== #48. 로그인 여부 알아오기 ===== -->
+	<select id="loginEnd" parameterType="java.util.HashMap" resultType="int">
+	select case(select count(*)
+				from tbl_member
+				where email= #{email} and pwd = #{pwd} and status = 1)
+		   when 1 then 1
+		   else(case(select count(*)
+					 from tbl_member
+					 where email= #{email} and status = 0)
+				when 1 then -2
+				else(case(select count(*)
+								 from tbl_member
+								 where email= #{email})
+					 when 1 then 0
+		   			 else -1
+				     end
+						)
+				end
+					)
+			end as LOGINCHECK
+	from dual
+	</select>
+	
+	
+	<resultMap type="java.util.HashMap" id="tbl_member_resultmap">
+    	<result property="EMAIL" 		column="email" 			javaType="String" />
+	    <result property="SEQ_MEMBER" 	column="seq_member" 	javaType="int" />
+	    <result property="PWD" 			column="pwd" 			javaType="String" />
+	    <result property="LAST_NAME" 	column="last_name" 		javaType="String" />
+	    <result property="FIRST_NAME" 	column="first_name" 	javaType="String" />
+	    <result property="BIRTHDAY" 	column="birthday" 		javaType="String"/>
+	   	<result property="TEL" 			column="tel" 			javaType="String"/>
+	    <result property="GRADE" 		column="grade" 			javaType="int"/>
+	    <result property="REGIDATE" 	column="regidate" 		javaType="String"/>
+	    <result property="STATUS" 		column="status" 		javaType="int" />
+    </resultMap>
+	<!-- ===== #51. 로그인 성공한 사용자 정보 가져오기 ===== -->
+	<select id="getLoginMember" parameterType="java.util.HashMap" resultMap="tbl_member_resultmap"> 
+       select email, seq_member, pwd, last_name, first_name, birthday, tel, grade, regidate, status
+	   from tbl_member
+	   where status = 1 and email = #{email}
+	</select>
+	
+	
+	<!-- 회원정보 수정 여부 알아오기  -->
+	<update id="edituserEnd" parameterType="java.util.HashMap">
+		update tbl_member set first_name = #{first_name}, last_name = #{last_name}, pwd = #{pwd}, tel = #{tel}
+		where email = #{email}
+	</update>
+	 
+	 
+	 <!-- 비밀번호 찾기시 인증번호를 메일로 발송하기 전
+	  email 을 입력받아서 사용자가 존재하는지 여부를 알려주는 메소드 생성하기  -->
+	<select id="getUserExists" parameterType="java.util.HashMap" resultType="int"> 
+       select count(*) as cnt
+	   from tbl_member
+	   where status = 1 and email = #{email}
+	</select>
+	
+	
+	<!-- 비밀번호 찾기에서 인증 후 비밀번호 변경하기  -->
+	<update id="updatePwdUser" parameterType="java.util.HashMap">
+		update tbl_member set pwd = #{pwd}
+		where status = 1 and email = #{email}
+	</update>
+	
+	
+	<!--  회원가입(insert)시 userid 를 중복검사 해주는 메소드 생성하기   -->
+	<select id="idDuplicateCheck" parameterType="java.util.HashMap" resultType="int">
+		select count(*) as CNT
+		from tbl_member
+		where email = #{email}
+	</select>
+	
+	
+	<!-- wish-list 보여주기  -->
+	<resultMap type="java.util.HashMap" id="tbl_wish_resultmap">
+    	<result property="SEQ_LODGE_WISH" 	column="seq_lodge_wish" 	javaType="int" />
+	    <result property="SEQ_LODGE" 		column="seq_lodge" 		javaType="int" />
+	    <result property="EMAIL" 			column="email" 			javaType="String" />
+	    <result property="STATUS" 			column="status" 		javaType="int" />
+    </resultMap>
+	<!-- wish-list 보여주기  -->
+	<select id="wishList"  resultMap="tbl_wish_resultmap">
+		select seq_lodge_wish, seq_lodge, email, status
+		from tbl_lodge_wish
+		where email = #{email}
+		order by seq_lodge_wish desc	
+	</select>
+	
+	
+	<!-- 결제 리스트 보여주기  -->
+	<resultMap type="java.util.HashMap" id="tbl_payment_resultmap">
+    	<result property="SEQ_PAYMENT" 		column="seq_payment" 	javaType="int" />
+	    <result property="SEQ_LODGE" 		column="seq_lodge" 		javaType="int" />
+	    <result property="EMAIL" 			column="email" 			javaType="String" />
+	    <result property="CHECKIN_DATE" 	column="checkin_date" 	javaType="String" />
+	    <result property="CHECKOUT_DATE" 	column="checkout_date" 	javaType="String" />
+	    <result property="CHECKIN_PERSON" 	column="checkin_person" javaType="int"/>
+ 		<result property="SEQ_COUPON" 		column="seq_coupon" 	javaType="int"/>
+	   	<result property="TOTAL_SALEPRICE" 	column="total_saleprice" javaType="String"/>
+	    <result property="SALESDATE" 		column="salesdate" 		javaType="String"/>
+	    <result property="STATUS" 			column="status" 		javaType="int" />
+    </resultMap>
+	<!-- 결제 리스트 보여주기  -->
+	<select id="paymentList"  resultMap="tbl_payment_resultmap">
+		select seq_payment, seq_lodge, email, to_char(checkin_date,'yyyy-mm-dd') as checkin_date, to_char(checkout_date,'yyyy-mm-dd') as checkout_date, checkin_person, seq_coupon, total_saleprice, salesdate, status
+		from tbl_payment
+		where email = #{email}
+		order by seq_payment desc	
+	</select>
+
+	<!-- 나의 이용후기 보여주기 -->
+	<resultMap type="java.util.HashMap" id="tbl_review_resultmap">
+    	<result property="SEQ_REVIEW" 	column="seq_review" 	javaType="int" />
+	    <result property="SEQ_PAYMENT" 		column="seq_payment" 		javaType="int" />
+	    <result property="EMAIL" 			column="email" 			javaType="String" />
+	    <result property="SCORE" 			column="score" 		javaType="int" />
+	    <result property="CONTENT" 			column="content" 		javaType="String" />
+	    <result property="STATUS" 			column="status" 		javaType="int" />
+    </resultMap>
+	<!-- 나의 이용후기 보여주기 -->
+	<select id="reviewList"  resultMap="tbl_review_resultmap">
+		select seq_review, email, seq_payment, score, content, status
+		from tbl_review
+		where email = #{email}	
+		order by seq_review desc	
+	</select>
+	
+	<!-- 쿠폰 리스트 보여주기  -->
+	<resultMap type="java.util.HashMap" id="tbl_coupon_resultmap">
+    	<result property="SEQ_COUPON" 	column="seq_coupon" 	javaType="int" />
+	    <result property="EMAIL" 		column="email" 			javaType="String" />
+	    <result property="NAME" 		column="name" 			javaType="String" />
+	    <result property="STARTDAY" 	column="startday" 		javaType="String" />
+	    <result property="ENDDAY" 		column="endday" 		javaType="String" />
+	    <result property="PERCENT" 		column="percent" 		javaType="int"/>
+ 		<result property="STATUS" 		column="status" 		javaType="int"/>
+    </resultMap>
+	<!-- 쿠폰 리스트 보여주기  -->
+	<select id="couponList"  parameterType="String"  resultMap="tbl_coupon_resultmap">
+		select seq_coupon, email, name, to_char(startday,'yyyy-mm-dd') as startday, to_char(endday,'yyyy-mm-dd') as endday, percent, status
+		from tbl_coupon
+		where email = #{email}
+		order by seq_coupon desc	
+	</select>
+
+	<!--  질문 목록 보여주기(검색어, 페이징 처리 포함) -->
+	<resultMap type="java.util.HashMap" id="tbl_que_resultmap">
+    	<result property="SEQ_QUESTION" column="seq_question" 		javaType="int" />
+	    <result property="EMAIL" 		column="email" 		javaType="String" />
+	    <result property="SUBJECT" 	column="subject" 		javaType="String" />
+	    <result property="CONTENT" 	column="content" 		javaType="String" />
+	    <result property="WRITEDATE" 	column="writedate" 	javaType="String" />
+	    <result property="STATUS" 	column="status" 	javaType="int" />
+	    <result property="REPLYSTATUS" 	column="replystatus" 	javaType="int" />
+	   
+    </resultMap>
+	<select id="questionList"  parameterType="java.util.HashMap"  resultMap="tbl_que_resultmap">
+    	select seq_question, email, subject, content, writedate, status, replystatus
+		from 
+		(
+		  select rownum as RNO
+		       , V.seq_question, V.email, V.subject, V.content, V.writedate, V.status, V.replystatus
+		  from 
+		  (
+		      select seq_question, email, subject, content, to_char(writedate,'yyyy-mm-dd') as writedate, status, replystatus
+		      from tbl_question
+		      where status = 1
+		      <if test="colname != null and search != null">
+			  and ${colname} like '%' || #{search} || '%'
+			  </if>
+		  ) V
+		) T
+		where T.RNO >= #{start} and T.RNO <![CDATA[<=]]> #{end} and status = 1
+	</select>
+
+<!-- 	<resultMap type="java.util.HashMap" id="tbl_ans_resultmap">
+    	<result property="SEQ_QUESTION" column="seq_question" 		javaType="int" />
+	    <result property="EMAIL" 		column="email" 		javaType="String" />
+	    <result property="SUBJECT" 	column="subject" 		javaType="String" />
+	    <result property="CONTENT" 	column="content" 		javaType="String" />
+	    <result property="WRITEDATE" 	column="writedate" 	javaType="String" />
+	    <result property="STATUS" 	column="status" 	javaType="int" />
+    </resultMap>
+	
+	<select id="answerList"  parameterType="java.util.HashMap"  resultMap="tbl_ans_resultmap">
+     select seq_question, email, subject, content, writedate, status
+		from 
+		(
+		  select rownum as RNO
+		       , V.seq_question, V.email, V.subject, V.content, V.writedate, V.status
+		  from 
+		  (
+		      select seq_question, email, subject, content, to_char(writedate,'yyyy-mm-dd') as writedate, status
+		      from tbl_answer
+		      where status = 1
+		      order by seq_question desc
+    
+      ) V
+		) T
+		where T.RNO >= '1' and T.RNO <= '5' 
+	</select> -->
+
+	<resultMap type="java.util.HashMap" id="tbl_queinfo">
+    	<result property="SEQ_QUESTION" column="seq_question" 		javaType="int" />
+	    <result property="EMAIL" 		column="email" 				javaType="String" />
+	    <result property="SUBJECT" 		column="subject" 			javaType="String" />
+	    <result property="CONTENT" 		column="content" 			javaType="String" />
+	    <result property="WRITEDATE" 	column="writedate" 			javaType="String" />
+	    <result property="STATUS" 		column="status" 			javaType="int" />
+	    <result property="REPLYSTATUS" 	column="replystatus" 		javaType="int" />
+    </resultMap>
+	
+	<!-- 글 수정 폼 보여주기  -->
+	<select id="editList"  parameterType="String"  resultMap="tbl_queinfo">
+		select seq_question, email, subject, content, writedate, status, replystatus
+    	from tbl_question
+    	where seq_question = #{seq} 
+	</select>
+	
+	<!-- 글 수정 완료하기  -->
+	<update id="editEnd" parameterType="java.util.HashMap">
+    	update tbl_question set subject = #{subject}, content = #{content}, writedate = sysdate
+    	where seq_question = #{seq}
+    </update>
+	
+	<!-- 글쓰기 -->
+	<insert id="add" parameterType="java.util.HashMap">
+		insert into tbl_question(seq_question, email, subject, content, writedate, status, replystatus)
+		values(seq_question.nextval, #{email}, #{subject}, #{content}, default, default, default) 
+	</insert>
+	
+	<!-- 총 게시물 수 구하기  -->
+	<select id ="getTotalCount" parameterType="java.util.HashMap"  resultType="int">
+		select count(seq_question)
+		from 
+		(
+		  select rownum as RNO
+		       , V.seq_question
+		  from 
+		  (
+		      select seq_question
+		      from tbl_question
+		      where status = 1
+		       <if test="colname != null and search != null">
+			  and ${colname} like '%' || #{search} || '%'
+			  </if>
+		      order by seq_question desc
+		  ) V
+		) T
+
+	</select>
+	
+	
+	<resultMap type="java.util.HashMap" id="tbl_login_infomap">
+       <result property="EMAIL"       column="email"        javaType="String" />
+       <result property="LOGINTIME"    column="logintime"     javaType="String" />
+    </resultMap>
+    
+	<!-- 로그인되면 로그인 시간정보 넣어주기 -->
+	<insert id="insertLoginTime" parameterType="java.util.HashMap">
+	insert into tbl_login_info(email, logintime)
+	values(#{email}, sysdate)
+	</insert>
+	
+	<!-- 질문 번호에 맞는 질문 정보 보여주기 -->	
+	<resultMap type="java.util.HashMap" id="tbl_que_info">
+    	<result property="SEQ_QUESTION" column="seq_question" javaType="int" />
+	    <result property="EMAIL" 		column="email" 		javaType="String" />
+	    <result property="SUBJECT" 	column="subject" 		javaType="String" />
+	    <result property="CONTENT" 	column="content" 		javaType="String" />
+	    <result property="WRITEDATE" 	column="writedate" 	javaType="String" />
+    </resultMap>
+	<select id="questioninfo"  parameterType="String"  resultMap="tbl_que_info">
+		select seq_question, email, subject, content, writedate, status, replystatus
+    	from tbl_question
+    	where seq_question = #{seq}
+	</select>
+	
+	<!-- 질문 번호에 맞는 답변 정보 보여주기 -->	
+	<resultMap type="java.util.HashMap" id="tbl_ans_info">
+    	<result property="SEQ_QUESTION" column="seq_question" javaType="int" />
+	    <result property="EMAIL" 		column="email" 		javaType="String" />
+	    <result property="SUBJECT" 	column="subject" 		javaType="String" />
+	    <result property="CONTENT" 	column="content" 		javaType="String" />
+	    <result property="WRITEDATE" 	column="writedate" 	javaType="String" />
+    </resultMap>
+	<select id="answerinfo"  parameterType="String"  resultMap="tbl_ans_info">
+		select seq_question, email, subject, content, writedate, status
+    	from tbl_answer
+    	where seq_question = #{seq} 
+	</select>
+	
+	<!-- 게스트 탈퇴 이메일/탈퇴사유 가져오기 -->
+	<resultMap type="java.util.HashMap" id="tbl_withdraw_reason">
+    <result property="SEQ_WITHDRAW_REASON"      column="seq_withdraw_reason"         javaType="int" />
+   	<result property="WITHDRAW_REASON"         column="withdraw_reason"            javaType="String" />
+	</resultMap>
+   	<select id="getSignOut" parameterType="java.util.HashMap" resultMap="tbl_withdraw_reason">
+       select *
+       from tbl_withdraw_reason
+       where 1 <![CDATA[<=]]> seq_withdraw_reason and seq_withdraw_reason <![CDATA[<=]]> 4
+       order by seq_withdraw_reason asc
+    </select>
+
+
+	<!-- 호스트 탈퇴 이메일/탈퇴사유 가져오기 -->
+    <select id="gethostSignOut" parameterType="java.util.HashMap" resultMap="tbl_withdraw_reason">
+        select *
+         from tbl_withdraw_reason
+         where 5 <![CDATA[<=]]> seq_withdraw_reason and seq_withdraw_reason <![CDATA[<=]]> 8
+         order by seq_withdraw_reason asc
+    </select>
+    
+    
+    <!-- 회원 탈퇴  -->
+    <update id="signOutEnd" parameterType="java.util.HashMap">
+    	update tbl_member set status = 0
+    	where email = #{email}
+    </update>
+    
+    
+    <!-- 회원 탈퇴 사유 insert -->
+    <insert id="reasonInsert" parameterType="java.util.HashMap">
+       insert into tbl_withdraw(email, seq_withdraw_reason)
+       values (#{email}, #{value})
+    </insert>
+    
+    
+    
+    
+    <!-- 글삭제  -->
+    <update id="qnaDel" parameterType="java.util.HashMap">
+    	update tbl_question set status = 0
+    	where seq_question = #{seq}
+    </update>
+    
+    
+	
+	
+	
+	
+	
+ 
+	
+	
+
+
+
+</mapper>
