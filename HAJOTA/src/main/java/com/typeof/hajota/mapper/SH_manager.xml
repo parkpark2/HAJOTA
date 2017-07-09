@@ -199,11 +199,9 @@
 	</select>
 	
 	<select id="guestqnashowCount" parameterType="java.util.HashMap" resultType="int">
-		select count(a.seq_question)
-        from tbl_question a join tbl_member b
-        on a.email = b.email
-        where b.grade = 9 and a.status = 1		
-		order by a.seq_question desc   		
+		select count(*)
+		from tbl_question	
+		where status = 1		
 		<if test='search != null and !"".equals(search)'>
 			and ${colname} like '%' || #{search} || '%'
 		</if>	
@@ -225,11 +223,9 @@
 	</select>
 	
 	<select id="hostqnashowCount" parameterType="java.util.HashMap" resultType="int">
-		select count(a.seq_question)
-        from tbl_question a join tbl_member b
-        on a.email = b.email
-        where b.grade = 8 and a.status = 1		
-		order by a.seq_question desc   		
+		select count(*)
+		from tbl_question	
+		where status = 1	
 		<if test='search != null and !"".equals(search)'>
 			and ${colname} like '%' || #{search} || '%'
 		</if>	
@@ -308,10 +304,7 @@
 	
 	<!-- index guest qna show -->
 	<select id="Showguestqna" resultMap="Showqnamap1">
-           select a.seq_question, a.email, a.subject,  
-        	 case when length(a.content) > 10 then substr(a.content , 1, 10) || '....'
-                                else a.content
-                                end as content
+           select a.seq_question, a.email, a.subject, a.content
            from tbl_question a join tbl_member b  
            on a.email = b.email        
            where a.status = 1 and b.grade = 9
@@ -320,10 +313,7 @@
 	 
 	<!-- index host qna show -->
 	<select id="Showhostqna" resultMap="Showqnamap1">
-           select a.seq_question, a.email, a.subject, 
-           		 case when length(a.content) > 10 then substr(a.content , 1, 10) || '....'
-                                else a.content
-                                end as content
+           select a.seq_question, a.email, a.subject, a.content, b.grade
            from tbl_question a join tbl_member b       
            on a.email = b.email        
            where a.status = 1 and b.grade = 8         
@@ -332,10 +322,7 @@
 	 
 	 <!-- index notice show -->
 	<select id="Shownoticeindex" resultMap="Shownoticemap">		   
-	        select seq_notice, email, subject, 
-	        	 case when length(content) > 10 then substr(content , 1, 10) || '....'
-                                else content
-                                end as content
+	        select seq_notice, email, subject, content, writedate, status
 	        from tbl_notice
 	        where status = 1
 	        order by seq_notice desc    
@@ -374,161 +361,6 @@
 		where seq_question = #{seq_question}
 	</update>
 	
-	<!-- 통계 알아오기 -->
-	<resultMap type="java.util.HashMap" id="Showsum">
-		<result property="SEQ_NOTICE" column="seq_notice" javaType="int" />
-		<result property="EMAIL" column="email" javaType="String" />
-		<result property="SUBJECT" column="subject" javaType="String" />
-		<result property="CONTENT" column="content" javaType="String" />
-		<result property="WRITEDATE" column="writedate" javaType="String" />
-		<result property="STATUS" column="status" javaType="String" />
-		<result property="COMMISSION" column="commission" javaType="String" />
-		<result property="LEVEL" column="level" javaType="String" />
-		<result property="MONTH" column="month" javaType="String" />
-		<result property="YEAR" column="year" javaType="String"/>
-	</resultMap>
-	<select id="getSum" parameterType="java.util.HashMap" resultMap="Showsum">
-	select D.month, nvl(sum(E.commission), 0) as commission
-	from (SELECT LEVEL as month
-		  FROM DUAL
-		  CONNECT BY LEVEL <![CDATA[<=]]> 12) D
-		  left outer join
-		  (select extract(month from checkin_date) as month,
-		 		  C.total_saleprice * A.commission / 100 as commission
-		   from tbl_member A
-		   join tbl_lodge B
-		   on A.email = B.email
-		   join tbl_payment C
-		   on B.seq_lodge = C.seq_lodge
-		   where extract(year from checkin_date) = #{year}) E
-		   on D.month = E.month
-	group by D.month
-	order by D.month asc
-	</select>
-	
-	<!-- 총수익 통계 -->
-	<select id="totalincome" parameterType="java.util.HashMap" resultType="int">
-		select sum(commission) 
-		from
-		(
-		select  D.month, nvl(sum(E.commission), 0) as commission
-		from   (SELECT LEVEL as month FROM DUAL CONNECT BY LEVEL <![CDATA[<=]]> 12) D
-		        left outer join  (select  extract(month from checkin_date) as month,
-		                                  C.total_saleprice * A.commission / 100 as commission
-		                          from    tbl_member A
-		                          join    tbl_lodge B
-		                          on      A.email = B.email
-		                          join    tbl_payment C
-		                          on      B.seq_lodge = C.seq_lodge
-		                          where   extract(year from checkin_date) = 2017) E
-		        on D.month = E.month
-		group by D.month
-		order by D.month asc
-		) v
-	</select>
-	
-	<!-- qna 카운트 통계 -->
-	<select id="qnalistsum" parameterType="java.util.HashMap" resultMap="Showsum">
-	select month, count(seq_question) as seq
-	from
-	    (
-	    select A.month as month, seq_question, writedate
-	    from (select level as month from dual connect by level <![CDATA[<=]]> 12) A
-	          full outer join (select extract(month from writedate) as month, nvl(seq_question, 0) as seq_question, writedate from tbl_question where extract(year from writedate) = #{year}) B
-	          on A.month = B.month            
-	          order by A.month
-	    )  
-	group by month
-	order by month
-	</select> 
-
-	<!-- 오늘 접속자 수 구하기 -->
-	<select id="jintianCount" resultType="int"> 
-      select sum(cnt) as cnt
-	  from
-		(select substr(a.time, 12, 13) as time, nvl(b.cnt, 0) as cnt
-		from (select to_char(to_date(to_char(sysdate, 'yyyy-mm-dd'), 'yyyy-mm-dd') + ((level - 1) / 24), 'yyyy-mm-dd hh24') as time from dual connect by level <![CDATA[<=]]> 24) a
-		left outer join 
-		(select time, count(time) as cnt 
-		from (select to_char(logintime, 'yyyy-mm-dd hh24') as time 
-		from tbl_login_info where to_char(logintime, 'yyyy-mm-dd') = to_char(sysdate, 'yyyy-mm-dd')) group by time) b
-		on a.time = b.time
-		order by time asc
-		)
-    </select>
-    
-    <!-- 지구본에 들어갈 Q&A 가져오기 -->
-    <select id="ShowqnaList" resultMap="Showqnamap"> 
-    select rno, seq_question, email, subject, alertstatus
-	from
-	          (
-	           select a.seq_question, a.email, a.subject, rownum as rno, a.alertstatus,
-	            case when length(a.content) > 10 then substr(a.content , 1, 10) || '....'
-	                                else a.content
-	                                end as content
-	           from tbl_question a join tbl_member b  
-	           on a.email = b.email        
-	           where a.status = 1 
-	           order by seq_question desc
-	          )v
-	where rno <![CDATA[<=]]> 5
-	</select>
-
-	<!-- 알림을 눌르지 않았을 경우 1, 눌렀을 경우 0 -->
-	<update id="changeStatus" parameterType="java.util.HashMap">
-		update tbl_question set alertstatus = 0
-		where seq_question = #{seq_question}
-	</update>
-
-
-	<!-- 알람 누르지 않은 갯수 구하기 -->
-	<select id="LingCount" resultType="int">
-		select count(*)
-		from
-	          (
-	           select a.seq_question, a.email, a.subject, rownum as rno, a.alertstatus,
-	            case when length(a.content) > 10 then substr(a.content , 1, 10) || '....'
-	                                else a.content
-	                                end as content
-	           from tbl_question a join tbl_member b  
-	           on a.email = b.email        
-	           where a.status = 1 
-	           order by seq_question desc
-	          )v
-		where rno <![CDATA[<=]]> 5 and alertstatus = 1
-	</select>
-
-
-
-	<resultMap type="java.util.HashMap" id="Showreport">
-      <result property="SEQ_LODGE" column="seq_lodge" javaType="int" />
-      <result property="EMAIL" column="email" javaType="String" />
-      <result property="SEQ_REVIEW" column="seq_review" javaType="String" />
-      <result property="CONTENT" column="content" javaType="String" />
-      <result property="REPORTDATE" column="reportdate" javaType="String" />
-   </resultMap>
-   
-   <!-- 신고 목록 -->
-   <select id="allreportList" parameterType="java.util.HashMap" resultMap="Showreport">
-   select  seq_lodge, seq_review, email, content , reportdate
-    from 
-      (
-         select A.seq_payment , A.seq_lodge , B.SEQ_REVIEW , B.EMAIL  , B.SCORE , B.CONTENT , B.STATUS , to_char(C.reportdate , 'yyyy-mm-dd') as reportdate , C.status
-         from TBL_PAYMENT A join tbl_review B
-         on A.seq_payment = B.seq_payment
-         join tbl_report_review C
-         on B.SEQ_REVIEW = C.SEQ_REVIEW
-         where C.status = 1
-      ) V
-   </select>
-   
-   <update id="delreport" parameterType="String">
-   
-   update tbl_report_review set status = 0
-    where seq_review = #{reportno}
-    
-   </update>
-
 </mapper>
 
 

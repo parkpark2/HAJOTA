@@ -141,13 +141,6 @@ public class ManagerDAO implements InterManagerDAO {
 			int n = sqlsession.insert("manager.InsertDolGame", map);
 			return n;
 		}
-		
-		// 사다리게임에 참여했던 기록 남기기
-		@Override
-		public int InsertSadaliGame(HashMap<String, String> map) {
-			int n = sqlsession.insert("manager.InsertSadaliGame", map);
-			return n;
-		}
 
 		// 게임에서 얻은 쿠폰 저장하기
 		@Override
@@ -183,23 +176,6 @@ public class ManagerDAO implements InterManagerDAO {
 			int n = sqlsession.update("manager.plusSadaliGame");
 			return n;
 		}
-
-		// 오늘 시간대 별로 로그인한 회원수 구하기
-		@Override
-		public List<HashMap<String, Object>> loginTimeCount() {
-			List<HashMap<String, Object>> loginTimeCount = sqlsession.selectList("manager.loginTimeCount");
-			return loginTimeCount;
-		}
-
-		// 매달 가입한 게스트의 총수
-		@Override
-		public List<HashMap<String, Object>> joinGuestChart() {
-			List<HashMap<String, Object>> joinGuestChart = sqlsession.selectList("manager.joinGuestChart");
-			return joinGuestChart;
-		}
-		
-		
-		
 	
 	
 }

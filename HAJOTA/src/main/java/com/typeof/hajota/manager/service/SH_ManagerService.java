@@ -204,13 +204,6 @@ public class SH_ManagerService implements SH_InterManagerService {
 		return t;
 	}
 	
-	// 오늘 접속자 수 구하기
-	@Override
-	public int jintianCount() {
-		int n = dao.jintianCount();
-		return n;
-	}
-
 	////////////////////////////////////////////
 	// 답변하기
 	@Override
@@ -273,78 +266,11 @@ public class SH_ManagerService implements SH_InterManagerService {
 	// 답변 테이블 보여주기
 	@Override
 	public HashMap<String, Object> answerdetailShow(HashMap<String, String> map) {
-		
 		HashMap<String, Object> answerdetailShow = dao.answerdetailShow(map);
 		
 		return answerdetailShow;
 	}
 	
-	// 수입 통계
-	@Override
-	public List<HashMap<String, Object>> getSum(HashMap<String, String> map) {
-		
-		List<HashMap<String, Object>> sumlist = dao.sumlist(map);
-		
-		return sumlist;
-	}
 	
-	// 인덱스 화면에 총 수입 보여주기
-	public int totalincome(HashMap<String, String> map) {
-		
-		int totalincome = dao.totalincome(map);
-		
-		return totalincome;
-	}
-	
-	// qna 통계
-	@Override
-	public List<HashMap<String, Object>> getSumqna(HashMap<String, String> map) {
-		
-		List<HashMap<String, Object>> qnalist = dao.qnalistsum(map);
-		
-		return qnalist;
-	}
-
-	// 지구본에 들어갈 Q&A 가져오기
-	@Override
-	public List<HashMap<String, Object>> ShowqnaList() {
-		List<HashMap<String, Object>> ShowqnaList = dao.ShowqnaList();
-		return ShowqnaList;
-	}
-
-	// 알림을 누르면 Status변경
-	@Override
-	public int changeStatus(HashMap<String, String> map) {
-		int changeStatus = dao.changeStatus(map);
-		
-		return changeStatus;
-	}
-	
-	// 신고 목록
-    @Override
-    public List<HashMap<String, Object>> allreportList() {
-       
-       List<HashMap<String, Object>> allreportList = dao.allreportList();
-       
-       return allreportList;
-    }
-
-    public int delreport(String reportno) {
-
-       int n = dao.delreport(reportno);
-       
-       return n;
-    }
-
-	 // 알람 누르지 않은 갯수 구하기
-	@Override
-	public int LingCount() {
-		int LingCount = dao.LingCount();
-		
-		return LingCount;
-	}
-	
-	
-
 	
 }

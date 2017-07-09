@@ -5,7 +5,7 @@
 
 <style type="text/css">
 	table, th, td, input, textarea {border: solid gray 1px;}
-	 
+	
 	#table {border-collapse: collapse;
 	 		width: 600px;
 	 		}

@@ -4,11 +4,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 <style type="text/css">
-   
+  
   #div_email {
   		width: 70%;
   		height: 15%;
@@ -97,12 +100,14 @@ $(document).ready(function(){
 </head>
 <body>
 	<form name="pwdFindFrm">
-		<div id="div_email"  align="center">
-			<span style="color: blue; font-size: 12pt;">이메일</span><br/>
-			<input type="email" id="email" name="email" size="15" placeholder="abc@def.com" value="${email}"/> 
+		<div id="div_email" style="border: solid 0px red; " align="center">
+			<p style="font-size: 15px;  ">고객님의 이메일 주소를 입력해 주세요.<br/>비밀번호 재설정을 위한 링크를 보내드리도록 하겠습니다.</p>
+			
+			<br/><br/><span style="margin-left: -30%; font-weight: bold; font-size: 13pt;">이메일</span><br/>
+			<input type="text" id="email" name="email" size="20" placeholder="insang@google.com" value="${email}" style="height: 25px;" /> 
 		</div>
 		<div id="div_btnFind" align="center">
-			<button type="button"  onclick="pwdFind();">찾기</button>
+			<button type="button" class="btn btn-primary" onclick="pwdFind();">찾기</button>
 		</div>
 		
 		<div id="div_findResult" align="center">

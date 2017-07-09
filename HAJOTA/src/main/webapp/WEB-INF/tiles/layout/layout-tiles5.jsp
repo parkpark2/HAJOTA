@@ -1,15 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<%-- ===== 효윤오빠부분  ===== --%>
+<%-- ===== #35. tiles 를 사용하는 레이아웃 페이지 만들기  ===== --%>
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"  %>    
     
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>HAJOTA</title>
- 
+<title>숙소안되</title>
+
   <meta name="viewport" content="width=device-width, initial-scale=1">
    			 <link rel="stylesheet" href="<%= request.getContextPath() %>/resources/TypeofCss/HY/main.css" />
    			 <link rel="stylesheet" href="<%= request.getContextPath() %>/resources/TypeofCss/JW/sweetalert.css" />
@@ -70,14 +70,26 @@
 					alert("값없음");
 				}
 				else{
-					alert("값잇음");
+					
 					$.each(data , function(entryIndex , entry){
 						
 						showreview+="<div  style='width: 300px;height: 200px;'>";
-						showreview+="<img id='HY_P' alt='adf' src='<%=request.getContextPath()%>/resources/TypeofCss/HS/assets/img/defalut-avatar.png' style='width: 50px;margin-top: 1%;' />";
+						showreview+="<img id='HY_P' alt='adf' src='<%=request.getContextPath()%>/resources/TypeofCss/HS/assets/img/default-avatar.png' style='width: 50px;margin-top: 1%;' />";
 						showreview+="<input id='HY_N' type='text' style='margin-top: 0.2%;position: absolute;  border: none;' value='"+entry.Remail+"' readonly />";
 						showreview+="<input id='HY_Y' type='text' style='margin-top: 3.5%;position: absolute;  border: none;' value='"+entry.Rscore+"' readonly />";
 						showreview+="</div>";
+						if(entry.BDAY==0 && entry.BHOUR ==0 && entry.BMINUTE==0 && entry.BSECONT !=0){
+							showreview+="<input id='HY_T' type='text' style='margin-top: 0.4%;position: absolute;margin-top: -13%;margin-left: 47%;border: none;'  value='"+entry.BSECOND+"초전' readonly />"
+							}
+							else if(entry.BDAY==0 && entry.BHOUR ==0 && entry.BMINUTE!=0){
+							showreview+="<input id='HY_T' type='text' style='margin-top: 0.4%;position: absolute;margin-top: -13%;margin-left: 47%;border: none;'  value='"+entry.BMINUTE+"분전' readonly />"
+							}
+							else if(entry.BDAY==0 && entry.BHOUR !=0){
+							showreview+="<input id='HY_T' type='text' style='margin-top: 0.4%;position: absolute;margin-top: -13%;margin-left: 47%;border: none;'  value='"+entry.BHOUR+"시간전' readonly />"
+							}
+							else if(entry.BDAY!=0){
+							showreview+="<input id='HY_T' type='text' style='margin-top: 0.4%;position: absolute;margin-top: -13%;margin-left: 47%;border: none;'  value='"+entry.BDAY+"일전' readonly />"
+							}
 						showreview+="<textarea id='HY_C'  style='width: 80%; margin-top: -10%; resize: vertical; border: none;' >"+entry.Rcontent+"</textarea><a href='javascript:reveiwreport("+entry.seqreview+");' id='HY_R' style='margin-left: 90%;'  >신고하기</a>";
 						showreview+="<div style='border-bottom: solid rgba(0, 0, 0, 0.13)  3px;'></div>";
 						

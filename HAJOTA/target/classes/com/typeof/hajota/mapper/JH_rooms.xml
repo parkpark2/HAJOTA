@@ -100,41 +100,39 @@
  		<result property="REFUND_POLICY"		column="refund_policy"	 	javaType="String" />
  		<result property="SAFETY_FUNCTION"		column="safety_function" 	javaType="String" />
  		<result property="LOCAL_INFORMATION"	column="local_information" 	javaType="String" />
+ 		<result property="WISH"					column="wish" 				javaType="int" />
 	</resultMap>
 
 	<select id="selectAvailableRoomsList" parameterType="java.util.HashMap" resultMap="availableRoomsListMap">
- 		select *
+ 		select  D.*, nvl(E.status, 0) as wish
 		from (
-			select  rownum as rno,
-					seq_lodge, email, name,
-					case when type_lodge = 1 then '집전체' when type_lodge = 2 then '개인실' else '다인실' end as type_lodge,  
-     					case when type_building = 1 then '아파트' when type_building = 2 then '개인주택' else '빌딩' end as type_building,
-					location, location_detail, lat, lon, img_main, num_of_people,
-	 				room_price, deposit_price, clean_price, total_price, status, num_of_bathroom, num_of_bedroom, num_of_bed,
-	 				checkin_hour, checkin_min, checkout_hour, checkout_min, elevator, wifi, air_controller, heating, washing_machine,
-	 				hair_dryer, tv, essential_item
-			from (
-						select *
-				 		from
-				 				<if test='afterLat != null and !"".equals(afterLat)'>
-					 				(select seq_lodge, email, name, type_lodge, type_building, location, location_detail, lat, lon, img_main, num_of_people, room_price, deposit_price, clean_price, total_price, status, DISTNACE_WGS84(#{afterLat}, #{afterLon}, lat, lon) as distance
-							        from tbl_lodge
-							        where status = 1
-					                and (lat between #{afterLat} - 0.019 and #{afterLat} + 0.019)
-					                and (lon between #{afterLon} - 0.022 and #{afterLon} + 0.022)
-									order by DISTANCE) A
-								</if>
-								
-								<if test='afterLat == null or "".equals(afterLat)'>
-									tbl_lodge A
-								</if>
-						join tbl_lodge_detail B
-						on A.seq_lodge = B.seq_lodge
-						join tbl_lodge_detail2 C
-						on A.seq_lodge = C.seq_lodge
-						where 1 = 1
-				        	and status = 1
-        
+		        select  rownum as rno,
+		                A.seq_lodge, email, name,
+		                case when type_lodge = 1 then '집전체' when type_lodge = 2 then '개인실' else '다인실' end as type_lodge,  
+		                case when type_building = 1 then '아파트' when type_building = 2 then '개인주택' else '빌딩' end as type_building,
+		                location, location_detail, lat, lon, img_main, num_of_people,
+		                room_price, deposit_price, clean_price, total_price, status, num_of_bathroom, num_of_bedroom, num_of_bed,
+		                checkin_hour, checkin_min, checkout_hour, checkout_min, elevator, wifi, air_controller, heating, washing_machine,
+		                hair_dryer, tv, essential_item
+				from 
+		 				<if test='afterLat != null and !"".equals(afterLat)'>
+			 				(select seq_lodge, email, name, type_lodge, type_building, location, location_detail, lat, lon, img_main, num_of_people, room_price, deposit_price, clean_price, total_price, status, DISTNACE_WGS84(#{afterLat}, #{afterLon}, lat, lon) as distance
+					        from tbl_lodge
+					        where status = 1
+			                and (lat between #{afterLat} - 0.019 and #{afterLat} + 0.019)
+			                and (lon between #{afterLon} - 0.022 and #{afterLon} + 0.022)
+							order by DISTANCE) A
+						</if>
+						
+						<if test='afterLat == null or "".equals(afterLat)'>
+							tbl_lodge A
+						</if>
+				join tbl_lodge_detail B
+				on A.seq_lodge = B.seq_lodge
+				join tbl_lodge_detail2 C
+				on A.seq_lodge = C.seq_lodge
+				where status = 1
+    
         <!-- 검색어 -->
         <if test='search_content != null and !"".equals(search_content)'>
         	and (location like '%' || #{search_content} || '%'
@@ -154,7 +152,13 @@
         	</foreach>
         	)
         </if>
-        ))
+        ) D left outer join
+
+		(select  seq_lodge, status
+		from    tbl_lodge_wish
+		where   email = #{email}) E
+		
+		on D.seq_lodge = E.seq_lodge
         
         where rno > ${start}
 		and rno <![CDATA[<]]> ${end}
@@ -202,12 +206,13 @@
  		<result property="REFUND_POLICY"		column="refund_policy"	 	javaType="String" />
  		<result property="SAFETY_FUNCTION"		column="safety_function" 	javaType="String" />
  		<result property="LOCAL_INFORMATION"	column="local_information" 	javaType="String" />
+ 		<result property="WISH"					column="wish" 				javaType="int" />
 	</resultMap>
 
 	<select id="selectNearFromCenterRoomsList" parameterType="java.util.HashMap" resultMap="nearFromCenterRoomsList">
-		select *
+		select A.*, B.*, nvl(C.status, 0) as wish
 			from (
-	 		select rno, seq_lodge, email, case when length(name) > 10 then substr(name, 0, 10) || '..' else name end as name,
+	 		(select rno, seq_lodge, email, case when length(name) > 10 then substr(name, 0, 10) || '..' else name end as name,
 	 				case when type_lodge = 1 then '집전체' when type_lodge = 2 then '개인실' else '다인실' end as type_lodge,  
 	      			case when type_building = 1 then '아파트' when type_building = 2 then '개인주택' else '빌딩' end as type_building, 
 	 				location, location_detail, lat, lon, img_main, num_of_people, room_price, deposit_price, clean_price, total_price, status, distance
@@ -243,6 +248,13 @@
 			and rno <![CDATA[<]]> ${end}
 			order by rno) A join tbl_lodge_detail2 B
 		on A.seq_lodge = B.seq_lodge
+		left outer join
+
+		(select  seq_lodge, status
+		from    tbl_lodge_wish
+		where   email = #{email}) C
+		
+		on A.seq_lodge = C.seq_lodge)
  	</select>
  	
 	<!-- 근처의 이용 가능한 숙소의 전체 수 알기 -->
@@ -341,11 +353,8 @@
 		values(SEQ_LODGE_IMAGE.nextval , seq_lodge.currval, #{imagefilename})
 	</insert>
 	
- 	<!--
  	
- 	
- 	
- 	숙소 수정
+ 	<!-- 숙소 수정 -->
  	<update id="updateLodge" parameterType="java.util.HashMap">
  		update tbl_lodge
  		set name = #{name}, type_lodge = #{type_lodge}, type_building = #{type_building},
@@ -374,14 +383,8 @@
  		washing_machine = #{washing_machine}, hair_dryer = #{hair_dryer}, tv = #{tv}, essential_item = #{essential_item}
 		where seq_lodge = #{seq_lodge}
  	</update>
- 	 -->
- 	<!-- 
  	
  	
- 	
- 	
- 	 -->
- 	 
  	<!-- 위시리스트에 해당 숙소가 이미 있는지 확인 -->
  	<select id="selectCheckWishList" parameterType="java.util.HashMap" resultType="int">
 		select count(*) as count
@@ -547,4 +550,8 @@
 		where rownum = 1
 		order by seq_lodge desc
 	</select>
+	
+	<update id="updateHostStatus" parameterType="java.util.HashMap">
+		update tbl_member set status = 8 where email = #{email}
+	</update>
 </mapper>

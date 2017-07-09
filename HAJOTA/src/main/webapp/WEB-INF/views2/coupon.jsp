@@ -56,7 +56,7 @@ html,body,h1,h2,h3,h4 {font-family:"Lato", sans-serif}
 <body>
 
 <!-- Links (sit on top) -->
-<div class="w3-top" style="margin-top: 65px;">
+<div class="w3-top" style="margin-top: 55px;">
   <div class="w3-row w3-large w3-light-green">
     <div class="w3-col s3">
       <a href="#" class="w3-button w3-block">TOP</a>
@@ -127,10 +127,10 @@ html,body,h1,h2,h3,h4 {font-family:"Lato", sans-serif}
   
   <!-- 돌려돌려돌려판 -->
   <div class="w3-row-padding" id="plans">
-	    <div class="w3-center w3-padding-64" style="margin-left: 30px;">
+	    <div class="w3-center w3-padding-64">
 	      <span class="w3-xlarge w3-bottombar w3-border-dark-grey w3-padding-16">돌려돌려판</span>
 	      <c:if test="${dolGame == 1 }">
-	      <input type='button' class="btn btn-primary" value='>>>START' id='spin' style="margin-left: 33px;"></input>
+	      <input type='button' class="btn btn-primary" value='>>>START' id='spin' style="margin-left: 30px;"></input>
 	      </c:if>
 	  	</div>
 	  	
@@ -159,7 +159,7 @@ html,body,h1,h2,h3,h4 {font-family:"Lato", sans-serif}
 	  
 	  <c:if test="${dolWanrle != 0}"> <!-- 이벤트참여有  -->  
 	  <div>
-			<span class="w3-xlarge w3-padding-16" style="color: #ea6153; margin-left: 41%;">이벤트에 이미 참여하셨습니다.</span>
+			<span class="w3-xlarge w3-padding-16" style="color: #ea6153; margin-left: 39%;">이벤트에 이미 참여하셨습니다.</span>
 	  </div>
 	  </c:if>	
   		
@@ -194,19 +194,21 @@ html,body,h1,h2,h3,h4 {font-family:"Lato", sans-serif}
 		                </div>
 		            </div>
 		        </div>
-		   </div>		
+		   </div>
+		
 		
 		    <div id="ladder" class="ladder">
 		        <div class="dim"></div>
 		         <canvas class="ladder_canvas" id="ladder_canvas"></canvas>
 		    </div>
-		<script src="<%=request.getContextPath()%>/resources/js/HS/ladder.js"></script>		
+		<script src="<%=request.getContextPath()%>/resources/js/HS/ladder.js"></script>
+		
 		</div>
 	</c:if>
 	
 	  <c:if test="${sadaliWanrle != 0}"> <!-- 이벤트참여有  -->  
 	  <div>
-			<span class="w3-xlarge w3-padding-16" style="color: #ea6153; margin-left: 42%;">이벤트에 이미 참여하셨습니다.</span>
+			<span class="w3-xlarge w3-padding-16" style="color: #ea6153; margin-left: 39%;">이벤트에 이미 참여하셨습니다.</span>
 	  </div>
 	  </c:if>
 	
@@ -215,8 +217,9 @@ html,body,h1,h2,h3,h4 {font-family:"Lato", sans-serif}
   <c:if test="${sadaliGame == 0 }"> <!-- 이벤트종료  -->  
   <div >
 		<span class="w3-xlarge w3-padding-16" style="color: #ea6153; margin-left: 43%;">이벤트가 종료되었습니다.</span>
+    
   </div>
-  </c:if>
+</c:if>
   
 
   <!-- 생일이벤트 -->
@@ -225,14 +228,14 @@ html,body,h1,h2,h3,h4 {font-family:"Lato", sans-serif}
   </div>
 
 
-<img alt="생일이벤트" src="<%= request.getContextPath() %>/resources/images/HSSH/birthday.jpg" style="margin-left: 35%; margin-bottom: 3%;">
+<img alt="생일이벤트" src="<%= request.getContextPath() %>/resources/images/HSSH/birthday.jpg" style="margin-left: 36%; margin-bottom: 3%;">
 
 
 
 <script>
 
 // 룰렛
-var options = ["50%할인", "꽝!!", "30%할인", "꽝!!", "10%할인", "꽝!!", "20%할인" ,"꽝!!"];
+var options = ["50%할인", "꽝!!", "30%할인", "꽝!!", "50%할인", "꽝!!", "30%할인"];
 
 var startAngle = 0;
 var arc = Math.PI / (options.length / 2);
@@ -361,7 +364,9 @@ function stopRotateWheel() {
   text = options[index] 
   ctx.fillText(text, 250 - ctx.measureText(text).width / 2, 250 + 10);
   ctx.restore();
-
+  
+/*   
+  location.href="http://localhost:9090/hajota/coupon.go?text="+substr(text,0,1) */
 }
 
 function easeOut(t, b, c, d) {

@@ -147,6 +147,8 @@ public class JH_RoomsController {
 		map1.put("str_numOfPeople", str_numOfPeople);
 		map1.put("email", email);
 		
+		System.out.println("email : " + email);
+		
 		// 날짜
 		HashMap<String, Object> map2 = new HashMap<String, Object>();
 		map2.put("startDate", startDate);
@@ -541,7 +543,7 @@ public class JH_RoomsController {
         session = req.getSession();
         String root = session.getServletContext().getRealPath("/"); 
         String path = req.getSession().getServletContext().getRealPath("/resources/images/hajotaroom");
-        // path 가 첨부파일들을 저장할 WAS(톰캣)의 폴더가 된다. 
+        // path 가 첨부파일들을 저장할 WAS(톰캣)의 폴더가 된다.
         
         String newFileName = "";
         // WAS(톰캣) 디스크에 저장할 파일명 
@@ -636,6 +638,8 @@ public class JH_RoomsController {
 		}
 		
 		if(n == 1) {
+			n = service.setHostStatus(map);
+			
 			HashMap<String, Object> hashmap = service.getLatelySeqLodge();
 			req.setAttribute("seq_lodge", hashmap.get("SEQ_LODGE"));
 		}

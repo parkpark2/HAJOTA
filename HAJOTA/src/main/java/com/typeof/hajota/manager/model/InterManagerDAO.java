@@ -39,7 +39,6 @@ public interface InterManagerDAO {
 	int getbirthUsercount(HashMap<String, String> map); // 생일인 유저가 있는지 확인하기
 		
 	int InsertDolGame(HashMap<String, String> map); // 돌림판게임에 참여했던 기록 남기기
-	int InsertSadaliGame(HashMap<String, String> map); // 사다리게임에 참여했던 기록 남기기
 	
 	int getCoupon(HashMap<String, String> map); // 게임에서 얻은 쿠폰 저장하기
 	
@@ -49,12 +48,4 @@ public interface InterManagerDAO {
 	int plusDolGame(HashMap<String, String> map); // 돌려돌려돌림판에 참여하면 실행횟수 증가 시키기
 	int plusSadaliGame(HashMap<String, String> map); // 사다리게임에 참여하면 실행횟수 증가 시키기
 
-	List<HashMap<String, Object>> loginTimeCount(); // 오늘 시간대 별로 로그인한 회원수 구하기
-	
-	List<HashMap<String, Object>> joinGuestChart(); // 매달 가입한 게스트의 총수
-	
 	}
-
-
-
-

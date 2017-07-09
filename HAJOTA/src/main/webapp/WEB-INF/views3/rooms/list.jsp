@@ -140,6 +140,7 @@ div#JH_list_roomList_paging {
 				
 				seq_lodge = [];
 				name = [];
+				img_main = [];
 				type_lodge = [];
 				type_building = [];
 				lat = [];
@@ -158,8 +159,11 @@ div#JH_list_roomList_paging {
 				var html = '<ul class="gallery-post-grid holder" style="margin-left: 10%; margin-top: -3%;">';
 				
 				$.each(data, function(entryIndex, entry){
+					alert(entryIndex + " : " + entry.WISH);
+					
 					seq_lodge[entryIndex] = entry.SEQ_LODGE;
 					name[entryIndex] = entry.NAME;
+					img_main[entryIndex] = entry.IMG_MAIN;
 					type_lodge[entryIndex] = entry.TYPE_LODGE;
 					type_building[entryIndex] = entry.TYPE_BUILDING;
 					lat[entryIndex] = entry.LAT;
@@ -178,7 +182,7 @@ div#JH_list_roomList_paging {
 					html += '<div class="w3-third w3-margin-bottom w3-margin-top">'
 				      	+ '<div class="w3-card-4" style="width: 300px; height: 400px;">'
 				        + '<a href="/hajota/listdetailtest.go?seq_lodge=' + entry.SEQ_LODGE + '">'
-				        + '<img src="<%=request.getContextPath() %>/resources/images/hajotaroom/"' + entry.IMG_MAIN + '" style="width:100%"></a>'
+				        + '<img src="<%=request.getContextPath() %>/resources/images/hajotaroom/' + entry.IMG_MAIN + '" style="width: 300px; height: 200px;"></a>'
 				        + '<div class="w3-container">'
 				        + '<h3>' + entry.NAME
 				        + '<a href="#" id="JH_wishlist' + entry.SEQ_LODGE + '" onclick="clickWishList(' + entry.SEQ_LODGE + ');">';

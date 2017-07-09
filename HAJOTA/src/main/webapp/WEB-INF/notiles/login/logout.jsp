@@ -4,7 +4,7 @@
 
 <script type="text/javascript">
 	<c:if test="${sessionScope.loginuser == null}">
-		alert("정상적으로 로그아웃 되었습니다.");
+		alert("로그아웃 되었습니다.");
 		location.href="<%= request.getContextPath() %>/index.go"; 
 	</c:if>
 </script>

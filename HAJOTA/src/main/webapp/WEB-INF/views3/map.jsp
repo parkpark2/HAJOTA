@@ -9,7 +9,7 @@
 	src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
  
 <script
-	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBEM1_6g0M675zuc-nJwdmBf-reTcY_v60"></script>
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0lhC9N1j3QlNzCn2PqtPJL0tQRllKTzE"></script>
  
 <style>
 #map {
@@ -27,8 +27,8 @@ div.JH_infowindow {
 }
 
 img.JH_infowidow_gallary {
-	width: 100%;
-	height: 70%;
+	width: 173px;
+	height: 155px;
 }
 
 #map-canvas img[src*="gstatic.com/"], #map-canvas img[src*="googleapis.com/"]
@@ -46,6 +46,7 @@ img.JH_infowidow_gallary {
 	
 	var seq_lodge = [];
 	var name = [];
+	var img_main = [];
 	var type_lodge = [];
 	var type_building = [];
 	var lat = [];
@@ -123,10 +124,10 @@ img.JH_infowidow_gallary {
 			
 			contentString[i] = '<div class="JH_infowindow">' +
 				'<a href="/hajota/rooms/detailInfo.go?seq_lodge=' + seq_lodge[i] + '">' +
-				'<img class="JH_infowidow_gallary" alt="infowindowGallary" src="<%=request.getContextPath() %>/resources/images/JHHY/Sample01_00.jpg" />' +
+				'<img class="JH_infowidow_gallary" alt="infowindowGallary" src="<%=request.getContextPath() %>/resources/images/hajotaroom/' + img_main[i] + '" />' +
 				'</a>' +
 				'<span class="project-details">' +
-				'<a href="/hajota/rooms/detailInfo.go?seq_lodge=' + seq_lodge[i] + '">' +
+				'<a href="/hajota/rooms/listdetailtest.go?seq_lodge=' + seq_lodge[i] + '">' +
 				'<strong>' +
 				/* '<strong>' + name[i] + '</strong>' + '<br/>' + */
 				/* '&nbsp;' + name[i] +  */'&#8361;&nbsp;' + total_price[i] + '<br/>' + type_lodge[i] + '&nbsp;' + type_building[i] + '<br/>' + '</a>' +
@@ -181,6 +182,7 @@ img.JH_infowidow_gallary {
 				// map에 marker 등록할 것에 대한 정보
 				seq_lodge = [];
 				name = [];
+				img_main = [];
 				type_lodge = [];
 				type_building = [];
 				lat = [];
@@ -192,6 +194,7 @@ img.JH_infowidow_gallary {
 				$.each(data, function(entryIndex, entry){
 					seq_lodge[entryIndex] = entry.SEQ_LODGE;
 					name[entryIndex] = entry.NAME;
+					img_main[entryIndex] = entry.IMG_MAIN;
 					type_lodge[entryIndex] = entry.TYPE_LODGE;
 					type_building[entryIndex] = entry.TYPE_BUILDING;
 					lat[entryIndex] = entry.LAT;
@@ -201,7 +204,7 @@ img.JH_infowidow_gallary {
 					html += '<div class="w3-third w3-margin-bottom w3-margin-top">'
 				      + '<div class="w3-card-4" style="width: 300px; height: 400px;">'
 				        + '<a href="/hajota/listdetailtest.go?seq_lodge=' + entry.SEQ_LODGE + '">'
-				        + '<img src="<%=request.getContextPath() %>/resources/images/HSSH/event1.jpg" style="width:100%"></a>'
+				        + '<img src="<%=request.getContextPath() %>/resources/images/hajotaroom/' + entry.IMG_MAIN + '" style="width: 300px; height: 200px;"></a>'
 				        + '<div class="w3-container">'
 				        + '<h3>' + entry.NAME + '</h3>'
 				        + '<p class="w3-opacity">&#8361;&nbsp;' + entry.TOTAL_PRICE + '</p>'
@@ -331,6 +334,7 @@ img.JH_infowidow_gallary {
 			success : function(data) {
 				seq_lodge = [];
 				name = [];
+				img_main = [];
 				type_lodge = [];
 				type_building = [];
 				lat = [];
@@ -342,6 +346,7 @@ img.JH_infowidow_gallary {
 				$.each(data, function(entryIndex, entry){
 					seq_lodge[entryIndex] = entry.SEQ_LODGE;
 					name[entryIndex] = entry.NAME;
+					img_main[entryIndex] = entry.IMG_MAIN;
 					type_lodge[entryIndex] = entry.TYPE_LODGE;
 					type_building[entryIndex] = entry.TYPE_BUILDING;
 					lat[entryIndex] = entry.LAT;
@@ -351,7 +356,7 @@ img.JH_infowidow_gallary {
 					html += '<div class="w3-third w3-margin-bottom w3-margin-top">'
 				      + '<div class="w3-card-4" style="width: 300px; height: 400px;">'
 				        + '<a href="/hajota/listdetailtest.go?seq_lodge=' + entry.SEQ_LODGE + '">'
-				        + '<img src="<%=request.getContextPath() %>/resources/images/HSSH/event1.jpg" style="width:100%"></a>'
+				        + '<img src="<%=request.getContextPath() %>/resources/images/hajotaroom/' + entry.IMG_MAIN + '" style="width: 300px; height: 200px;"></a>'
 				        + '<div class="w3-container">'
 				        + '<h3>' + entry.NAME + '</h3>'
 				        + '<p class="w3-opacity">&#8361;&nbsp;' + entry.TOTAL_PRICE + '</p>'

@@ -151,10 +151,10 @@ tr:hover{background-color:#f5f5f5}
      
 </script>
 <div>
-     <span style="font-size: 35px; font-weight: bold;"><img src="<%= request.getContextPath() %>/resources/images/ISJW/user2.png" style="width: 50px; height: 50px;" />&nbsp;Q&A</span>
+     <span style="font-size: 35px; font-weight: bold;"><img src="<%= request.getContextPath() %>/resources/images/ISJW/user2.png" style="width: 50px; height: 50px; margin-left: 13%;" />&nbsp;Q&A</span>
 </div>
 <div id="line"
-		style="position: relative; top: 10px; background-color: navy; height: 3px; margin-left: 20%;"></div>
+		style="position: relative; top: 10px; background-color: #5cb85c; height: 3px; margin-left: 20%;"></div>
 
 	<div style="padding-left: 10%; margin-top: 2%; margin-left: 20%;" >
 	
@@ -196,7 +196,7 @@ tr:hover{background-color:#f5f5f5}
 		
 	<!-- ===== #115. 페이지바 보여주기 ===== -->
 	
-	     <div align="center" style="width: 400px; margin-left: 100px; margin-right: auto;">
+	     <div align="center" style="width: 450px; margin-left: 100px; margin-right: auto;">
 	         
 	          ${pagebar}
 	     	 
@@ -215,7 +215,7 @@ tr:hover{background-color:#f5f5f5}
               <option value="email">이메일</option>
           </select>
           <input type="text" name="search" id="search2" size="40px"/>
-          <button type="button" onClick="goSearch();">검색</button>
+          <button type="button" style="background-color: #5cb85c; border-color: #4cae4c; color: white;" class="btn" onClick="goSearch();">검색</button>
      </form>
      
      <!-- ===== #146. Ajax 로 검색어 입력시 자동글 완성하기 1 ===== -->
@@ -224,8 +224,8 @@ tr:hover{background-color:#f5f5f5}
      
      
      <div style="margin-top: 20px;">
-          <button type="button" onClick="javascript:location.href='<%= request.getContextPath() %>/questionList.go'">글목록</button>&nbsp;
-          <button type="button" onClick="javascript:location.href='<%= request.getContextPath() %>/add.go'">글쓰기</button>
+          <button type="button" style="background-color: #5cb85c; border-color: #4cae4c; color: white;" class="btn" onClick="javascript:location.href='<%= request.getContextPath() %>/questionList.go'">글목록</button>&nbsp;
+          <button type="button" style="background-color: #5cb85c; border-color: #4cae4c; color: white;" class="btn" onClick="javascript:location.href='<%= request.getContextPath() %>/add.go'">글쓰기</button>
      </div>
      
 </div>

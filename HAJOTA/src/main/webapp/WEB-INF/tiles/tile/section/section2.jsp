@@ -8,8 +8,6 @@
 						총가격 : ${listdetail.totalprice}<br/>
 						숙소 상태 : ${listdetail.roomstatus}<br/>
 						화장실 개수 : ${listdetail.bathroomcnt}<br/>
-						침실 개수 : ${listdetail.bedroomcnt}<br/>
-						침대 개수 : ${listdetail.bedcnt}<br/>
 						숙소 체크인시간 : ${listdetail.Hcheckin}<br/>
 						숙소 체크아웃 시간 : ${listdetail.Hcheckout}<br/>
 						<c:if test="${listdetail.elevator == 1}">

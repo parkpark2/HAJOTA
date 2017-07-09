@@ -7,7 +7,7 @@
 			alert("게스트 탈퇴 성공!!");
 			location.href="<%= request.getContextPath() %>/guestManager.go";       
 		</c:if>
-		 
+		
 		<c:if test="${n != 1}">
 			alert("게스트 탈퇴 실패!!");
 			javascript:history.back();

@@ -1,4 +1,4 @@
-﻿package com.typeof.hajota; 
+﻿package com.typeof.hajota;
 
 import java.io.BufferedInputStream;
 import java.io.File;

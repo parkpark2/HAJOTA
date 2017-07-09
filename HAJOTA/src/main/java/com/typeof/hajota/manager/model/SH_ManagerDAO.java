@@ -8,10 +8,11 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+//===== #28. DAO �꽑�뼵 =====
 @Repository
 public class SH_ManagerDAO implements SH_InterManagerDAO {
 
-//	===== �쓽議닿컼泥� 二쇱엯�븯湲�(DI : Dependency Injection) =====
+//	===== #29. �쓽議닿컼泥� 二쇱엯�븯湲�(DI : Dependency Injection) =====
 	@Autowired
 	private SqlSessionTemplate sqlsession;
 
@@ -201,13 +202,6 @@ public class SH_ManagerDAO implements SH_InterManagerDAO {
 		
 		return t;
 	}
-
-	// 오늘 접속자 수 구하기
-	@Override
-	public int jintianCount() {
-		int n = sqlsession.selectOne("SH_manager.jintianCount");
-		return n;
-	}
 	
 	////////////////////////////////////////////
 	// 답변하기
@@ -276,67 +270,6 @@ public class SH_ManagerDAO implements SH_InterManagerDAO {
 		return answerdetailShow;
 	}		
 	
-	// 수입 통계
-	@Override
-	public List<HashMap<String, Object>> sumlist(HashMap<String, String> map) {
-		List<HashMap<String, Object>> sumlist = sqlsession.selectList("SH_manager.getSum", map);
-		
-		return sumlist;
-	}	
 	
-	// 인덱스 화면에 통계 보여주기
-	@Override
-	public int totalincome(HashMap<String, String> map) {
-		int totalincome = sqlsession.selectOne("SH_manager.totalincome", map);
-		
-		return totalincome;
-	}	
-	
-	// qna 보여주기
-	@Override
-	public List<HashMap<String, Object>> qnalistsum(HashMap<String, String> map) {
-		List<HashMap<String, Object>> qnalistsum = sqlsession.selectList("SH_manager.qnalistsum", map);
-		
-		return qnalistsum;
-	}
-
-	// 지구본에 들어갈 Q&A 가져오기
-	@Override
-	public List<HashMap<String, Object>> ShowqnaList() {
-		List<HashMap<String, Object>> ShowqnaList = sqlsession.selectList("SH_manager.ShowqnaList");
-		
-		return ShowqnaList;
-	}
-
-	// 알림을 누르면 Status변경
-	@Override
-	public int changeStatus(HashMap<String, String> map) {
-		int changeStatus = sqlsession.update("SH_manager.changeStatus", map);
-		
-		return changeStatus;
-	}
-
-	// 신고 목록
-	   @Override
-	   public List<HashMap<String, Object>> allreportList() {
-	      List<HashMap<String, Object>> allreportList = sqlsession.selectList("SH_manager.allreportList");
-	      
-	      return allreportList;
-	   }
-
-	   public int delreport(String reportno) {
-	      
-	      int n = sqlsession.update("SH_manager.delreport", reportno);
-	      
-	      return n;
-	   }   
-
-	// 알람 누르지 않은 갯수 구하기
-	@Override
-	public int LingCount() {
-		int LingCount = sqlsession.selectOne("SH_manager.LingCount");
-		
-		return LingCount;
-	}	
 
 }

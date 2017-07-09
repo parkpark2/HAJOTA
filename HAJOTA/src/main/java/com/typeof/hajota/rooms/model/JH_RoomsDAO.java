@@ -176,4 +176,9 @@ public class JH_RoomsDAO implements JH_InterRoomsDAO {
 		
 		return count;
 	}
+
+	public int setHostStatus(HashMap<String, Object> map) {
+		int n = sqlsession.update("JH_rooms.updateHostStatus", map);
+		return n;
+	}
 }

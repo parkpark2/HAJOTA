@@ -17,16 +17,42 @@
   background-repeat: no-repeat;  
 }
 
+
+.button {
+    background-color: #008CBA; /* Blue */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.button2 {background-color: #3B5998;} /* Blue */
+.button4 {background-color: #e7e7e7; color: black;} /* Gray */
+
 </style>
 
 <script type="text/javascript">
  
      $(document).ready(function(){
-    	 
-    	if(${sessionScope.loginuser.GRADE== 1}){
-    		location.href="<%= request.getContextPath()%>/indexManager.go"	 
-    	}
-    	
+        
+    	  if(${sessionScope.loginuser.GRADE== 1}){
+              location.href="<%= request.getContextPath()%>/indexManager.go"    
+           }
+           
+           if(${sessionScope.loginuser.GRADE== 2}){
+              location.href="<%= request.getContextPath()%>/indexManager.go"    
+           }
+           
+           if(${sessionScope.loginuser.GRADE== 3}){
+              location.href="<%= request.getContextPath()%>/indexManager.go"    
+           }
+
+       
         $(".error").hide();
         
         $("#join_email").bind("keyup", function(){
@@ -100,6 +126,14 @@
         
         $("#btnLOGIN").click(function(event){
            
+           /* if(${sessionScope.loginuser != null}) {
+              alert("이미 로그인을 하신 상태 입니다 !!");
+              $("#guest_email").val(""); 
+              $("#pwd").val("");
+              $("#guest_email").focus();
+              event.preventDefault();
+              return; 
+           } */
            
            var email = $("#email").val(); 
            var pwd = $("#pwd").val(); 
@@ -128,7 +162,15 @@
        
        $("#btnJOIN").click(function(event){
            
-
+           /* if(${sessionScope.loginuser != null}) {
+              alert("이미 로그인을 하신 상태 입니다 !!");
+              $("#guest_email").val(""); 
+              $("#pwd").val("");
+              $("#guest_email").focus();
+              event.preventDefault();
+              return; 
+           } */
+           
           var email = $("#join_email").val(); 
           var pwd = $("#join_pwd").val(); 
           var last_name = $("#join_last_name").val(); 
@@ -249,34 +291,27 @@
 </script>
 
    <!-- Navigation Bar -->
-    <div class="w3-top w3-bar w3-white w3-border-bottom w3-xlarge">
+    <div class="w3-bar w3-white w3-border-bottom w3-xlarge">
       <a href="<%=request.getContextPath()%>/index.go">
       <img src="<%=request.getContextPath()%>/resources/images/oneofall/logo.png"
          style="width: 200px; height: 60px; margin-left: 30px;" /> 
       </a>
       
-       <a href="<%=request.getContextPath()%>/index.go"> 
-       <img src="<%=request.getContextPath()%>/resources/images/oneofall/South Korea.png"
+       <a href="<%=request.getContextPath()%>/index.go"> <img
+         src="<%=request.getContextPath()%>/resources/images/oneofall/South Korea.png"
          style="margin-left: 2%;" />
-      </a>
-       
-       <a href="<%=request.getContextPath()%>/indexChinese.go"> 
-       <img src="<%=request.getContextPath()%>/resources/images/oneofall/China.png"
+      </a> <a href="<%=request.getContextPath()%>/indexChinese.go"> <img
+         src="<%=request.getContextPath()%>/resources/images/oneofall/China.png"
          style="margin-left: 10px;" />
-       </a> 
-      
-      <a href="<%=request.getContextPath()%>/indexJapanese.go">
-      <img src="<%=request.getContextPath()%>/resources/images/oneofall/Japan.png"
-         style="margin-left: 10px;" /> 
-      </a>
-      
-      <a href="<%=request.getContextPath()%>/indexEnglish.go">   
-      <img src="<%=request.getContextPath()%>/resources/images/oneofall/USA.png"
+      </a> <img
+         src="<%=request.getContextPath()%>/resources/images/oneofall/Japan.png"
+         style="margin-left: 10px;" /> <img
+         src="<%=request.getContextPath()%>/resources/images/oneofall/USA.png"
          style="margin-left: 10px;" />
-	  </a>
+
       
        <a href="<%=request.getContextPath()%>/callview.go" class="w3-bar-item w3-button  w3-right w3-hide-small w3-padding-large"
-         title="Q&A"><i class="fa fa-question-circle"></i></a>
+         title="Q&A2"><i class="fa fa-question-circle"></i></a>
 
       <c:if test="${sessionScope.loginuser == null}">        
          <a data-toggle="modal" data-target="#loginModal"
@@ -288,55 +323,54 @@
        <c:if test="${sessionScope.loginuser != null}">
        
           <!-- 게스트로 로그인했을때 -->
-	       	 <c:if test="${sessionScope.loginuser.GRADE == '9'}">
-	         <a style="color: red; font-weight: bold; font-size: 15px; margin-left: 47%;">
-	            환영합니다♥ </a>
-	         <a style="color: navy; font-weight: bold; font-size: 15px;">
-	            ${sessionScope.loginuser.LAST_NAME}${sessionScope.loginuser.FIRST_NAME} 게스트님
-	         </a>
-	       
-	       	 <a href="<%=request.getContextPath()%>/coupon.go"
-	            class="w3-bar-item w3-button  w3-right w3-hide-small w3-padding-large"
-	            title="EVENT"><i class="fa fa-heart"></i></a>	
-	       
-	         <a href="<%=request.getContextPath()%>/logout.go"
-	            class="w3-bar-item w3-button  w3-right w3-hide-small w3-padding-large"
-	            title="LOGOUT"><i class="fa fa-sign-out"></i></a>
-	      
-	         <a href="<%=request.getContextPath()%>/editUser.go"
-	            class="w3-bar-item w3-button  w3-right w3-hide-small w3-padding-large" title="MYPAGE"> 
-	            <img src="<%=request.getContextPath()%>/resources/images/ISJW/user.png" width="35px;" height="35px;" />
-	         </a>
-	      	</c:if>  
-      	
-      	<!-- 호스트로 로그인했을때 -->
-	      	<c:if test="${sessionScope.loginuser.GRADE == '8'}">
-	         <a style="color: red; font-weight: bold; font-size: 15px; margin-left: 47%;">
-	            환영합니다♥ </a>
-	         <a style="color: navy; font-weight: bold; font-size: 15px;">
-	            ${sessionScope.loginuser.LAST_NAME}${sessionScope.loginuser.FIRST_NAME} 호스트님
-	         </a>
-	       
-	         <a href="<%=request.getContextPath()%>/logout.go"
-	            class="w3-bar-item w3-button  w3-right w3-hide-small w3-padding-large"
-	            title="LOGOUT"><i class="fa fa-sign-out"></i></a>
-	      
-	      	 <a href="<%=request.getContextPath()%>/rooms/insert.go" class="w3-bar-item w3-button  w3-right w3-hide-small w3-padding-large" title="HOSTING">
-	         <i class="fa fa-globe"></i></a>
-	      
-	         <a href="<%=request.getContextPath()%>/editUser.go"
-	            class="w3-bar-item w3-button  w3-right w3-hide-small w3-padding-large" title="MYPAGE"> 
-	            <img src="<%=request.getContextPath()%>/resources/images/ISJW/user.png" width="35px;" height="35px;" />
-	         </a>
-	         
-	         
-	         
-	      	</c:if>
-	     
-	     <!-- 관리자로 로그인했을때 --> 
-	       <c:if test="${sessionScope.loginuser.GRADE == '1'}">
+              <c:if test="${sessionScope.loginuser.GRADE == '9'}">
+            <a style="color: red; font-weight: bold; font-size: 15px; margin-left: 47%;">
+               환영합니다♥ </a>
+            <a style="color: navy; font-weight: bold; font-size: 15px;">
+               ${sessionScope.loginuser.LAST_NAME}${sessionScope.loginuser.FIRST_NAME} 게스트님
+            </a>
+          
+          	<a href="<%=request.getContextPath()%>/coupon.go"
+               class="w3-bar-item w3-button  w3-right w3-hide-small w3-padding-large"
+               title="EVENT"><i class="fa fa-heart"></i></a>  
+          
+
+            <a href="<%=request.getContextPath()%>/logout.go"
+               class="w3-bar-item w3-button  w3-right w3-hide-small w3-padding-large"
+               title="LOGOUT"><i class="fa fa-sign-out"></i></a>
+         
+            <a href="<%=request.getContextPath()%>/editUser.go"
+               class="w3-bar-item w3-button  w3-right w3-hide-small w3-padding-large" title="MYPAGE"> 
+               <img src="<%=request.getContextPath()%>/resources/images/ISJW/user.png" width="35px;" height="35px;" />
+            </a>
+            </c:if>  
+         
+         <!-- 호스트로 로그인했을때 -->
+            <c:if test="${sessionScope.loginuser.GRADE == '8'}">
+            <a style="color: red; font-weight: bold; font-size: 15px; margin-left: 47%;">
+               환영합니다♥ </a>
+            <a style="color: navy; font-weight: bold; font-size: 15px;">
+               ${sessionScope.loginuser.LAST_NAME}${sessionScope.loginuser.FIRST_NAME} 호스트님
+            </a>
+          
+            <a href="<%=request.getContextPath()%>/logout.go"
+               class="w3-bar-item w3-button  w3-right w3-hide-small w3-padding-large"
+               title="LOGOUT"><i class="fa fa-sign-out"></i></a>
+         
+            <a href="<%=request.getContextPath()%>/editUser.go"
+               class="w3-bar-item w3-button  w3-right w3-hide-small w3-padding-large" title="MYPAGE"> 
+               <img src="<%=request.getContextPath()%>/resources/images/ISJW/user.png" width="35px;" height="35px;" />
+            </a>
+            
+            <a href="#" class="w3-bar-item w3-button  w3-right w3-hide-small w3-padding-large" title="HOSTING">
+            <i class="fa fa-globe"></i></a>
+            
+            </c:if>
+        
+        <!-- 관리자로 로그인했을때 --> 
+          <c:if test="${sessionScope.loginuser.GRADE == '1'}">
                            
-      	   </c:if> 	
+            </c:if>    
             
          
       </c:if> 
@@ -352,7 +386,10 @@
    <div class="modal-dialog">
       <section class="container">
          <article class="half">
-            <h1>HAJOTA</h1>
+         <div align="center">
+            <button class="button button2" style="width: 100%"><img align="left" src="<%= request.getContextPath() %>/resources/images/ISJW/페이스북.png" style="width:7%; height: 7%; margin-top: 5px;">&nbsp;facebook으로 로그인</button><br>
+            <button class="button button4" style="width: 100%"><img align="left" src="<%= request.getContextPath() %>/resources/images/ISJW/구글.jpg" style="width:7%; height: 7%; margin-top: 5px;">&nbsp;google으로 로그인</button><br><br>
+            </div>
             <div class="tabs">
                <span class="tab signin active"><a href="#signin">Sign in</a></span> 
                <span class="tab signup"><a href="#signup">Sign up</a></span>
@@ -365,13 +402,18 @@
                         <input type="password" name="pwd" id="pwd" class="inpt" required="required" placeholder="비밀번호"> 
                         <label for="password">비밀번호</label> 
                         
-                     <div class="submit-wrap">
+                     <div class="submit-wrap" style="margin-top: 40px; position: relative;">
                         <input type="submit" value="Sign in" class="submit" id="btnLOGIN"> 
                         <a href="#" class="more" data-toggle="modal" data-target="#pwdfindModal" data-dismiss="modal">비밀번호가 생각나지 않으세요?</a>
+                        
+                         <input type="submit" value="Close" class="submit" data-dismiss="modal" class="btn btn-default myclose" style="width: 30%; margin-left: 70%; margin-top: 30px;" > 
+                         
+                         <!-- <button type="button"  >Close</button> -->
                      </div>
                   </form>
                   
                </div>
+               
                <div class="signup-cont cont">
                   <form action="#" method="post" enctype="multipart/form-data" name="joinFrm">
                       
@@ -389,6 +431,7 @@
                      </div>
                   </form>
                </div>
+               
             </div>
          </article>
          <div class="half bg"></div>
@@ -425,8 +468,8 @@ $('.container .bg').mousemove(function(e){
     <div class="modal-dialog">
       <div class="modal-content" align="center">
         <div class="modal-header">
-          <button type="button" class="close myclose" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">비밀번호 찾기</h4>
+        
+          <h4 style="font-weight: bold; class="modal-title">비밀번호 재설정하기</h4>
         </div>
         <div class="modal-body" style="height: 400px; width: 100%;">
           <div id="pwFind">

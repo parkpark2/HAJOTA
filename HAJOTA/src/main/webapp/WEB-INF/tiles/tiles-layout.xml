@@ -45,65 +45,6 @@
 	</definition>
 	<!-- 중국어tiles 레이아웃 끝 -->
 	
-	<!-- 영어tiles 레이아웃 -->
-	<definition name="layout-English"   template="/WEB-INF/tiles/layout/layout-English.jsp"> 
-		<put-attribute name="header"    value="/WEB-INF/tiles/tile/headerEnglish.jsp" />
-		<put-attribute name="content"   value="" />
-		<put-attribute name="footer"    value="/WEB-INF/tiles/tile/footer.jsp" />
-		<put-attribute name="search"    value="/WEB-INF/tiles/tile/searchEnglish.jsp" />
-	</definition>
-	
-	<!-- 콘텐츠 항목 -->
-	<definition name="*.tilesE" extends="layout-English">
-		<put-attribute name="content" value="/WEB-INF/views8/{1}.jsp"/>
-	</definition>
-	<definition name="*/*.tilesE" extends="layout-English">
-		<put-attribute name="content" value="/WEB-INF/views8/{1}/{2}.jsp"/>
-	</definition>
-	<definition name="*/*/*.tilesE" extends="layout-English">
-		<put-attribute name="content" value="/WEB-INF/views8/{1}/{2}/{3}.jsp"/>
-	</definition>
-	<!-- 영어tiles 레이아웃 끝 -->
-	
-	<!-- 일본어tiles 레이아웃 -->
-	<definition name="layout-Japanese"   template="/WEB-INF/tiles/layout/layout-Japanese.jsp"> 
-		<put-attribute name="header"    value="/WEB-INF/tiles/tile/headerJapanese.jsp" />
-		<put-attribute name="content"   value="" />
-		<put-attribute name="footer"    value="/WEB-INF/tiles/tile/footer.jsp" />
-		<put-attribute name="search"    value="/WEB-INF/tiles/tile/searchJapanese.jsp" />
-	</definition>
-	
-	<!-- 콘텐츠 항목 -->
-	<definition name="*.tilesJ" extends="layout-Japanese">
-		<put-attribute name="content" value="/WEB-INF/views9/{1}.jsp"/>
-	</definition>
-	<definition name="*/*.tilesJ" extends="layout-Japanese">
-		<put-attribute name="content" value="/WEB-INF/views9/{1}/{2}.jsp"/>
-	</definition>
-	<definition name="*/*/*.tilesJ" extends="layout-Japanese">
-		<put-attribute name="content" value="/WEB-INF/views9/{1}/{2}/{3}.jsp"/>
-	</definition>
-	<!-- 일본어tiles 레이아웃 끝 -->
-	
-	<!-- EVENT tiles 레이아웃 -->
-	<definition name="layout-tiles11"    template="/WEB-INF/tiles/layout/layout-tiles11.jsp"> 
-		<put-attribute name="header"    value="/WEB-INF/tiles/tile/header.jsp" />
-		<put-attribute name="content"   value="" />
-		<put-attribute name="footer"    value="/WEB-INF/tiles/tile/footer.jsp" />
-	</definition>
-	
-	<!-- 콘텐츠 항목 -->
-	<definition name="*.tiles11" extends="layout-tiles11">
-		<put-attribute name="content" value="/WEB-INF/views11/{1}.jsp"/>
-	</definition>
-	<definition name="*/*.tiles11" extends="layout-tiles2">
-		<put-attribute name="content" value="/WEB-INF/views11/{1}/{2}.jsp"/>
-	</definition>
-	<definition name="*/*/*.tiles11" extends="layout-tiles2">
-		<put-attribute name="content" value="/WEB-INF/views11/{1}/{2}/{3}.jsp"/>
-	</definition>
-	<!-- EVENT tiles 레이아웃 끝 -->
-	
 	<!-- Member tiles 레이아웃 -->
 	<definition name="layout-tiles2"    template="/WEB-INF/tiles/layout/layout-tiles2.jsp"> 
 		<put-attribute name="header"    value="/WEB-INF/tiles/tile/header.jsp" />
@@ -112,7 +53,7 @@
 		<put-attribute name="side"      value="/WEB-INF/tiles/tile/side.jsp" />
 	</definition>
 	
-	<!-- 콘텐츠 항목 -->
+	<!-- 肄섑뀗痢???ぉ -->
 	<definition name="*.tiles2" extends="layout-tiles2">
 		<put-attribute name="content" value="/WEB-INF/views2/{1}.jsp"/>
 	</definition>
@@ -122,27 +63,8 @@
 	<definition name="*/*/*.tiles2" extends="layout-tiles2">
 		<put-attribute name="content" value="/WEB-INF/views2/{1}/{2}/{3}.jsp"/>
 	</definition>
+
 	<!-- Member tiles 레이아웃 끝 -->
-	
-	<!-- 고객센터 tiles 레이아웃 -->
-	<definition name="layout-tilesCU"    template="/WEB-INF/tiles/layout/layout-tilesCU.jsp"> 
-		<put-attribute name="header"    value="/WEB-INF/tiles/tile/header.jsp" />
-		<put-attribute name="content"   value="" />
-		<put-attribute name="footer"    value="/WEB-INF/tiles/tile/footer.jsp" />
-		<put-attribute name="side"      value="/WEB-INF/tiles/tile/sideCU.jsp" />
-	</definition>
-	
-	<!-- 콘텐츠 항목 -->
-	<definition name="*.tilesCU" extends="layout-tilesCU">
-		<put-attribute name="content" value="/WEB-INF/views10/{1}.jsp"/>
-	</definition>
-	<definition name="*/*.tilesCU" extends="layout-tilesCU">
-		<put-attribute name="content" value="/WEB-INF/views10/{1}/{2}.jsp"/>
-	</definition>
-	<definition name="*/*/*.tilesCU" extends="layout-tilesCU">
-		<put-attribute name="content" value="/WEB-INF/views10/{1}/{2}/{3}.jsp"/>
-	</definition>
-	<!-- 고객센터 tiles 레이아웃 끝 -->
 	
 	<!-- roomslist tiles 레이아웃 -->	
 	<definition name="layout-roomslist"     template="/WEB-INF/tiles/layout/layout-tiles3.jsp"> 
@@ -236,6 +158,24 @@
    <definition name="*/*/*.tiles6" extends="layout-tiles6">
       <put-attribute name="content" value="/WEB-INF/views6/{1}/{2}/{3}.jsp"/>
    </definition>
-   <!-- layout-tiles6 레이아웃 끝 -->	
+   <!-- layout-tiles5 레이아웃 끝 -->	
+   
+   	<definition name="layout-tilesCU"    template="/WEB-INF/tiles/layout/layout-tilesCU.jsp"> 
+		<put-attribute name="header"    value="/WEB-INF/tiles/tile/header.jsp" />
+		<put-attribute name="content"   value="" />
+		<put-attribute name="footer"    value="/WEB-INF/tiles/tile/footer.jsp" />
+		<put-attribute name="side"      value="/WEB-INF/tiles/tile/sideCU.jsp" />
+	</definition>
+	
+	<!-- 肄섑뀗痢???ぉ -->
+	<definition name="*.tilesCU" extends="layout-tilesCU">
+		<put-attribute name="content" value="/WEB-INF/views10/{1}.jsp"/>
+	</definition>
+	<definition name="*/*.tilesCU" extends="layout-tilesCU">
+		<put-attribute name="content" value="/WEB-INF/views10/{1}/{2}.jsp"/>
+	</definition>
+	<definition name="*/*/*.tilesCU" extends="layout-tilesCU">
+		<put-attribute name="content" value="/WEB-INF/views10/{1}/{2}/{3}.jsp"/>
+   </definition>
 	
 </tiles-definitions> 

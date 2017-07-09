@@ -15,7 +15,7 @@ $(document).ready(function(){
 
 function goconfirmroom(){
 	
-	 var gsWin = window.open('about:blank','payviewer','width=1000,height=600,top=100,left=300');
+	 var gsWin = window.open('about:blank','payviewer','width=500,height=500,top=500,left=500');
      var frm =document.tripFrm;
      frm.action = '/hajota/confirmroom.go';
      frm.target ="payviewer";
@@ -34,13 +34,13 @@ function goconfirmroom(){
 
 				<div class="top" style="height: 50%">
 
-					<!-- Logo -->
+					 <!-- Logo -->
 						<div id="logo">
 							<span class="image avatar48"><img src="<%= request.getContextPath() %>/resources/images/JHHY/avatar.jpg" /></span>
-							<h1 id="title">Jane Doe</h1>
-							<p>Hyperspace Engineer</p>
+							<h1 id="title">${listdetail.hostname}`S<br/> 아늑하고 편안한<br/> ${listdetail.roomname}</h1>
+							<p></p>
 						</div>
-
+ 
 					<!-- Nav -->
 						<nav id="nav">
 							<!--

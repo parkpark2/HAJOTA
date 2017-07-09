@@ -7,7 +7,7 @@
 			alert("호스트 복구 성공!!");
 			location.href="<%= request.getContextPath() %>/hostManager.go";       
 		</c:if>
-		 
+		
 		<c:if test="${n != 1}">
 			alert("호스트 복구 실패!!");
 			javascript:history.back();

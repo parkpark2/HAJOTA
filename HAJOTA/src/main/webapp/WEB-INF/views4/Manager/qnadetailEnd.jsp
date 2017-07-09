@@ -106,7 +106,7 @@
 	 
 	</div>	
 
-	<div style="margin-left: 48%; margin-top:11%;"> 
+	<div style="margin-left: 48%; margin-top:20%;"> 
 		<button type="button" class="btn btn-primary" onClick="goCheck();">뒤로가기</button>		
 	</div>
 	

@@ -64,18 +64,6 @@ public interface SH_InterManagerService {
 	
 	// 인덱스 화면에 호스트 수 COUNT
 	int hostcount();
-
-	// 오늘 접속자 수 구하기
-	int jintianCount(); 
-	
-	// 지구본에 들어갈 Q&A 가져오기
-	List<HashMap<String, Object>> ShowqnaList(); 
-	
-	// 알림을 누르면 Status변경
-	int changeStatus(HashMap<String, String> map); 
-	
-	// 알람 누르지 않은 갯수 구하기
-	int LingCount();
 	
 	////////////////////////////////////////////
 	// 답변하기
@@ -102,15 +90,4 @@ public interface SH_InterManagerService {
 	// 답변 테이블 보여주기
 	HashMap<String, Object> answerdetailShow(HashMap<String, String> map);
 	
-	// 수입 통계
-	List<HashMap<String, Object>> getSum(HashMap<String, String> map);
-	
-	// 인덱스 화면에 총 수입 
-	int totalincome(HashMap<String, String> map);
-	
-	// qna 통계
-	List<HashMap<String, Object>> getSumqna(HashMap<String, String> map);
-	
-	// 신고 목록 
-	List<HashMap<String, Object>> allreportList();
 }	

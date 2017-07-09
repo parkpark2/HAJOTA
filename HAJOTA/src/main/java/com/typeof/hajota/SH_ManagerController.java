@@ -1,6 +1,5 @@
 package com.typeof.hajota;
 
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -12,10 +11,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.typeof.hajota.manager.service.SH_ManagerService;
 
+import oracle.net.aso.r;
 
 @Controller
 @Component
@@ -32,129 +31,128 @@ public class SH_ManagerController {
 		return "Manager/call.tilesM";
 	}
 	
-	// ===== 공지사항 =====
 	@RequestMapping(value="/noticeManager.go", method={RequestMethod.GET})
     public String notice(HttpServletRequest req) {
     	    	
-      String pageNo = req.getParameter("pageNo");
-      
-      int totalCount = 0;        
-      int sizePerPage = 10;      
-      int currentShowPageNo = 1; 
-      int totalPage = 0;     
-      
-      int start = 0;           
-      int end = 0;              
-      int startPageNo = 0;       
-      
-      int loop = 0;      
-      int blocksize = 5;  
-      
-      if(pageNo == null) {
-    	  currentShowPageNo = 1;    	  
-      }
-      else {
-    	  currentShowPageNo = Integer.parseInt(pageNo);
-      }
-      
-      start = ((currentShowPageNo - 1) * sizePerPage) + 1;  
-      end = start + sizePerPage - 1;		  
-    	
-      String colname = req.getParameter("colname");
-      String search = req.getParameter("search");		      	    	
-      
-      HashMap<String, String> map = new HashMap<String, String>();
-      map.put("colname", colname);
-      map.put("search", search);
-    	
-      map.put("start", String.valueOf(start) ); 
-      map.put("end", String.valueOf(end) );     
-      
-      List<HashMap<String, Object>> noticeList = service.Shownotice(map);
-    
-      totalCount = service.getTotalCount(map);
-    	
-      totalPage = (int)Math.ceil((double)totalCount/sizePerPage);
-    	
-      String pagebar = "";
-      pagebar += "<ul>";
+    	      String pageNo = req.getParameter("pageNo");
+    	      
+    	      int totalCount = 0;        
+    	      int sizePerPage = 10;      
+    	      int currentShowPageNo = 1; 
+    	      int totalPage = 0;     
+    	      
+    	      int start = 0;           
+    	      int end = 0;              
+    	      int startPageNo = 0;       
+    	      
+    	      int loop = 0;      
+    	      int blocksize = 5;  
+    	      
+    	      if(pageNo == null) {
+    	    	  currentShowPageNo = 1;    	  
+    	      }
+    	      else {
+    	    	  currentShowPageNo = Integer.parseInt(pageNo);
+    	      }
+    	      
+    	      start = ((currentShowPageNo - 1) * sizePerPage) + 1;  
+    	      end = start + sizePerPage - 1;		  
+    	    	
+		      String colname = req.getParameter("colname");
+		      String search = req.getParameter("search");		      	    	
+		      
+		      HashMap<String, String> map = new HashMap<String, String>();
+		      map.put("colname", colname);
+		      map.put("search", search);
+		    	
+		      map.put("start", String.valueOf(start) ); 
+		      map.put("end", String.valueOf(end) );     
+		      
+		      List<HashMap<String, Object>> noticeList = service.Shownotice(map);
+		    
+    	      totalCount = service.getTotalCount(map);
+    	    	
+    	      totalPage = (int)Math.ceil((double)totalCount/sizePerPage);
+    	    	
+    	      String pagebar = "";
+    	      pagebar += "<ul>";
 
-      loop = 1;
-        
-      startPageNo = ((currentShowPageNo - 1)/blocksize)*blocksize + 1;
-        
-   
-        if(startPageNo == 1) {
-        	
-        	pagebar += "";
-        }
-        else {
-        	
-        	
-        	if(colname == null || search == null) {
-        		
-        		pagebar += String.format("&nbsp;&nbsp;<a href='/hajota/noticeManager.go?pageNo=%d'>[이전페이지]</a>&nbsp;&nbsp;", startPageNo-1, blocksize); 		
-        	}
-        	else{
-        		
-        	    pagebar += String.format("&nbsp;&nbsp;<a href='/hajota/noticeManager.go?pageNo=%d&colname=%s&search=%s'>[다음페이지]</a>&nbsp;&nbsp;", startPageNo-1, colname, search, blocksize);       		
-        	}	
-        }        
-            	
-        
-        while( !(loop > blocksize ||
-        		 startPageNo > totalPage) ) {
-        	
-        	if(startPageNo == currentShowPageNo) {
-        		pagebar += String.format("&nbsp;&nbsp;<span style='color:red; font-weight:bold; text-decoration:underline;'>%d</span>&nbsp;&nbsp;", startPageNo);	
-        	}
-        	else {
-	        	if(colname == null || search == null) {
-	        		
-	        		pagebar += String.format("&nbsp;&nbsp;<a href='/hajota/noticeManager.go?pageNo=%d'>%d</a>&nbsp;&nbsp;", startPageNo, startPageNo); 	
-	        	}
-	        	else{
-	        		
-	        	    pagebar += String.format("&nbsp;&nbsp;<a href='/hajota/noticeManager.go?pageNo=%d&colname=%s&search=%s'>%d</a>&nbsp;&nbsp;", startPageNo, colname, search, startPageNo);       		
-	        	}
-        	}
-        	
-        	loop++;
-        	startPageNo++;
-        	
-        }// end of while--------------------
-                
-        
-        if(startPageNo > totalPage) {
-        	
-        	pagebar += "";
-        }
-        else {
-        	
-        	
-        	if(colname == null || search == null) {
-        		
-        		pagebar += String.format("&nbsp;&nbsp;<a href='/hajota/noticeManager.go?pageNo=%d'>[�떎�쓬%d�럹�씠吏�]</a>&nbsp;&nbsp;", startPageNo, blocksize); 	
-        	}
-        	else{
-        		
-        	    pagebar += String.format("&nbsp;&nbsp;<a href='/hajota/noticeManager.go?pageNo=%d&colname=%s&search=%s'>[�떎�쓬%d�럹�씠吏�]</a>&nbsp;&nbsp;", startPageNo, colname, search, blocksize);      		
-        	}	
-        }
-         	        
-        pagebar += "</ul>";
-    	
-        req.setAttribute("pagebar", pagebar);
-        req.setAttribute("colname", colname);
-        req.setAttribute("search", search);
-        
-    	req.setAttribute("noticeList", noticeList);
+    	      loop = 1;
+    	        
+    	      startPageNo = ((currentShowPageNo - 1)/blocksize)*blocksize + 1;
+    	        
+    	   
+    	        if(startPageNo == 1) {
+    	        	
+    	        	pagebar += "";
+    	        }
+    	        else {
+    	        	
+    	        	
+    	        	if(colname == null || search == null) {
+    	        		
+    	        		pagebar += String.format("&nbsp;&nbsp;<a href='/hajota/noticeManager.go?pageNo=%d'>[�씠�쟾%d�럹�씠吏�]</a>&nbsp;&nbsp;", startPageNo-1, blocksize); // 泥섏쓬 %d �뿉�뒗 startPageNo媛� , �몢踰덉㎏ %d �뿉�뒗 �럹�씠吏�諛붿뿉 �굹���궪 startPageNo媛� �씠�떎.		
+    	        	}
+    	        	else{
+    	        		
+    	        	    pagebar += String.format("&nbsp;&nbsp;<a href='/hajota/noticeManager.go?pageNo=%d&colname=%s&search=%s'>[�씠�쟾%d�럹�씠吏�]</a>&nbsp;&nbsp;", startPageNo-1, colname, search, blocksize); // 寃��깋�뼱 �엳�뒗 寃쎌슦        		
+    	        	}	
+    	        }        
+    	            	
+    	        
+    	        while( !(loop > blocksize ||
+    	        		 startPageNo > totalPage) ) {
+    	        	
+    	        	if(startPageNo == currentShowPageNo) {
+    	        		pagebar += String.format("&nbsp;&nbsp;<span style='color:red; font-weight:bold; text-decoration:underline;'>%d</span>&nbsp;&nbsp;", startPageNo);	
+    	        	}
+    	        	else {
+    		        	if(colname == null || search == null) {
+    		        		// 寃��깋�뼱媛� �뾾�뒗 寃쎌슦
+    		        		pagebar += String.format("&nbsp;&nbsp;<a href='/hajota/noticeManager.go?pageNo=%d'>%d</a>&nbsp;&nbsp;", startPageNo, startPageNo); // 泥섏쓬 %d �뿉�뒗 startPageNo媛� , �몢踰덉㎏ %d �뿉�뒗 �럹�씠吏�諛붿뿉 �굹���궪 startPageNo媛� �씠�떎.		
+    		        	}
+    		        	else{
+    		        		// 寃��깋�뼱媛� �엳�뒗 寃쎌슦
+    		        	    pagebar += String.format("&nbsp;&nbsp;<a href='/hajota/noticeManager.go?pageNo=%d&colname=%s&search=%s'>%d</a>&nbsp;&nbsp;", startPageNo, colname, search, startPageNo); // 寃��깋�뼱 �엳�뒗 寃쎌슦        		
+    		        	}
+    	        	}
+    	        	
+    	        	loop++;
+    	        	startPageNo++;
+    	        	
+    	        }// end of while--------------------
+    	                
+    	        // �떎�쓬 5�럹�씠吏� 留뚮뱾湲�
+    	        if(startPageNo > totalPage) {
+    	        	// 留덉�留� �럹�씠吏�諛붿뿉 �룄�떖�븳 寃쎌슦
+    	        	pagebar += "";
+    	        }
+    	        else {
+    	        	// 留덉�留� �럹�씠吏�諛붽� �븘�땶 寃쎌슦
+    	        	
+    	        	if(colname == null || search == null) {
+    	        		// 寃��깋�뼱媛� �뾾�뒗 寃쎌슦
+    	        		pagebar += String.format("&nbsp;&nbsp;<a href='/hajota/noticeManager.go?pageNo=%d'>[�떎�쓬%d�럹�씠吏�]</a>&nbsp;&nbsp;", startPageNo, blocksize); // 泥섏쓬 %d �뿉�뒗 startPageNo媛� , �몢踰덉㎏ %d �뿉�뒗 �럹�씠吏�諛붿뿉 �굹���궪 startPageNo媛� �씠�떎.		
+    	        	}
+    	        	else{
+    	        		// 寃��깋�뼱媛� �엳�뒗 寃쎌슦
+    	        	    pagebar += String.format("&nbsp;&nbsp;<a href='/hajota/noticeManager.go?pageNo=%d&colname=%s&search=%s'>[�떎�쓬%d�럹�씠吏�]</a>&nbsp;&nbsp;", startPageNo, colname, search, blocksize); // 寃��깋�뼱 �엳�뒗 寃쎌슦        		
+    	        	}	
+    	        }
+    	         	        
+    	        pagebar += "</ul>";
+    	    	
+    	        req.setAttribute("pagebar", pagebar);
+    	        req.setAttribute("colname", colname);
+    	        req.setAttribute("search", search);
+    	        
+    	    	req.setAttribute("noticeList", noticeList);
 
-    	return "Manager/notice.tilesM";
-    	// /Board/src/main/webapp/WEB-INF/views2/board/list.jsp �뙆�씪�쓣 �깮�꽦�븳�떎.
+    	    	return "Manager/notice.tilesM";
+    	    	// /Board/src/main/webapp/WEB-INF/views2/board/list.jsp �뙆�씪�쓣 �깮�꽦�븳�떎.
     }
 	
-	// ===== 공지사항 글쓰기 =====
+	// ===== 湲��벐湲� �뤌�럹�씠吏� =====
 	@RequestMapping(value="/noticewriteManager.go", method={RequestMethod.GET})
     public String noticewrite(HttpServletRequest req) {
     	 
@@ -162,7 +160,7 @@ public class SH_ManagerController {
     	return "Manager/noticewrite.tilesM";
     }
 	
-	// ===== 공지사항 글쓰기 END =====
+	// ===== 湲��벐湲� �셿猷� �슂泥� =====
     @RequestMapping(value="/noticewriteEndManager.go", method={RequestMethod.POST}) 
     public String addEnd(HttpServletRequest req) {
     	
@@ -185,9 +183,10 @@ public class SH_ManagerController {
     	req.setAttribute("n", n);
     	
     	return "Manager/noticewriteEnd.tilesM";
+    	// /Board/src/main/webapp/WEB-INF/views2/board/addEnd.jsp �뙆�씪�쓣 �깮�꽦�븳�떎.
     }
     
- // ===== 공지사항 삭제 =====
+ // ===== 湲� �궘�젣 �럹�씠吏� =====
     @RequestMapping(value="/delete.go", method={RequestMethod.POST})
     public String delete(HttpServletRequest req) { 
     	
@@ -206,7 +205,7 @@ public class SH_ManagerController {
     		
     } 
     
-    // ===== 공지사항 디테일 =====
+    // ===== 湲� �궘�젣 �럹�씠吏� =====
     @RequestMapping(value="/noticedetail.go", method={RequestMethod.GET})
     public String detail(HttpServletRequest req) { 
     	
@@ -227,7 +226,7 @@ public class SH_ManagerController {
     		
     } 
     
-    // ===== 공지사항 수정 =====
+    // ===== 湲� �궘�젣 �럹�씠吏� =====
     @RequestMapping(value="/noticechangeManager.go", method={RequestMethod.POST})
     public String change(HttpServletRequest req) { 
     	
@@ -254,17 +253,17 @@ public class SH_ManagerController {
       	    	     
   		  String pageNo = req.getParameter("pageNo");
 	      
-	      int totalguestqnaCount = 0;    
-	      int sizePerPage = 10;    
-	      int currentShowPageNo = 1;
-	      int totalPage = 0;        
+	      int totalguestqnaCount = 0;        // 珥앷쾶�떆臾� 嫄댁닔
+	      int sizePerPage = 10;      // �븳 �럹�씠吏��떦 蹂댁뿬以� 寃뚯떆臾� 媛��닔 (�삁: 3, 5, 10) 
+	      int currentShowPageNo = 1; // �쁽�옱 蹂댁뿬二쇰뒗 �럹�씠吏� 踰덊샇濡쒖꽌, 珥덇린移섎줈�뒗 1�럹�씠吏�濡� �꽕�젙�븿.
+	      int totalPage = 0;         // 珥앺럹�씠吏��닔(�쎒釉뚮씪�슦���긽�뿉 蹂댁뿬以� 珥� �럹�씠吏� 媛��닔)
 	      
-	      int start = 0;         
-	      int end = 0;             
-	      int startPageNo = 0;      
+	      int start = 0;             // �떆�옉 �뻾 踰덊샇
+	      int end = 0;               // �걹 �뻾 踰덊샇
+	      int startPageNo = 0;       // �럹�씠吏�諛붿뿉�꽌 �떆�옉�맆 �럹�씠吏� 踰덊샇 
 	      
-	      int loop = 0;       
-	      int blocksize = 5;  
+	      int loop = 0;       // startPageNo 媛믪씠 利앷��븷�븣 留덈떎 1�뵫 利앷��븯�뒗 �슜�룄.
+	      int blocksize = 5;  // "�럹�씠吏�諛�" �뿉 蹂댁뿬以� �럹�씠吏��쓽 媛��닔 
 	      
 	      if(pageNo == null) {
 	    	  currentShowPageNo = 1;    	  
@@ -278,13 +277,16 @@ public class SH_ManagerController {
 	    	
 	      String colname = req.getParameter("colname");
 	      String search = req.getParameter("search");	
-	       
+	      
+	      
+	    
+	      
 	      HashMap<String, String> map = new HashMap<String, String>();
 	      map.put("colname", colname);
 	      map.put("search", search);
 	    	
-	      map.put("start", String.valueOf(start) ); 
-	      map.put("end", String.valueOf(end) );  
+	      map.put("start", String.valueOf(start) ); // �궎媛� start, 諛몃쪟媛믪� �빐�돩留듭씠 String ���엯�씤�뜲 start �뒗 int ���엯�씠�뼱�꽌 String ���엯�쑝濡� 蹂�寃쏀븿. 
+	      map.put("end", String.valueOf(end) );     // �궎媛� end,   諛몃쪟媛믪� �빐�돩留듭씠 String ���엯�씤�뜲 end �뒗 int ���엯�씠�뼱�꽌 String ���엯�쑝濡� 蹂�寃쏀븿. 
 	    
 	   
 	      List<HashMap<String, Object>> allqnaList = service.Showallqna(map);
@@ -300,25 +302,25 @@ public class SH_ManagerController {
 	        
 	      startPageNo = ((currentShowPageNo - 1)/blocksize)*blocksize + 1;
 	        
-	    
+	      // �씠�쟾 5�럹�씠吏�
 	        if(startPageNo == 1) {
-	        	
+	        	// 泥� �럹�씠吏�諛붿뿉 �룄�떖�븳 寃쎌슦
 	        	pagebar += "";
 	        }
 	        else {
-	        
+	        	// 泥� �럹�씠吏�諛붽� �븘�땶 �몢踰덉㎏ �씠�긽 �럹�씠吏�諛붿뿉 �삩 寃쎌슦
 	        	
 	        	if(colname == null || search == null) {
-	        		
+	        		// 寃��깋�뼱媛� �뾾�뒗 寃쎌슦
 	        		pagebar += String.format("&nbsp;&nbsp;<a href='/hajota/qnaManager.go?pageNo=%d'>[�씠�쟾%d�럹�씠吏�]</a>&nbsp;&nbsp;", startPageNo-1, blocksize); // 泥섏쓬 %d �뿉�뒗 startPageNo媛� , �몢踰덉㎏ %d �뿉�뒗 �럹�씠吏�諛붿뿉 �굹���궪 startPageNo媛� �씠�떎.		
 	        	}
 	        	else{
-	        	
+	        		// 寃��깋�뼱媛� �엳�뒗 寃쎌슦
 	        	    pagebar += String.format("&nbsp;&nbsp;<a href='/hajota/qnaManager.go?pageNo=%d&colname=%s&search=%s'>[�씠�쟾%d�럹�씠吏�]</a>&nbsp;&nbsp;", startPageNo-1, colname, search, blocksize); // 寃��깋�뼱 �엳�뒗 寃쎌슦        		
 	        	}	
 	        }        
 	            	
-	        
+	        // **** �씠�쟾5�럹�씠吏� �� �떎�쓬5�럹�씠吏� �궗�씠�뿉 �뱾�뼱媛��뒗 寃껋쓣 留뚮뱶�뒗 寃�
 	        while( !(loop > blocksize ||
 	        		 startPageNo > totalPage) ) {
 	        	
@@ -327,11 +329,11 @@ public class SH_ManagerController {
 	        	}
 	        	else {
 		        	if(colname == null || search == null) {
-		        	
+		        		// 寃��깋�뼱媛� �뾾�뒗 寃쎌슦
 		        		pagebar += String.format("&nbsp;&nbsp;<a href='/hajota/qnaManager.go?pageNo=%d'>%d</a>&nbsp;&nbsp;", startPageNo, startPageNo); // 泥섏쓬 %d �뿉�뒗 startPageNo媛� , �몢踰덉㎏ %d �뿉�뒗 �럹�씠吏�諛붿뿉 �굹���궪 startPageNo媛� �씠�떎.		
 		        	}
 		        	else{
-		        		
+		        		// 寃��깋�뼱媛� �엳�뒗 寃쎌슦
 		        	    pagebar += String.format("&nbsp;&nbsp;<a href='/hajota/qnaManager.go?pageNo=%d&colname=%s&search=%s'>%d</a>&nbsp;&nbsp;", startPageNo, colname, search, startPageNo); // 寃��깋�뼱 �엳�뒗 寃쎌슦        		
 		        	}
 	        	}
@@ -341,20 +343,20 @@ public class SH_ManagerController {
 	        	
 	        }// end of while--------------------
 	                
-	       
+	        // �떎�쓬 5�럹�씠吏� 留뚮뱾湲�
 	        if(startPageNo > totalPage) {
-	        	
+	        	// 留덉�留� �럹�씠吏�諛붿뿉 �룄�떖�븳 寃쎌슦
 	        	pagebar += "";
 	        }
 	        else {
-	     
+	        	// 留덉�留� �럹�씠吏�諛붽� �븘�땶 寃쎌슦
 	        	
 	        	if(colname == null || search == null) {
-	        		
+	        		// 寃��깋�뼱媛� �뾾�뒗 寃쎌슦
 	        		pagebar += String.format("&nbsp;&nbsp;<a href='/hajota/qnaManager.go?pageNo=%d'>[�떎�쓬%d�럹�씠吏�]</a>&nbsp;&nbsp;", startPageNo, blocksize); // 泥섏쓬 %d �뿉�뒗 startPageNo媛� , �몢踰덉㎏ %d �뿉�뒗 �럹�씠吏�諛붿뿉 �굹���궪 startPageNo媛� �씠�떎.		
 	        	}
 	        	else{
-	        	
+	        		// 寃��깋�뼱媛� �엳�뒗 寃쎌슦
 	        	    pagebar += String.format("&nbsp;&nbsp;<a href='/hajota/qnaManager.go?pageNo=%d&colname=%s&search=%s'>[�떎�쓬%d�럹�씠吏�]</a>&nbsp;&nbsp;", startPageNo, colname, search, blocksize); // 寃��깋�뼱 �엳�뒗 寃쎌슦        		
 	        	}	
 	        }
@@ -396,21 +398,15 @@ public class SH_ManagerController {
     @RequestMapping(value="/qnadetail.go", method={RequestMethod.GET})
     public String qnadetail(HttpServletRequest req) { 
     		
-    		String seq_question = req.getParameter("seq");
-    		
-    		HashMap<String, String> map = new HashMap<String, String>();
-    		
-			if(seq_question != null || !"".equals(seq_question)) {
-	    		map.put("seq_question", seq_question);
-	    	
-	    		service.changeStatus(map);
-			}
     		String email = req.getParameter("email");
 	    	String content = req.getParameter("content");
 	    	String subject = req.getParameter("subject");
+	    	String seq_question = req.getParameter("seq");
 	    	
-    		map.put("content", content);
+    		HashMap<String, String> map = new HashMap<String, String>();
+        	map.put("content", content);
         	map.put("subject", subject);
+        	map.put("seq_question", seq_question);
         	map.put("email", email);
       	
         	HashMap<String, Object> n = service.qnadetailShow(map);
@@ -481,25 +477,25 @@ public class SH_ManagerController {
 	        
 	      startPageNo = ((currentShowPageNo - 1)/blocksize)*blocksize + 1;
 	        
-	     
+	      // �씠�쟾 5�럹�씠吏�
 	        if(startPageNo == 1) {
-	        
+	        	// 泥� �럹�씠吏�諛붿뿉 �룄�떖�븳 寃쎌슦
 	        	pagebar += "";
 	        }
 	        else {
-	        
+	        	// 泥� �럹�씠吏�諛붽� �븘�땶 �몢踰덉㎏ �씠�긽 �럹�씠吏�諛붿뿉 �삩 寃쎌슦
 	        	
 	        	if(colname == null || search == null) {
-	        		
+	        		// 寃��깋�뼱媛� �뾾�뒗 寃쎌슦
 	        		pagebar += String.format("&nbsp;&nbsp;<a href='/hajota/qnaguestManager.go?pageNo=%d'>[�씠�쟾%d�럹�씠吏�]</a>&nbsp;&nbsp;", startPageNo-1, blocksize); // 泥섏쓬 %d �뿉�뒗 startPageNo媛� , �몢踰덉㎏ %d �뿉�뒗 �럹�씠吏�諛붿뿉 �굹���궪 startPageNo媛� �씠�떎.		
 	        	}
 	        	else{
-	        	
+	        		// 寃��깋�뼱媛� �엳�뒗 寃쎌슦
 	        	    pagebar += String.format("&nbsp;&nbsp;<a href='/hajota/qnaguestManager.go?pageNo=%d&colname=%s&search=%s'>[�씠�쟾%d�럹�씠吏�]</a>&nbsp;&nbsp;", startPageNo-1, colname, search, blocksize); // 寃��깋�뼱 �엳�뒗 寃쎌슦        		
 	        	}	
 	        }        
 	            	
-	       
+	        // **** �씠�쟾5�럹�씠吏� �� �떎�쓬5�럹�씠吏� �궗�씠�뿉 �뱾�뼱媛��뒗 寃껋쓣 留뚮뱶�뒗 寃�
 	        while( !(loop > blocksize ||
 	        		 startPageNo > totalPage) ) {
 	        	
@@ -508,11 +504,11 @@ public class SH_ManagerController {
 	        	}
 	        	else {
 		        	if(colname == null || search == null) {
-		        		
+		        		// 寃��깋�뼱媛� �뾾�뒗 寃쎌슦
 		        		pagebar += String.format("&nbsp;&nbsp;<a href='/hajota/qnaguestManager.go?pageNo=%d'>%d</a>&nbsp;&nbsp;", startPageNo, startPageNo); // 泥섏쓬 %d �뿉�뒗 startPageNo媛� , �몢踰덉㎏ %d �뿉�뒗 �럹�씠吏�諛붿뿉 �굹���궪 startPageNo媛� �씠�떎.		
 		        	}
 		        	else{
-		        		
+		        		// 寃��깋�뼱媛� �엳�뒗 寃쎌슦
 		        	    pagebar += String.format("&nbsp;&nbsp;<a href='/hajota/qnaguestManager.go?pageNo=%d&colname=%s&search=%s'>%d</a>&nbsp;&nbsp;", startPageNo, colname, search, startPageNo); // 寃��깋�뼱 �엳�뒗 寃쎌슦        		
 		        	}
 	        	}
@@ -522,18 +518,20 @@ public class SH_ManagerController {
 	        	
 	        }// end of while--------------------
 	                
-	      
+	        // �떎�쓬 5�럹�씠吏� 留뚮뱾湲�
 	        if(startPageNo > totalPage) {
-	        
+	        	// 留덉�留� �럹�씠吏�諛붿뿉 �룄�떖�븳 寃쎌슦
 	        	pagebar += "";
 	        }
 	        else {
-	        	        	
-	        	if(colname == null || search == null) {
+	        	// 留덉�留� �럹�씠吏�諛붽� �븘�땶 寃쎌슦
 	        	
+	        	if(colname == null || search == null) {
+	        		// 寃��깋�뼱媛� �뾾�뒗 寃쎌슦
 	        		pagebar += String.format("&nbsp;&nbsp;<a href='/hajota/qnaguestManager.go?pageNo=%d'>[�떎�쓬%d�럹�씠吏�]</a>&nbsp;&nbsp;", startPageNo, blocksize); // 泥섏쓬 %d �뿉�뒗 startPageNo媛� , �몢踰덉㎏ %d �뿉�뒗 �럹�씠吏�諛붿뿉 �굹���궪 startPageNo媛� �씠�떎.		
 	        	}
-	        	else{	        		
+	        	else{
+	        		// 寃��깋�뼱媛� �엳�뒗 寃쎌슦
 	        	    pagebar += String.format("&nbsp;&nbsp;<a href='/hajota/qnaguestManager.go?pageNo=%d&colname=%s&search=%s'>[�떎�쓬%d�럹�씠吏�]</a>&nbsp;&nbsp;", startPageNo, colname, search, blocksize); // 寃��깋�뼱 �엳�뒗 寃쎌슦        		
 	        	}	
 	        }
@@ -640,25 +638,25 @@ public class SH_ManagerController {
 	        
 	      startPageNo = ((currentShowPageNo - 1)/blocksize)*blocksize + 1;
 	        
-	      
+	      // �씠�쟾 5�럹�씠吏�
 	        if(startPageNo == 1) {
-	        	
+	        	// 泥� �럹�씠吏�諛붿뿉 �룄�떖�븳 寃쎌슦
 	        	pagebar += "";
 	        }
 	        else {
-	        	
+	        	// 泥� �럹�씠吏�諛붽� �븘�땶 �몢踰덉㎏ �씠�긽 �럹�씠吏�諛붿뿉 �삩 寃쎌슦
 	        	
 	        	if(colname == null || search == null) {
-	        	
+	        		// 寃��깋�뼱媛� �뾾�뒗 寃쎌슦
 	        		pagebar += String.format("&nbsp;&nbsp;<a href='/hajota/qnahostManager.go?pageNo=%d'>[�씠�쟾%d�럹�씠吏�]</a>&nbsp;&nbsp;", startPageNo-1, blocksize); // 泥섏쓬 %d �뿉�뒗 startPageNo媛� , �몢踰덉㎏ %d �뿉�뒗 �럹�씠吏�諛붿뿉 �굹���궪 startPageNo媛� �씠�떎.		
 	        	}
 	        	else{
-	        	
+	        		// 寃��깋�뼱媛� �엳�뒗 寃쎌슦
 	        	    pagebar += String.format("&nbsp;&nbsp;<a href='/hajota/qnahostManager.go?pageNo=%d&colname=%s&search=%s'>[�씠�쟾%d�럹�씠吏�]</a>&nbsp;&nbsp;", startPageNo-1, colname, search, blocksize); // 寃��깋�뼱 �엳�뒗 寃쎌슦        		
 	        	}	
 	        }        
 	            	
-	        // **** 
+	        // **** �씠�쟾5�럹�씠吏� �� �떎�쓬5�럹�씠吏� �궗�씠�뿉 �뱾�뼱媛��뒗 寃껋쓣 留뚮뱶�뒗 寃�
 	        while( !(loop > blocksize ||
 	        		 startPageNo > totalPage) ) {
 	        	
@@ -667,10 +665,11 @@ public class SH_ManagerController {
 	        	}
 	        	else {
 		        	if(colname == null || search == null) {
-		        	
+		        		// 寃��깋�뼱媛� �뾾�뒗 寃쎌슦
 		        		pagebar += String.format("&nbsp;&nbsp;<a href='/hajota/qnahostManager.go?pageNo=%d'>%d</a>&nbsp;&nbsp;", startPageNo, startPageNo); // 泥섏쓬 %d �뿉�뒗 startPageNo媛� , �몢踰덉㎏ %d �뿉�뒗 �럹�씠吏�諛붿뿉 �굹���궪 startPageNo媛� �씠�떎.		
 		        	}
-		        	else{		        		
+		        	else{
+		        		// 寃��깋�뼱媛� �엳�뒗 寃쎌슦
 		        	    pagebar += String.format("&nbsp;&nbsp;<a href='/hajota/qnahostManager.go?pageNo=%d&colname=%s&search=%s'>%d</a>&nbsp;&nbsp;", startPageNo, colname, search, startPageNo); // 寃��깋�뼱 �엳�뒗 寃쎌슦        		
 		        	}
 	        	}
@@ -680,18 +679,20 @@ public class SH_ManagerController {
 	        	
 	        }// end of while--------------------
 	                
-	       
+	        // �떎�쓬 5�럹�씠吏� 留뚮뱾湲�
 	        if(startPageNo > totalPage) {
-	        	
+	        	// 留덉�留� �럹�씠吏�諛붿뿉 �룄�떖�븳 寃쎌슦
 	        	pagebar += "";
 	        }
 	        else {
-	        		        	
+	        	// 留덉�留� �럹�씠吏�諛붽� �븘�땶 寃쎌슦
+	        	
 	        	if(colname == null || search == null) {
-	        		
+	        		// 寃��깋�뼱媛� �뾾�뒗 寃쎌슦
 	        		pagebar += String.format("&nbsp;&nbsp;<a href='/hajota/qnahostManager.go?pageNo=%d'>[�떎�쓬%d�럹�씠吏�]</a>&nbsp;&nbsp;", startPageNo, blocksize); // 泥섏쓬 %d �뿉�뒗 startPageNo媛� , �몢踰덉㎏ %d �뿉�뒗 �럹�씠吏�諛붿뿉 �굹���궪 startPageNo媛� �씠�떎.		
 	        	}
-	        	else{	        		
+	        	else{
+	        		// 寃��깋�뼱媛� �엳�뒗 寃쎌슦
 	        	    pagebar += String.format("&nbsp;&nbsp;<a href='/hajota/qnahostManager.go?pageNo=%d&colname=%s&search=%s'>[�떎�쓬%d�럹�씠吏�]</a>&nbsp;&nbsp;", startPageNo, colname, search, blocksize); // 寃��깋�뼱 �엳�뒗 寃쎌슦        		
 	        	}	
 	        }
@@ -747,7 +748,7 @@ public class SH_ManagerController {
 		
     } 
     
- // ===== index show =====
+ // ===== index guest qna show =====
     @RequestMapping(value="/indexManager.go", method={RequestMethod.GET})
     public String indexShow(HttpServletRequest req) {
     	
@@ -763,56 +764,13 @@ public class SH_ManagerController {
     	List<HashMap<String, Object>> indexhostqnaList = service.Showindexhostqna(rowBounds);
     	List<HashMap<String, Object>> indexnoticeList = service.Showindexnotice(rowBounds);
     	
-    	// 인덱스 페이지에 나타내기 위해서 년도를 받아오자
-    	GregorianCalendar today = new GregorianCalendar();     	 
-       	int year = today.get(today.YEAR);
-       	
-       	// 인덱스 페이지에 그래프 뽑아오기
-       	String Graphyear = req.getParameter("year");
-       //	System.out.println("year : " + Graphyear);
-       	
-       	// 인덱스 해당 년의 총 수입 뽑아오기
-       	HashMap<String, String> map = new HashMap<String, String>();
-       	map.put("Graphyear", Graphyear);
-       	
-        int totalincome = service.totalincome(map);
-       	
-		 // 오늘 접속자 수 구하기
-     	int jintianCount = service.jintianCount();
-        
-     	// 지구본에 들어갈 Q&A 가져오기
-     	List<HashMap<String, Object>> LingqnaList = service.ShowqnaList();  
-     	
-     	// 알람 누르지 않은 갯수 구하기
-     	int LingCount = service.LingCount();
-     	
     	req.setAttribute("indexguestqnaList", indexguestqnaList);    	
     	req.setAttribute("indexhostqnaList", indexhostqnaList);
     	req.setAttribute("indexnoticeList", indexnoticeList);
-    	req.setAttribute("year", year);
-    	req.setAttribute("Graphyear", Graphyear);
-    	req.setAttribute("totalincome", totalincome);
-		req.setAttribute("jintianCount", jintianCount);
-		req.setAttribute("LingqnaList", LingqnaList);
-		req.setAttribute("LingCount", LingCount);
-		
+    	
     	return "Manager/index.tilesM";
     } 
     
- // ===== 알림을 누르면 Status변경 =====
-/*    @RequestMapping(value="/goStatus.go", method={RequestMethod.POST})
-    void goStatus(HttpServletRequest req) {
-    	
-    	String seq_question = req.getParameter("seq_question");
-    	
-    	HashMap<String, String> map = new HashMap<String, String>();
-    	map.put("seq_question", seq_question);
-    	
-    	service.changeStatus(map);
-    	
-    }*/
-
-    // qna 답변
     @RequestMapping(value="/answerEnterEndManager.go", method={RequestMethod.POST})
     public String answerEnterEnd(HttpServletRequest req) {
     	
@@ -844,72 +802,11 @@ public class SH_ManagerController {
     
     // 통계
     @RequestMapping(value="/sumManager.go", method={RequestMethod.GET})
-	public String sum(HttpServletRequest req) {
+    public String sum(HttpServletRequest req) {
     	
     	return "Manager/sum.tilesM";
     }
     
-    
-    // 통계1
-    @RequestMapping(value="/sumManagerEnd.go", method={RequestMethod.GET})
-    @ResponseBody   
-	public List<HashMap<String, Object>> sumlist(HttpServletRequest req) {
-    	   	
-    	// 년도를 받아오자
-    	String year = req.getParameter("year");
-    	
-    	HashMap<String, String> map = new HashMap<String, String>();
-    	map.put("year", year);
-     	
-    	List<HashMap<String, Object>> sumlist = service.getSum(map);
-    	
-    //	System.out.println("sum : " + sumlist);
-    	return sumlist;
-    }
-    
-    // 통계2
-    @RequestMapping(value="/sumManagerEnd2.go", method={RequestMethod.GET})
-    @ResponseBody  
-	public List<HashMap<String, Object>> qnasumlist(HttpServletRequest req) {
-    	    	
-    	// 년도를 받아오자
-    	String year = req.getParameter("year");
-    	
-    	HashMap<String, String> map = new HashMap<String, String>();
-    	map.put("year", year);
-    	
-    	List<HashMap<String, Object>> qnasumlist = service.getSumqna(map);
-    	
-    //	System.out.println("qna :"  + qnasumlist);
-    	return qnasumlist;
-    }
-    
- // 신고 목록
-    @RequestMapping(value="/reportManager.go", method={RequestMethod.GET})
-   public String allreportList(HttpServletRequest req) {
-                    
-       List<HashMap<String, Object>> allreportList = service.allreportList();
-       
-       System.out.println(allreportList);
-       
-       req.setAttribute("allreportList", allreportList);
-       
-       return "Manager/report.tilesM";
-    }
-
-    @RequestMapping(value="/Delreport.go", method={RequestMethod.GET})
-    @ResponseBody
-   public int  Delreport(HttpServletRequest req) {
-                    
-       String reportno = req.getParameter("reportno");
-       
-       int n = service.delreport(reportno);
-       
-       System.out.println(n);
-       
-       return n;
-    }
-   
 }
 
 

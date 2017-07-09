@@ -131,6 +131,12 @@ public class JH_RoomsService implements JH_InterRoomsService {
 		
 		return count;
 	}
+
+	public int setHostStatus(HashMap<String, Object> map) {
+		int n = dao.setHostStatus(map);
+		
+		return n;
+	}
 	
 	/*
 	@Override

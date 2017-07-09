@@ -7,7 +7,7 @@
 			alert("메일발송이 완료되었습니다!");
 			location.href="<%= request.getContextPath() %>/eventManager.go";       
 		</c:if>
-	 	
+		
 		<c:if test="${n != 1}">
 			alert("메일발송이 취소되었습니다!");
 			javascript:history.back();

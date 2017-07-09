@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- #스프링버전 4.x 마이그레이션14 -->
 <beans:beans xmlns="http://www.springframework.org/schema/mvc"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
@@ -7,7 +8,7 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
@@ -46,7 +47,7 @@
     -->	
 	<!--  AOP 관련 어노테이션 동작이 가능하게 설정 -->	
 	<aop:aspectj-autoproxy /> <!-- 추가 -->
-	 
+	
 	
 	<!-- ===== #22. 일단 스프링에서 트랜잭션 처리를 하기 위해서는 아래와 같이 트랜잭션 처리을 위한 aop 등록을 해야만 한다. ===== -->     
 	<aop:config proxy-target-class="true">
@@ -54,6 +55,7 @@
     </aop:config>
 	
 	<!-- ===== #23.  tiles 프레임워크 구현을 위한 빈을 등록한다. ===== -->
+	<!--
 	<beans:bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
 		<beans:property name="definitions">
 			<beans:list>
@@ -66,7 +68,21 @@
 	<beans:bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver"> 
 		<beans:property name="viewClass" value="org.springframework.web.servlet.view.tiles2.TilesView" /> 
 	</beans:bean>
+	-->
 	
+	<!-- #스프링버전 4.x 마이그레이션15 -->
+	<beans:bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+        <beans:property name="definitions">
+            <beans:list>
+                 <beans:value>/WEB-INF/tiles/tiles-layout.xml</beans:value>
+            </beans:list>
+        </beans:property>
+    </beans:bean>
+	
+	<beans:bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+        <beans:property name="viewClass" value="org.springframework.web.servlet.view.tiles3.TilesView" />
+        <beans:property name="order" value="1"/>
+    </beans:bean>	
 	
 	<!-- ===== #25. 파일업로드 및 다운로드에 필요한 의존객체 설정하기 ===== -->
 	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">   

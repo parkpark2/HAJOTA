@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<%-- ===== 멤버페이지  ===== --%>
+<%-- ===== #35. tiles 를 사용하는 레이아웃 페이지 만들기  ===== --%>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"  %>    
     
 <!DOCTYPE html>
@@ -26,11 +26,22 @@
 	#mycontent		{  float:left; width:100%; min-height:800px; padding-top: 40px; }
 	#myfooter		{ background-color: white; clear:both; height:50px; width: 100%; margin: auto; }
 	p {line-height: 2}
-
+	/* #displayRank 	{ margin:20px; height:200px;} */
+	
 	#myheader a {text-decoration:none;}
 	
+	/* mouse over link */
 	#myheader a:hover {color: navy; font-weight: bolder;}
-
+	/* 
+	  unvisited link 
+	a:link {color: #FF0000;}
+		
+	  visited link 
+	a:visited {color: #00FF00;}
+		
+	  selected link 
+	a:active {color: #0000FF;}
+	*/
 	
 	#myheader .mynav {font-size: 13pt;}
 	.myrank {font-weight:bold; color:red; font-size:13pt;}

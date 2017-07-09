@@ -279,8 +279,8 @@ li{
 </script>
    <div class="container">
 <div class="row inbox">
-	<div class="col-md-3">
-		<div class="panel panel-default" style="margin-left: -250px; width: 99%; height:100%;">
+	<div class="col-md-3" style="border: solid 0px red; margin-left: -200px;">
+		<div class="panel panel-default" style="border: solid 0px red; width: 99%; height:100%;">
 			<div class="panel-body inbox-menu" style="width: 90%; height: 300px;">						
 				<a href="" class="btn btn-success btn-block" style="width: 112%;">고객센터</a>
 				<ul>

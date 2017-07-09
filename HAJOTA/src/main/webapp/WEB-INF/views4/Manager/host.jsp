@@ -112,9 +112,7 @@ $(document).ready(function(){
 </script>
 
 <div>
-	<span style="font-size: 25px; font-weight: bold;">
-	<img src="<%= request.getContextPath() %>/resources/images/HSSH/managericon.png" style="width: 50px; height: 50px;" />
-	호스트관리 페이지</span>
+	<span style="font-size: 25px; font-weight: bold;">호스트관리 페이지</span>
 </div>
 <div id="line" style="position:relative; top:10px; background-color:navy; height: 3px; "></div>
 

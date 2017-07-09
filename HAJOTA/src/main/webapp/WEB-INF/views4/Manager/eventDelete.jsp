@@ -7,7 +7,7 @@
 			alert("이벤트 정지가 완료되었습니다!");
 			location.href="<%= request.getContextPath() %>/eventManager.go";       
 		</c:if>
-		 
+		
 		<c:if test="${n != 1}">
 			alert("이벤트 정지가 취소되었습니다!");
 			javascript:history.back();

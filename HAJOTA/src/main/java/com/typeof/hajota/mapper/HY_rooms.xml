@@ -78,7 +78,7 @@
 	<select id="getcuponlist" parameterType="java.util.HashMap" resultMap="selectcupon">
 	select NAME , to_char(ENDDAY , 'yyyy-mm-dd') as ENDDAY , PERCENT 
 	from TBL_COUPON
-	where email = #{email} and status = 1
+	where email = #{email}
 	</select>
 
 	<!-- 리뷰 맵 -->
@@ -89,16 +89,26 @@
 	<result property="Rscore" column="SCORE" javaType="String" />
 	<result property="Rcontent" column="CONTENT" javaType="String" />
 	<result property="Rstatus" column="STATUS" javaType="String" />
+	<result property="BDAY" column="Bday" javaType="String" />
+	<result property="BHOUR" column="Bhour" javaType="String" />
+	<result property="BMINUTE" column="Bminute" javaType="String" />
+	<result property="BSECOND" column="Bsecond" javaType="String" />
 	</resultMap>
 
 
 	<!-- 리뷰 가져올 쿼리문 -->
 	<select id="getreviewlist" parameterType="String" resultMap="selectreview">
 	
-	select  SEQ_REVIEW , EMAIL , SCORE , CONTENT , STATUS
+	select  SEQ_REVIEW , EMAIL , SCORE , CONTENT , STATUS 
+        , to_char(writedate, 'yyyy-mm-dd hh24 mi ss') as writedate,email,
+            trunc(sysdate - writedate) as Bday,
+            trunc(((sysdate - writedate) - trunc(sysdate - writedate)) * 24) as Bhour,
+            trunc((((sysdate - writedate) - trunc(sysdate - writedate)) * 24 - trunc(((sysdate - writedate) - trunc(sysdate - writedate)) * 24)) * 60) as Bminute,
+            trunc(((((sysdate - writedate) - trunc(sysdate - writedate)) * 24 - trunc(((sysdate - writedate) - trunc(sysdate - writedate)) * 24)) * 60 - trunc((((sysdate - writedate) - trunc(sysdate - writedate)) * 24 - trunc(((sysdate - writedate) - trunc(sysdate - writedate)) * 24)) * 60)) * 60) as Bsecond
+
 	from 
 	(
-	select A.seq_payment , A.seq_lodge , B.SEQ_REVIEW , B.EMAIL  , B.SCORE , B.CONTENT , B.STATUS
+	select A.seq_payment , A.seq_lodge , B.SEQ_REVIEW , B.EMAIL  , B.SCORE , B.CONTENT , B.STATUS , B.writedate
 	from TBL_PAYMENT A join tbl_review B
 	on A.seq_payment = B.seq_payment
 	)

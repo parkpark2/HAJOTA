@@ -62,14 +62,6 @@ public interface SH_InterManagerDAO {
 	public int Guestcount(); // 인덱스 화면에 게스트 count
 	
 	public int Hostcount(); // 인덱스 화면에 호스트 count
-
-	int jintianCount(); // 오늘 접속자 수 구하기
-	
-	List<HashMap<String, Object>> ShowqnaList(); // 지구본에 들어갈 Q&A 가져오기
-	
-	int changeStatus(HashMap<String, String> map); // 알림을 누르면 Status변경
-	
-	int LingCount(); // 알람 누르지 않은 갯수 구하기
 	
 	////////////////////////////////////////////	
 	void answerChecker(); // 답변하기
@@ -87,12 +79,10 @@ public interface SH_InterManagerDAO {
 	int AllqnaReply(HashMap<String, String> map);	// 답변 했는지 안했는지 유무
 
 	HashMap<String, Object> answerdetailShow(HashMap<String, String> map);	// 답변 테이블 보여주기
-
-	List<HashMap<String, Object>> sumlist(HashMap<String, String> map); // 수입 통계
 		
-	int totalincome(HashMap<String, String> map);	// 인덱스 화면데 총 수입
+	// QNAList에 답변이 완료되었으면 카운트 0 or 카운트 1로 하기로하자 [0] or [1]
+	//public int reply(HashMap<String, String> map);
 	
-	List<HashMap<String, Object>> qnalistsum(HashMap<String, String> map); // qna 통계
-	
-	List<HashMap<String, Object>> allreportList();	// 신고 목록
+	// 호스트 인지 게스트인지 체크
+	//int check(HashMap<String, String> map);
 }

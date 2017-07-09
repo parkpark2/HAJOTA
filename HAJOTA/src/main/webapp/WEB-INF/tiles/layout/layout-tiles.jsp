@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<%-- ===== 인덱스페이지  ===== --%>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"  %>    
     
 <!DOCTYPE html>
@@ -9,7 +8,7 @@
 <head>
 <meta charset="UTF-8">
 <title>HAJOTA</title>
- 
+
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet"
    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />

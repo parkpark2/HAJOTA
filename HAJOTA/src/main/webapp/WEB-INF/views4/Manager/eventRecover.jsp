@@ -7,7 +7,7 @@
 			alert("이벤트가 실행되었습니다!!");
 			location.href="<%= request.getContextPath() %>/eventManager.go";       
 		</c:if>
-	 	
+		
 		<c:if test="${n != 1}">
 			alert("이벤트가 실행이 취소되었습니다!!");
 			javascript:history.back();

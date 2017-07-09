@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.typeof.hajota.manager.service.ManagerService;
 
@@ -24,30 +23,9 @@ public class ManagerController {
 	@Autowired
 	private ManagerService service;
 
-	@RequestMapping(value="/test.go")
-	public String test(HttpServletRequest req){		
-		
-		String departure = req.getParameter("departure");
-		
-		System.out.println(departure);
-		
-		return "test.notiles";
-	}
 	
-	 // ===== 영어페이지 =====
-	@RequestMapping(value="/indexEnglish.go")
-	public String indexEnglish(){		
-		
-		return "main/indexEnglish.tilesE";
-	}
-	
-	 // ===== 일본어페이지 =====
-	@RequestMapping(value="/indexJapanese.go")
-	public String indexJapanese(){		
-		
-		return "main/indexJapanese.tilesJ";
-	}
-	
+	// ---------------------------------------------------------------------------------------위는
+	// 기본 페이지
 
     // ===== 게스트 목록을 보여주는 리스트 =====
     @RequestMapping(value="/guestManager.go", method={RequestMethod.GET})
@@ -586,7 +564,7 @@ public class ManagerController {
 	        req.setAttribute("dolWanrle", dolWanrle);
 	        req.setAttribute("sadaliWanrle", sadaliWanrle);
 	        
-			return "coupon.tiles11";
+			return "coupon.tiles2";
 		}
 		
 		
@@ -611,7 +589,7 @@ public class ManagerController {
 	             GoogleMail mail = new GoogleMail();
 
 	             try {	                
-	                mail.sendmailbirth(email);
+	              /*  mail.sendmailbirth(email);*/
 	                 req.setAttribute("email", email);
 	             } catch (Exception e) {
 	                e.printStackTrace();
@@ -663,79 +641,11 @@ public class ManagerController {
 	    	
 	    	req.setAttribute("n", n);
 	    	
-	    	return "getCoupon.notiles";
+	    	return "getCoupon.tiles2";
 	    	
 	    }
 
 	    
-	 // ===== 사다리게임 쿠폰받기 =====
-	    @RequestMapping(value="/getCoupon2.go", method={RequestMethod.GET})
-	    public String getCoupon2(HttpServletRequest req, HttpSession session) 
-	    	throws Throwable { 
-	    	
-	    	String percent = "30";
-	   	    	
-	    	// 게임에 참여한 게스트 이메일 가져오기
-	    	@SuppressWarnings("unchecked")
-			HashMap<String, Object> loginuser = (HashMap<String, Object>)session.getAttribute("loginuser");
-	        String email = (String)loginuser.get("EMAIL");
-	    
-	    	HashMap<String, String> map = new HashMap<String, String>();
-	    	map.put("email", email);
-	    	map.put("percent", percent);
-	        
-	    	// 게임에 참여했던 기록 남기기
-	    	 service.InsertSadaliGame(map);
-	    	
-	    	// 게임에 참여하면 실행횟수 증가 시키기
-	         service.plusSadaliGame(map);
-	    		    	
-	    	int n = service.getCoupon(map);
-	    	// 넘겨받은 값이 1이면 쿠폰등록 성공,
-	    	// 넘겨받은 값이 0이면 쿠폰등록 실패.
-	    	
-	    	req.setAttribute("n", n);
-	    	
-	    	return "getCoupon2.notiles";
-	    	
-	    }
-	    
-	 // ==== 전체통계 ====   
-	    @RequestMapping(value="/chart.go", method={RequestMethod.GET})
-	    public String chart(HttpServletRequest req) { 
-	    	    	
-	    	return "Manager/chart.tilesM";
-	    	
-	    }
-	    
-	 // ===== 회원통계 =====
-	    @RequestMapping(value="/HSchart.go", method={RequestMethod.GET})
-	    public String HSchart(HttpServletRequest req) { 
-	    	 
-	    	return "Manager/HSchart.tilesM";	    	
-	    }
-	    
-	 // ===== 시간별 로그인한 회원통계 =====
-	    @RequestMapping(value="/HSchartEnd.go", method={RequestMethod.GET})
-	    @ResponseBody
-	    public List<HashMap<String, Object>> HSchartEnd(HttpServletRequest req) { 
-	    	    	
-	    	List<HashMap<String, Object>> loginTimeList = service.loginTimeCount();
-	    		    	
-	    	return loginTimeList;
-	    	
-	    }   
-	 
-	 // ===== 매달 가입한 게스트의 총수 =====
-	    @RequestMapping(value="/joinGuestChart.go", method={RequestMethod.GET})
-	    @ResponseBody
-	    public List<HashMap<String, Object>> joinGuestChart(HttpServletRequest req) { 
-	    	    	
-	    	List<HashMap<String, Object>> joinGuestChart = service.joinGuestChart();
-	    		    	
-	    	return joinGuestChart;
-	    	
-	    }    
 
 }
 

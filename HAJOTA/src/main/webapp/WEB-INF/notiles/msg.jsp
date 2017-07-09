@@ -6,7 +6,7 @@
 <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/resources/TypeofCss/JW/sweetalert.css">
 
 <script type="text/javascript">
- 
+
 $(document).ready(function() {
    swal({ 
         title:  "${title}", 

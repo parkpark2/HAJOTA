@@ -7,7 +7,7 @@
 <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/resources/TypeofCss/JW/bootstrap.css">
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/js/JW/jquery-2.0.0.js"></script>
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/js/JW/bootstrap.js"></script> 
- 
+
 <style type="text/css">
 
   #div_pwd {

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<%-- ===== 고객센터  ===== --%>
+<%-- ===== #35. tiles 를 사용하는 레이아웃 페이지 만들기  ===== --%>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"  %>    
     
 <!DOCTYPE html>

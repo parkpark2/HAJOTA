@@ -478,6 +478,9 @@ public class JW_MemberController {
 		/*List<HashMap<String, Object>> questionList = service.questionList();
 		req.setAttribute("questionList", questionList);*/
   		
+  		HashMap<String, Object> loginuser = (HashMap<String, Object>)session.getAttribute("loginuser");
+  		req.setAttribute("loginuser", loginuser);
+  		
   		String seq = req.getParameter("seq");
     	
     	HashMap<String, Object> queinfo = service.questioninfo(seq);
@@ -626,13 +629,21 @@ public class JW_MemberController {
   	@RequestMapping(value="/callview.go", method={RequestMethod.GET})
   	 public String callview(HttpServletRequest req) {
  		
- 		 return "call.tilesCU";
+ 		 return "callview.tilesCU";
  	 }
   	 
+  	// FAQ 보여주기
+  	@RequestMapping(value="/FAQ.go", method={RequestMethod.GET})
+ 	 public String FAQ(HttpServletRequest req) {
+		 return "FAQ/FAQ.tilesCU";
+	 }
   	 
-  	 
-  	 
-  	 
+  	// FAQdetail 보여주기
+  	@RequestMapping(value="/FAQdetail.go", method={RequestMethod.GET})
+ 	 public String FAQdetail(HttpServletRequest req) {
+		 return "FAQ/FAQdetail.tilesCU";
+	 }
+  	
   	
   	
 }

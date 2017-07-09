@@ -2,7 +2,7 @@ package com.typeof.hajota;
 
 import javax.mail.Authenticator;
 import javax.mail.PasswordAuthentication;
- 
+
 public class MySMTPAuthenticator extends Authenticator {
 
 	@Override

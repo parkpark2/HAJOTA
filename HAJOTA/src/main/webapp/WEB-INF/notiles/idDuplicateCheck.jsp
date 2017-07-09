@@ -10,7 +10,7 @@
 <title>중복 ID 검사하기</title>
 
 <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/resources/TypeofCss/JW/style.css">
- 
+
 <script type="text/javascript">
 
 	function goCheck() {

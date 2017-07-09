@@ -1,8 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <!DOCTYPE html>
 <html >
 <head>
@@ -57,72 +54,7 @@ $(document).ready(function(){
 		}
 	});
 	
-	$("#roomprice").focusin(function(){
-		$(this).val("");
-	});
-	
-	$("#roomprice").focusout(function(){
-		if(regNum($(this).val())) {
-			var totalprice = Number($("#roomprice").val()) + Number($("#depositprice").val()) +	Number($("#cleanprice").val());
-			$("#totalprice").val(totalprice);
-		}
-		
-		else {
-			$(this).val("0");
-		}
-	});
-	
-	
-	
-	$("#depositprice").focusin(function(){
-		$(this).val("");
-	});
-	
-	$("#depositprice").focusout(function(){
-		if(regNum($(this).val())) {
-			var totalprice = Number($("#roomprice").val()) + Number($("#depositprice").val()) +	Number($("#cleanprice").val());
-			$("#totalprice").val(totalprice);
-		}
-		
-		else {
-			$(this).val("0");
-		}
-	});
-	
-	
-	
-	$("#cleanprice").focusin(function(){
-		$(this).val("");
-	});
-	
-	$("#cleanprice").focusout(function(){
-		if(regNum($(this).val())) {
-			var totalprice = Number($("#roomprice").val()) + Number($("#depositprice").val()) +	Number($("#cleanprice").val());
-			$("#totalprice").val(totalprice);
-		}
-		
-		else {
-			$(this).val("0");
-		}
-	});
-	
 }); // end of $(document).ready()-----------------------------------
-
-function regNum(target) {
-	var regNumber = /^[0-9]+$/;
-	
-	if(target == "") {
-		alert("금액을 입력해야 합니다");
-		return false;
-	}
-	
-	else if(!regNumber.test(target)) {
-		alert("숫자만 입력이 가능합니다");
-		return false;
-	}
-	
-	return true;
-}
 
 var testaddress ="";
 
@@ -160,7 +92,7 @@ function sample4_execDaumPostcode() {
             document.getElementById('sample4_jibunAddress').value = data.jibunAddress;
             
             testaddress = fullRoadAddr;
-            /*
+             
             // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
             if(data.autoRoadAddress) {
                 //예상되는 도로명 주소에 조합형 주소를 추가한다.
@@ -174,7 +106,6 @@ function sample4_execDaumPostcode() {
             } else {
                 document.getElementById('guide').innerHTML = '';
             }
-            */
             getgeocode(testaddress);
         }
     }).open();
@@ -217,13 +148,7 @@ function gosubmit(){
 
 </script>
 
-<style>
-	textarea {
-		height: 200px;
-		resize: none;
-	}
-</style>
-
+  
 </head>
 
 <body>
@@ -231,32 +156,33 @@ function gosubmit(){
 <form id="msform" name ="msform" enctype="multipart/form-data">
   <!-- progressbar -->
   <ul id="progressbar">
-    <li class="active"> </li>
-    <li> </li>
-    <li> </li>
-    <li> </li>
-    <li> </li>
-    <li> </li>
-    <li> </li>
+    <li class="active">숙소1</li>
+    <li>숙소2</li>
+    <li>숙소3</li>
+    <li>숙소4</li>
+    <li>숙소5</li>
+    <li>숙소6</li>
+    <li>숙소7</li>
   </ul>
   <!-- fieldsets -->
   <fieldset>
-    <h2 class="fs-title">첫 번째 단계</h2>
-    <!-- <h3 class="fs-subtitle"></h3> -->
+    <h2 class="fs-title">숙소1</h2>
+    <h3 class="fs-subtitle">This is step 1</h3>
     <!-- <input type="text" name="email" placeholder="Email(이메일)" /> -->
-         숙소 이름 :
-    <input type="text" id="roomsname" name="roomsname" placeholder="숙소 이름" required="required"/>
-         숙소 형태 : <select id="TYPE_LODGE" name="TYPE_LODGE" required="required">
+    <input type="text" id="roomsname" name="roomsname" placeholder="roomsname(숙소이름)" />
+         숙소타입 : <select name="TYPE_LODGE">
+	<option value="0" selected>타입선택</option>
 	<option value="1">집전체</option>
 	<option value="2">개인실</option>
 	<option value="3">다인실</option>
 	</select>
-	건물 형태 : <select id="TYPE_BUILDING" name="TYPE_BUILDING" required="required">
+	건물 타입 : <select name="TYPE_BUILDING">
+	<option value="0" selected>타입선택</option>
 	<option value="1">아파트</option>
 	<option value="2">개인주택</option>
 	<option value="3">빌딩</option>
 	</select><br/>
-	최대 인원 : <select id="maxpeople" name="maxpeople" required="required">
+	최대 인원 : <select name="maxpeople">
 	<option value="1">1 명</option>
 	<option value="2">2 명</option>
 	<option value="3">3 명</option>
@@ -277,34 +203,30 @@ function gosubmit(){
   </fieldset>
   
   <fieldset>
-    <h2 class="fs-title">두 번째 단계</h2>
-    <!-- <h3 class="fs-subtitle"></h3> -->
-    	<input type="hidden" id="sample4_postcode" placeholder="우편번호" readonly required="required">
-    	<input type="button" onclick="sample4_execDaumPostcode()" value="우편번호 찾기" required="required"><br>
-    	 도로명 주소:
-		<input type="text" id="sample4_roadAddress" name="roadAddress" placeholder="도로명주소" readonly required="required">
-		상세 주소:
-		<input type="text" id="detailAddress" name="detailAddress" placeholder="상세주소" required="required">
-		<input type="hidden" id="sample4_jibunAddress" placeholder="지번주소" readonly="readonly" required="required">
-		<input type="hidden" id="LAT" name="LAT" value="" required="required">
-		<input type="hidden" id="LNG" name="LNG" value="" required="required">
-		<span id="guide" style="color:#999"></span>
+    <h2 class="fs-title">숙소2</h2>
+    <h3 class="fs-subtitle">We will never sell it</h3>
+    상세주소 : 		 <input type="button" onclick="sample4_execDaumPostcode()" value="우편번호 찾기"><br>
+				 <input type="text" id="sample4_roadAddress" name="roadAddress" placeholder="도로명주소" readonly>
+				 <input type="text" id="detailAddress" name="detailAddress" placeholder="상세주소">
+				 <input type="hidden" id="LAT" name="LAT" value="">
+				 <input type="hidden" id="LNG" name="LNG" value="">
+				 <span id="guide" style="color:#999"></span>
     <input type="button" name="previous" class="previous action-button" value="Previous" />
     <input type="button" name="next" class="next action-button" value="Next" />
     
   </fieldset>
   
   <fieldset>
-    <h2 class="fs-title">세 번째 단계</h2>
-    <!-- <h3 class="fs-subtitle"></h3> -->
-       화장실 개수 : <select id="bathroomcount" name="bathroomcount" required="required">
+    <h2 class="fs-title">숙소3</h2>
+    <h3 class="fs-subtitle">Your presence on the social network</h3>
+    화장실 개수 : <select name="bathroomcount">
 			  <option value="1">1</option>
 			  <option value="2">2</option>
 			  <option value="3">3</option>
 			  <option value="4">4</option>
 			  <option value="5">5+</option>
 			  </select> <br/>
-	침실 개수 : <select id="bedroomcount" name="bedroomcount" required="required">
+	침실 개수 : <select name="bedroomcount">
 			  <option value="1">1</option>
 			  <option value="2">2</option>
 			  <option value="3">3</option>
@@ -313,7 +235,7 @@ function gosubmit(){
 			  <option value="6">6</option>
 			  <option value="7">7+</option>
 			</select> <br/>
-	침대 개수 : <select id="bedcount" name="bedcount" required="required">
+	침대 개수 : <select name="bedcount">
 			  <option value="1">1</option>
 			  <option value="2">2</option>
 			  <option value="3">3</option>
@@ -323,82 +245,34 @@ function gosubmit(){
 			  <option value="7">7</option>
 			  <option value="8">8+</option>
 			</select> <br/>
-	<div>
-	체크인 :
-	<select id="checkinHour" name="checkinHour" style="width: 20%; display: inline-block;">
-		<c:set var="n" value="0" />
-		
-		<c:forEach begin="0" end="23">
-			<option value="${n}" >${n}</option>
-			<c:set var="n" value="${n+1}" />
-		</c:forEach>
-	</select>
-	<span>시</span>&nbsp;
-	
-	<select id="checkinMin" name="checkinMin" style="width: 20%; display: inline-block;">
-		<c:set var="n" value="0" />
-		
-		<c:forEach begin="0" end="59">
-			<option value="${n}" >${n}</option>
-			<c:set var="n" value="${n+1}" />
-		</c:forEach>
-	</select>
-	<span>분</span>
-	</div>
-	
-	<div>
-	체크아웃 :
-	<select id="checkoutHour" name="checkoutHour" style="width: 20%; display: inline-block;">
-		<c:set var="n" value="0" />
-		
-		<c:forEach begin="0" end="23">
-			<option value="${n}">${n}</option>
-			<c:set var="n" value="${n+1}" />
-		</c:forEach>
-	</select>
-	<span>시</span>&nbsp;
-	
-	<select id="checkoutMin" name="checkoutMin" style="width: 20%; display: inline-block;">
-		<c:set var="n" value="0" />
-		
-		<c:forEach begin="0" end="59">
-			<option value="${n}">${n}</option>
-			<c:set var="n" value="${n+1}" />
-		</c:forEach>
-	</select>
-	<span>분</span>
-	</div>
-	
+	<input type="text" id="Hcheckin" name="Hcheckin" placeholder="Hcheckin(숙소 체크인시간 )" /> <br/>
+	<input type="text" id="Hcheckout" name="Hcheckout" placeholder="Hcheckout(숙소 체크아웃 시간 )" /> <br/>
     <input type="button" name="previous" class="previous action-button" value="Previous" />
     <input type="button" name="next" class="next action-button" value="Next" />
   </fieldset>
   
   
   <fieldset>
-    <h2 class="fs-title">네 번째 단계</h2>
-    <!-- <h3 class="fs-subtitle"></h3> -->
-	숙박비 :<br/>
-    &#8361;&nbsp;&nbsp;<input type="text" id="roomprice" name="roomprice" placeholder="숙박비" required="required" style="width: 90%;" value="0"/>
-   	보증금 :<br/>
-	&#8361;&nbsp;&nbsp;<input type="text" id="depositprice" name="depositprice" placeholder="보증금" required="required" style="width: 90%;" value="0"/>
-	청소비 :<br/>
-	&#8361;&nbsp;&nbsp;<input type="text" id="cleanprice" name="cleanprice" placeholder="청소비" required="required" style="width: 90%;" value="0"/>
-	총 가격:<br/>
-	&#8361;&nbsp;&nbsp;<input type="text" id="totalprice" name="totalprice" placeholder="총 가격" readonly="readonly" required="required" style="width: 90%;" value="0"/>
+    <h2 class="fs-title">숙소4</h2>
+    <h3 class="fs-subtitle">We will never sell it</h3>
+    <input type="text" id="roomprice" name="roomprice" placeholder="roomprice(숙박비)" />
+	<input type="text" id="depositprice" name="depositprice" placeholder="depositprice(보증금)" />
+	<input type="text" id="cleanprice" name="cleanprice" placeholder="cleanprice(청소비)" />
+	<input type="text" id="totalprice" name="totalprice" placeholder="totalprice(총가격)" />
     <input type="button" name="previous" class="previous action-button" value="Previous" />
     <input type="button" name="next" class="next action-button" value="Next" />
   </fieldset>
   
   
   <fieldset>
-    <h2 class="fs-title">다섯 번째 단계</h2>
-    <!-- <h3 class="fs-subtitle"></h3> -->
+    <h2 class="fs-title">숙소5</h2>
+    <h3 class="fs-subtitle">This is step 123123</h3>
    	시설 : 
    	<div style="display: flex;">
 	<label for="elevator"><img style="width: 30px; height: 30px;" src="<%= request.getContextPath()%>/resources/images/JHHY/elevator.png"></label>
 	<br/><input type="checkbox" id="elevator" name="elevator" />
 	<label for="wifi"><img style="width: 30px; height: 30px;" src="<%= request.getContextPath()%>/resources/images/JHHY/wifi.png"></label>
-	<br/><input type="checkbox" id="wifi" name="wifi"/>
+	<br/><input type="checkbox" id="wifi" name="wifi" />
 	<label for="airconditioner"><img style="width: 30px; height: 30px;" src="<%= request.getContextPath()%>/resources/images/JHHY/airconditioner.png"></label>
 	<br/><input type="checkbox" id="airconditioner" name="airconditioner" />
 	</div>
@@ -421,21 +295,21 @@ function gosubmit(){
   </fieldset>
   
   <fieldset>
-    <h2 class="fs-title">여섯 번째 단계</h2>
-    <!-- <h3 class="fs-subtitle"></h3> -->
-   	숙소 설명 :  <textarea class="autosize" id="rooms_explain" name="rooms_explain" required="required"> </textarea><br/>
-	환불 정책 : <textarea class="autosize" id="refund_policy" name="refund_policy" required="required"> </textarea> <br/>
-	숙소 규칙 : <textarea class="autosize" id="rooms_rule" name="rooms_rule" required="required"> </textarea> <br/> 
+    <h2 class="fs-title">숙소6</h2>
+    <h3 class="fs-subtitle">This is step 123123</h3>
+   	숙소 설명 :  <textarea class="autosize" id="rooms_explain" name="rooms_explain"> </textarea><br/>
+	환불 정책 : <textarea class="autosize" id="refund_policy" name="refund_policy"> </textarea> <br/>
+	숙소 규칙 : <textarea class="autosize" id="rooms_rule" name="rooms_rule"> </textarea> <br/> 
 	<input type="button" name="previous" class="previous action-button" value="Previous" />
     <input type="button" name="next" class="next action-button" value="Next" />
   </fieldset>
   
    <fieldset>
-    <h2 class="fs-title">마지막 단계</h2>
-    <!-- <h3 class="fs-subtitle"></h3> -->    
-	안전 설명 : <textarea class="autosize" id="safety_function" name="safety_function" required="required"> </textarea><br/>
-	지역 설명 : <textarea class="autosize" id="local_information" name="local_information" required="required"> </textarea> <br/>
-	메인 이미지 :  <input type='file' id='mainimage' name='mainimage' class='btn btn-default' required="required"/> <br/>
+    <h2 class="fs-title">숙소7</h2>
+    <h3 class="fs-subtitle">We will never sell it</h3>    
+	안전 설명 : <textarea class="autosize" id="safety_function" name="safety_function"> </textarea><br/>
+	지역 설명 : <textarea class="autosize" id="local_information" name="local_information"> </textarea> <br/>
+	메인이미지 :  <input type='file' id='mainimage' name='mainimage' class='btn btn-default' /> <br/>
 	서브 이미지 : <label for="spinnerOqty">파일갯수 : </label>
              <input id="spinnerOqty" value="0" min="0" max="4" style="width: 30px; height: 20px;">
     		 <div id="divfileattach"></div><br/>
