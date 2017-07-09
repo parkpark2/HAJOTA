@@ -11,8 +11,9 @@
 
 
 <script>
+
 	function goSearch() {
-		var search_content = $("#search_content").val();
+		var search_content = $("#search_content").val(); 
 		var numOfPeople = $("#numOfPeople").val();
 		var startDate = $("#startDate").val();
 		var endDate = $("#endDate").val();
@@ -29,16 +30,21 @@
 		var searchFrm = document.searchFrm;
 
 		searchFrm.action = "/hajota/rooms/list.go";
-		searchFrm.method = "GET";
+		searchFrm.method = "POST";
 		searchFrm.submit();
 	}
-		
 	
+	$(document).ready(function() {
+		$("#search_content").val("${search_content}");
+		$("#numOfPeople").val("${numOfPeople}");
+		$("#startDate").val("${startDate}");
+		$("#endDate").val("${endDate}");
+	});	
 </script>
 
 
    <!-- Navigation Bar -->
-    <div class="w3-bar w3-white w3-border-bottom w3-xlarge">
+    <div class="w3-top w3-bar w3-white w3-border-bottom w3-xlarge" style="background-color: white; z-index :100;">
     <a href="<%=request.getContextPath()%>/index.go">
       <img src="<%=request.getContextPath()%>/resources/images/oneofall/logo.png"
          style="width: 200px; height: 60px; margin-left: 30px;" /> 
@@ -49,10 +55,11 @@
     <!-- <label><i class="fa fa-male"></i></label>&nbsp; -->
       <input type="text" id="numOfPeople" name="numOfPeople" placeholder="1" size="3" style="height: 30px; width: 2%;  margin-top: 1%;" />&nbsp; 
     <!--  <label><i class="fa fa-calendar-o"></i></label>&nbsp;  -->
-     <input type="text" class="datepicker" id="startDate"	name="startDate" placeholder="Check In" size="10" style="height: 30px; width: 8%; margin-top: 1%;" />&nbsp; 
-   <!--  <label><i class="fa fa-calendar-o"></i></label>&nbsp;  -->
-       <input type="text" class="datepicker" id="endDate" name="endDate" placeholder="Check Out" size="10" style="height: 30px; width: 8%; margin-top: 1%;" />&nbsp; 
-           
+      <input type="text" class="datepicker" id="startDate"	name="startDate" placeholder="Check In" size="10" style="height: 30px; width: 8%; margin-top: 1%;" />&nbsp; 
+    <!--  <label><i class="fa fa-calendar-o"></i></label>&nbsp;  -->
+      <input type="text" class="datepicker" id="endDate" name="endDate" placeholder="Check Out" size="10" style="height: 30px; width: 8%; margin-top: 1%;" />&nbsp; 
+       
+  
       
       <a href="#" class="<!-- w3-button w3-hover-white w3-text-white -->" style="background-color: #0099ff; width: 3%; height: 40px;">
       <i class="fa fa-search"  onclick="goSearch();"></i></a> 
@@ -63,11 +70,14 @@
       <a href="<%=request.getContextPath()%>/indexChinese.go"> 
       <img src="<%=request.getContextPath()%>/resources/images/oneofall/China.png" style="margin-left: 10px;" />
       </a> 
+      <a href="<%=request.getContextPath()%>/indexJapanese.go"> 
       <img src="<%=request.getContextPath()%>/resources/images/oneofall/Japan.png" style="margin-left: 10px;" /> 
+      </a>
+      <a href="<%=request.getContextPath()%>/indexEnglish.go"> 
       <img src="<%=request.getContextPath()%>/resources/images/oneofall/USA.png" style="margin-left: 10px;" />
-
+	  </a>
    
-         <a href="#" class="w3-bar-item w3-button  w3-right w3-hide-small w3-padding-large"
+         <a href="<%=request.getContextPath()%>/callview.go" class="w3-bar-item w3-button  w3-right w3-hide-small w3-padding-large"
          title="Q&A"><i class="fa fa-question-circle"></i></a>
       
 		
@@ -75,7 +85,7 @@
        
        <!-- 게스트로 로그인했을때 -->
 	       	 <c:if test="${sessionScope.loginuser.GRADE == '9'}">
-	         <a style="color: red; font-weight: bold; font-size: 15px; margin-left: 3%;">
+	         <a style="color: red; font-weight: bold; font-size: 15px; margin-left: 10%;">
 	            환영합니다♥ </a>
 	         <a style="color: navy; font-weight: bold; font-size: 15px;">
 	            ${sessionScope.loginuser.LAST_NAME}${sessionScope.loginuser.FIRST_NAME} 게스트님
@@ -84,7 +94,8 @@
 	       	 <a href="<%=request.getContextPath()%>/coupon.go"
 	            class="w3-bar-item w3-button  w3-right w3-hide-small w3-padding-large"
 	            title="EVENT"><i class="fa fa-heart"></i></a>	
-	       	       
+	       
+	       
 	         <a href="<%=request.getContextPath()%>/logout.go"
 	            class="w3-bar-item w3-button  w3-right w3-hide-small w3-padding-large"
 	            title="LOGOUT"><i class="fa fa-sign-out"></i></a>
@@ -107,13 +118,15 @@
 	            class="w3-bar-item w3-button  w3-right w3-hide-small w3-padding-large"
 	            title="LOGOUT"><i class="fa fa-sign-out"></i></a>
 	      
+	         <a href="<%=request.getContextPath()%>/rooms/insert.go" class="w3-bar-item w3-button  w3-right w3-hide-small w3-padding-large"
+         		title="HOSTING"><i class="fa fa-globe"></i></a> 
+	      
 	         <a href="<%=request.getContextPath()%>/editUser.go"
 	            class="w3-bar-item w3-button  w3-right w3-hide-small w3-padding-large" title="MYPAGE"> 
 	            <img src="<%=request.getContextPath()%>/resources/images/ISJW/user.png" width="35px;" height="35px;" />
 	         </a>
 	         
-	         <a href="#" class="w3-bar-item w3-button  w3-right w3-hide-small w3-padding-large"
-         		title="HOSTING"><i class="fa fa-globe"></i></a> 
+	         
 	         
 	      	</c:if>	 	
 	      	     
