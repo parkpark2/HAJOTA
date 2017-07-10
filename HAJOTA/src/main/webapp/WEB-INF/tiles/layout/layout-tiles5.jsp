@@ -53,10 +53,16 @@
 		action(pageno,seq_lodge,totalcount); 
 	} 
 	
+	
 	function action(pageno,seq_lodge,totalcount){
 	
 		pageno = pageno;
-		$.ajax({
+		
+		$(function() {
+
+			timer = setInterval( function () {
+		    
+			$.ajax({
 			
 			url : "/hajota/showreview.go",
 			data : {pageno : pageno
@@ -105,6 +111,8 @@
 			error : function(){
 				alert("안됨");
 			}
+		});
+			}, 10000); // 30초에 한번씩 받아온다.
 		});
 		}
 	

@@ -15,7 +15,20 @@ $(document).ready(function() {
      },
      
      function(){
-       window.location.href = "${loc}";
+    var loc = "${loc}";
+    
+    	 
+    if(loc != null){
+    	 window.location.href = "${loc}";
+    }
+    else{
+    	window.opener.open('','_self').close();
+    	window.open('','_parent').close();	
+    }
+      
+       
+       
+       
    });
 });
 </script>

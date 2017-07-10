@@ -206,7 +206,7 @@ $(function(){
             var left = left + plus;
             var hao = hao + 1;            
             if(hao==2){
-            html +='<div class="user-wrap click" style="margin-left:'+left+'px;"><input type="hidden" value="쿠폰당첨! Click★" data-node="'+userList[i]+'"><button class="ladder-start" style="background-color:'+color+'" data-color="'+color+'" data-node="'+userList[i]+'"></button>';
+            html +='<div class="user-wrap click" style="margin-left:'+left+'px;" ><input type="hidden" value="쿠폰당첨! Click★" data-node="'+userList[i]+'"><button class="ladder-start" style="background-color:'+color+'" data-color="'+color+'" data-node="'+userList[i]+'"></button>';
             html +='</div>'
             
             }
@@ -236,7 +236,7 @@ $(function(){
             var hao = hao + 1; 
             
             html +='<div class="answer-wrap" style="margin-left:'+left+'px;"><input type="text" data-node="'+node+'">';           
-            html +='<a href="/hajota/coupon.go"><p id="'+node+'-user"></p></a>'            	
+            html +='<a href="getCoupon2.go"><p id="'+node+'-user"></p></a>'            	
             html +='</div>'   
         }
         ladder.append(html);
@@ -378,6 +378,19 @@ $(function(){
         }
     
     }
+    
+    
+    
+    function getCoupon(){
+			
+		var bool = confirm("쿠폰을 받으시겠습니까?");
+		
+	    if(bool) {	    	
+	    	 document.location.href = "getCoupon.go";
+	    }
+ 				
+ 	}
+    
 
 
 

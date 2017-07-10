@@ -13,9 +13,10 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
 <body class="w3-light-grey">
 
 <!-- Navigation Bar --> 
- <div class="w3-bar w3-white w3-border-bottom w3-xlarge">
+ <div class="w3-top w3-bar w3-white w3-border-bottom w3-xlarge">
+ <a href="<%=request.getContextPath()%>/index.go">
   <img src="<%= request.getContextPath() %>/resources/images/oneofall/logo.png" style="width:200px; height:60px; margin-left: 30px;"/>
-
+</a>
                <label><i class="fa fa-search-plus" style="margin-left: 270px;"></i></label>&nbsp;              
                <input type="text" id="search" name="search" placeholder="目的地" size="10" style="height: 30px;" />&nbsp; 
         
@@ -34,8 +35,10 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
   <img src="<%= request.getContextPath() %>/resources/images/oneofall/South Korea.png" style=" margin-left:100px;"/> </a>
 <a href="<%= request.getContextPath() %>/indexChinese.go">
   <img src="<%= request.getContextPath() %>/resources/images/oneofall/China.png" style="margin-left: 10px;"/> </a>
-   <img src="<%= request.getContextPath() %>/resources/images/oneofall/Japan.png" style="margin-left: 10px;"/> 
-  <img src="<%= request.getContextPath() %>/resources/images/oneofall/USA.png" style="margin-left: 10px;"/>
+<a href="<%= request.getContextPath() %>/indexJapanese.go">  
+   <img src="<%= request.getContextPath() %>/resources/images/oneofall/Japan.png" style="margin-left: 10px;"/> </a>
+<a href="<%= request.getContextPath() %>/indexEnglish.go">   
+  <img src="<%= request.getContextPath() %>/resources/images/oneofall/USA.png" style="margin-left: 10px;"/> </a>
    
   
   <a href="#" class="w3-bar-item w3-button  w3-right w3-hide-small w3-padding-large" title="question"><i class="fa fa-question-circle"></i></a>

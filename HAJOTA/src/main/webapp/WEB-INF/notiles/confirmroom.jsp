@@ -136,32 +136,54 @@ IMP.request_pay({
 		
 		alert(msg);
 		insert();
-		
+		self.close();
     } else {
         var msg = '결제에 실패하였습니다.';
         msg += '에러내용 : ' + rsp.error_msg;
         
         alert(msg);
-        insert();
+        
     }
 });
 } 
 
 function insert(){
+	 var totalsaleprice = $("#totalsaleprice").val(); 
+	 var people = $("#people").val(); 
+	 var startdate = $("#startdate").val(); 
+	 var enddate = $("#enddate").val(); 
+	 var cupon = $("#coupon").val();
+	 var email = $("#c_email").val();
+	 var roomno = $("#c_roomno").val();
+	 alert(email);
+	 alert(roomno);
+	 alert(cupon);
+	 alert(startdate);
+	 alert(enddate);
+	 alert(people);
+	 alert(totalsaleprice);
+	 
+	 
+	 $.ajax({
+		 
+		url : "/hajota/addtrip.go",
+		data : {email : email,
+				roomno : roomno,
+				cupon : cupon,
+				startdate : startdate,
+				enddate : enddate,
+				people : people,
+				totalsaleprice : totalsaleprice},
+		dataType : "JSON",
+		success : function(){
+			alert("결제완료");
+		},
+		error : function(){
+			alert("결제실패");
+		}
+	 });
+	 
 	
-	var form = document.payroomfrm;
-	alert($("#totalsaleprice").val());
-	alert($("#people").val());
-	alert($("#startdate").val());
-	alert($("#enddate").val());
-	
-	form.A_totalsaleprice.value = $("#totalsaleprice").val(); 
-	form.A_people.value = $("#people").val(); 
-	form.A_startdate.value = $("#startdate").val(); 
-	form.A_enddate.value = $("#enddate").val(); 
-	form.action = "/hajota/addtrip.go";
-	form.method = "GET";
-	form.submit();
 	
 }
 
@@ -189,11 +211,12 @@ function insert(){
     <input style="width: 60px; text-align: center; " type="text" id="people" name="people"  min="1" max="15" value="1" size="10" readonly />
     <button style="width: 30px; height: 30px; border: none; background: none; position: absolute; margin-left: 1%; margin-top: 2.9%;" id="add" type="button"><img style="width: 30px; height: 30px;" src="<%=request.getContextPath() %>/resources/images/JHHY/add.png"></button>
 	<input type="text" id="updownprice" />
-	<select>
+	<select id="coupon">
 	<c:forEach var="cupon" items="${cuponlist}">
-	<option>${cupon.name} , ${cupon.percent}% , ${cupon.endday}</option>
+	<option value="${cupon.couponno}"> ${cupon.name} , ${cupon.percent}% , ${cupon.endday}</option>
 	</c:forEach>
 	</select>
+	
     <input type="button" style="margin-left: 0%" name="next" class="next action-button" value="Next" />
   </fieldset>
   <!-- fieldsets -->
@@ -233,11 +256,11 @@ function insert(){
 <form id="payroomfrm" name="payroomfrm" >
     <input type="hidden" id="c_email" name="email" value="${email}" />
 	<input type="hidden" id="c_roomno" name="roomno" value="${roomno}" />
-	<input type="hidden" id="c_cuponseq" name="cuponseq" value="${cupon}" />
     <input type="hidden" id="totalsaleprice" name="A_totalsaleprice"  />  
     <input type="hidden" id="people" name="A_people">
     <input type="hidden" id="startdate" name="A_startdate" />
     <input type="hidden" id="enddate" name="A_enddate" />
+    <input type="hidden" name="couponno"  />
   </form>  
 
 </body>

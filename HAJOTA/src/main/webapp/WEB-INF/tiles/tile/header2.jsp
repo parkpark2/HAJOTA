@@ -40,18 +40,17 @@
  
      $(document).ready(function(){
         
-    	  if(${sessionScope.loginuser.GRADE== 1}){
-              location.href="<%= request.getContextPath()%>/indexManager.go"    
-           }
-           
-           if(${sessionScope.loginuser.GRADE== 2}){
-              location.href="<%= request.getContextPath()%>/indexManager.go"    
-           }
-           
-           if(${sessionScope.loginuser.GRADE== 3}){
-              location.href="<%= request.getContextPath()%>/indexManager.go"    
-           }
-
+       if(${sessionScope.loginuser.GRADE== 1}){
+          location.href="<%= request.getContextPath()%>/indexManager.go"    
+       }
+       
+       if(${sessionScope.loginuser.GRADE== 2}){
+          location.href="<%= request.getContextPath()%>/indexManager.go"    
+       }
+       
+       if(${sessionScope.loginuser.GRADE== 3}){
+          location.href="<%= request.getContextPath()%>/indexManager.go"    
+       }
        
         $(".error").hide();
         
@@ -126,14 +125,6 @@
         
         $("#btnLOGIN").click(function(event){
            
-           /* if(${sessionScope.loginuser != null}) {
-              alert("이미 로그인을 하신 상태 입니다 !!");
-              $("#guest_email").val(""); 
-              $("#pwd").val("");
-              $("#guest_email").focus();
-              event.preventDefault();
-              return; 
-           } */
            
            var email = $("#email").val(); 
            var pwd = $("#pwd").val(); 
@@ -162,15 +153,7 @@
        
        $("#btnJOIN").click(function(event){
            
-           /* if(${sessionScope.loginuser != null}) {
-              alert("이미 로그인을 하신 상태 입니다 !!");
-              $("#guest_email").val(""); 
-              $("#pwd").val("");
-              $("#guest_email").focus();
-              event.preventDefault();
-              return; 
-           } */
-           
+
           var email = $("#join_email").val(); 
           var pwd = $("#join_pwd").val(); 
           var last_name = $("#join_last_name").val(); 
@@ -291,27 +274,34 @@
 </script>
 
    <!-- Navigation Bar -->
-    <div class="w3-bar w3-white w3-border-bottom w3-xlarge">
+    <div class="w3-top w3-bar w3-white w3-border-bottom w3-xlarge">
       <a href="<%=request.getContextPath()%>/index.go">
       <img src="<%=request.getContextPath()%>/resources/images/oneofall/logo.png"
          style="width: 200px; height: 60px; margin-left: 30px;" /> 
       </a>
       
-       <a href="<%=request.getContextPath()%>/index.go"> <img
-         src="<%=request.getContextPath()%>/resources/images/oneofall/South Korea.png"
+       <a href="<%=request.getContextPath()%>/index.go"> 
+       <img src="<%=request.getContextPath()%>/resources/images/oneofall/South Korea.png"
          style="margin-left: 2%;" />
-      </a> <a href="<%=request.getContextPath()%>/indexChinese.go"> <img
-         src="<%=request.getContextPath()%>/resources/images/oneofall/China.png"
+      </a>
+       
+       <a href="<%=request.getContextPath()%>/indexChinese.go"> 
+       <img src="<%=request.getContextPath()%>/resources/images/oneofall/China.png"
          style="margin-left: 10px;" />
-      </a> <img
-         src="<%=request.getContextPath()%>/resources/images/oneofall/Japan.png"
-         style="margin-left: 10px;" /> <img
-         src="<%=request.getContextPath()%>/resources/images/oneofall/USA.png"
+       </a> 
+      
+      <a href="<%=request.getContextPath()%>/indexJapanese.go">
+      <img src="<%=request.getContextPath()%>/resources/images/oneofall/Japan.png"
+         style="margin-left: 10px;" /> 
+      </a>
+      
+      <a href="<%=request.getContextPath()%>/indexEnglish.go">   
+      <img src="<%=request.getContextPath()%>/resources/images/oneofall/USA.png"
          style="margin-left: 10px;" />
-
+     </a>
       
        <a href="<%=request.getContextPath()%>/callview.go" class="w3-bar-item w3-button  w3-right w3-hide-small w3-padding-large"
-         title="Q&A2"><i class="fa fa-question-circle"></i></a>
+         title="Q&A"><i class="fa fa-question-circle"></i></a>
 
       <c:if test="${sessionScope.loginuser == null}">        
          <a data-toggle="modal" data-target="#loginModal"
@@ -330,11 +320,10 @@
                ${sessionScope.loginuser.LAST_NAME}${sessionScope.loginuser.FIRST_NAME} 게스트님
             </a>
           
-          	<a href="<%=request.getContextPath()%>/coupon.go"
+              <a href="<%=request.getContextPath()%>/coupon.go"
                class="w3-bar-item w3-button  w3-right w3-hide-small w3-padding-large"
-               title="EVENT"><i class="fa fa-heart"></i></a>  
+               title="EVENT"><i class="fa fa-heart"></i></a>   
           
-
             <a href="<%=request.getContextPath()%>/logout.go"
                class="w3-bar-item w3-button  w3-right w3-hide-small w3-padding-large"
                title="LOGOUT"><i class="fa fa-sign-out"></i></a>
@@ -357,13 +346,15 @@
                class="w3-bar-item w3-button  w3-right w3-hide-small w3-padding-large"
                title="LOGOUT"><i class="fa fa-sign-out"></i></a>
          
+             <a href="<%=request.getContextPath()%>/rooms/insert.go" class="w3-bar-item w3-button  w3-right w3-hide-small w3-padding-large" title="HOSTING">
+            <i class="fa fa-globe"></i></a>
+         
             <a href="<%=request.getContextPath()%>/editUser.go"
                class="w3-bar-item w3-button  w3-right w3-hide-small w3-padding-large" title="MYPAGE"> 
                <img src="<%=request.getContextPath()%>/resources/images/ISJW/user.png" width="35px;" height="35px;" />
             </a>
             
-            <a href="#" class="w3-bar-item w3-button  w3-right w3-hide-small w3-padding-large" title="HOSTING">
-            <i class="fa fa-globe"></i></a>
+            
             
             </c:if>
         
@@ -379,7 +370,6 @@
    </div>
    
    
-
 <!-- 로그인&회원가입 Modal -->
 <div class="body modal fade" id="loginModal" role="dialog"
    style="width: 40%; margin-left: 27%; margin-top: 7%; background-color: none;">
@@ -387,8 +377,7 @@
       <section class="container">
          <article class="half">
          <div align="center">
-            <button class="button button2" style="width: 100%"><img align="left" src="<%= request.getContextPath() %>/resources/images/ISJW/페이스북.png" style="width:7%; height: 7%; margin-top: 5px;">&nbsp;facebook으로 로그인</button><br>
-            <button class="button button4" style="width: 100%"><img align="left" src="<%= request.getContextPath() %>/resources/images/ISJW/구글.jpg" style="width:7%; height: 7%; margin-top: 5px;">&nbsp;google으로 로그인</button><br><br>
+            
             </div>
             <div class="tabs">
                <span class="tab signin active"><a href="#signin">Sign in</a></span> 
@@ -396,6 +385,8 @@
             </div>
             <div class="content">
                <div class="signin-cont cont">
+                  <button class="button button2" style="width: 100%"><img align="left" src="<%= request.getContextPath() %>/resources/images/ISJW/페이스북.png" style="width:7%; height: 7%; margin-top: 5px;">&nbsp;facebook으로 로그인</button><br>
+            <button class="button button4" style="width: 100%"><img align="left" src="<%= request.getContextPath() %>/resources/images/ISJW/구글.jpg" style="width:7%; height: 7%; margin-top: 5px;">&nbsp;google으로 로그인</button><br><br>
                   <form action="#" method="post" enctype="multipart/form-data" name="loginFrm">
                      <input type="email" name="email" id="email" class="inpt" required="required" placeholder="이메일 주소"> 
                      <label for="email">이메일 주소</label> 

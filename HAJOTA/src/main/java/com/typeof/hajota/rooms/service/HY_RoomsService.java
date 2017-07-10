@@ -39,22 +39,17 @@ public List<HashMap<String, String>> getcuponlist(HashMap<String, String> map) {
 	return getcuponlist;
 }
 
-/*public List<HashMap<String, String>> getreviewlist(String seq_lodge , RowBounds rowbounds) {
 
-	List<HashMap<String, String>> reviewlist = dao.getreviewlist(seq_lodge , rowbounds);
-	
-	return reviewlist;
-}*/
-public List<HashMap<String, String>> getreviewlist(RowBounds rowbounds) {
+public List<HashMap<String, String>> getreviewlist(String seq_lodge ,RowBounds rowbounds) {
 
-	List<HashMap<String, String>> reviewlist = dao.getreviewlist(rowbounds);
+	List<HashMap<String, String>> reviewlist = dao.getreviewlist(seq_lodge ,rowbounds);
 	
 	return reviewlist;
 }
 
-public int getreviewcount() {
+public int getreviewcount(String seq) {
 
-	int totalcount = dao.getreviewcount();
+	int totalcount = dao.getreviewcount(seq);
 	
 	return totalcount;
 }
@@ -63,6 +58,11 @@ public int insertreport(HashMap<String, String> map) {
 
 	int n = dao.insertreport(map);
 	
+	return n;
+}
+
+public int addtrip(HashMap<String, String> map) {
+	int n = dao.addtrip(map);
 	return n;
 }
 

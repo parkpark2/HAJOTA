@@ -178,4 +178,85 @@
 		<put-attribute name="content" value="/WEB-INF/views10/{1}/{2}/{3}.jsp"/>
    </definition>
 	
+	<!-- 중국어tiles 레이아웃 -->
+	<definition name="layout-Chinese"   template="/WEB-INF/tiles/layout/layout-Chinese.jsp"> 
+		<put-attribute name="header"    value="/WEB-INF/tiles/tile/headerChinese.jsp" />
+		<put-attribute name="content"   value="" />
+		<put-attribute name="footer"    value="/WEB-INF/tiles/tile/footer.jsp" />
+		<put-attribute name="search"    value="/WEB-INF/tiles/tile/searchChinese.jsp" />
+	</definition>
+	
+	<!-- 콘텐츠 항목 -->
+	<definition name="*.tilesC" extends="layout-Chinese">
+		<put-attribute name="content" value="/WEB-INF/views7/{1}.jsp"/>
+	</definition>
+	<definition name="*/*.tilesC" extends="layout-Chinese">
+		<put-attribute name="content" value="/WEB-INF/views7/{1}/{2}.jsp"/>
+	</definition>
+	<definition name="*/*/*.tilesC" extends="layout-Chinese">
+		<put-attribute name="content" value="/WEB-INF/views7/{1}/{2}/{3}.jsp"/>
+	</definition>
+	<!-- 중국어tiles 레이아웃 끝 -->
+	
+	<!-- 영어tiles 레이아웃 -->
+	<definition name="layout-English"   template="/WEB-INF/tiles/layout/layout-English.jsp"> 
+		<put-attribute name="header"    value="/WEB-INF/tiles/tile/headerEnglish.jsp" />
+		<put-attribute name="content"   value="" />
+		<put-attribute name="footer"    value="/WEB-INF/tiles/tile/footer.jsp" />
+		<put-attribute name="search"    value="/WEB-INF/tiles/tile/searchEnglish.jsp" />
+	</definition>
+	
+	<!-- 콘텐츠 항목 -->
+	<definition name="*.tilesE" extends="layout-English">
+		<put-attribute name="content" value="/WEB-INF/views8/{1}.jsp"/>
+	</definition>
+	<definition name="*/*.tilesE" extends="layout-English">
+		<put-attribute name="content" value="/WEB-INF/views8/{1}/{2}.jsp"/>
+	</definition>
+	<definition name="*/*/*.tilesE" extends="layout-English">
+		<put-attribute name="content" value="/WEB-INF/views8/{1}/{2}/{3}.jsp"/>
+	</definition>
+	<!-- 영어tiles 레이아웃 끝 -->
+	
+	<!-- 일본어tiles 레이아웃 -->
+	<definition name="layout-Japanese"   template="/WEB-INF/tiles/layout/layout-Japanese.jsp"> 
+		<put-attribute name="header"    value="/WEB-INF/tiles/tile/headerJapanese.jsp" />
+		<put-attribute name="content"   value="" />
+		<put-attribute name="footer"    value="/WEB-INF/tiles/tile/footer.jsp" />
+		<put-attribute name="search"    value="/WEB-INF/tiles/tile/searchJapanese.jsp" />
+	</definition>
+	
+	<!-- 콘텐츠 항목 -->
+	<definition name="*.tilesJ" extends="layout-Japanese">
+		<put-attribute name="content" value="/WEB-INF/views9/{1}.jsp"/>
+	</definition>
+	<definition name="*/*.tilesJ" extends="layout-Japanese">
+		<put-attribute name="content" value="/WEB-INF/views9/{1}/{2}.jsp"/>
+	</definition>
+	<definition name="*/*/*.tilesJ" extends="layout-Japanese">
+		<put-attribute name="content" value="/WEB-INF/views9/{1}/{2}/{3}.jsp"/>
+	</definition>
+	<!-- 일본어tiles 레이아웃 끝 -->
+	
+	<!-- EVENT tiles 레이아웃 -->
+	<definition name="layout-tiles11"    template="/WEB-INF/tiles/layout/layout-tiles11.jsp"> 
+		<put-attribute name="header"    value="/WEB-INF/tiles/tile/header.jsp" />
+		<put-attribute name="content"   value="" />
+		<put-attribute name="footer"    value="/WEB-INF/tiles/tile/footer.jsp" />
+	</definition>
+	
+	<!-- 콘텐츠 항목 -->
+	<definition name="*.tiles11" extends="layout-tiles11">
+		<put-attribute name="content" value="/WEB-INF/views11/{1}.jsp"/>
+	</definition>
+	<definition name="*/*.tiles11" extends="layout-tiles2">
+		<put-attribute name="content" value="/WEB-INF/views11/{1}/{2}.jsp"/>
+	</definition>
+	<definition name="*/*/*.tiles11" extends="layout-tiles2">
+		<put-attribute name="content" value="/WEB-INF/views11/{1}/{2}/{3}.jsp"/>
+	</definition>
+	<!-- EVENT tiles 레이아웃 끝 -->
+	
+	
+	
 </tiles-definitions> 

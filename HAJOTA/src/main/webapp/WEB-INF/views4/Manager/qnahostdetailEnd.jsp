@@ -17,7 +17,7 @@
 	.short {width: 120px;} 		
 
 </style>
-
+ 
 <script type="text/javascript">
 	
 	$(document).ready(function() {

@@ -133,6 +133,7 @@
 		    <if test="colname != null and search != null">     
 		        and ${colname} like '%'|| #{search} ||'%'
 		    </if>
+		    order by seq_coupon desc
 		) V
 	 ) T
 	 where T.RNO >= #{start} and T.RNO <![CDATA[<=]]> #{end}
@@ -248,7 +249,7 @@
       select count(*) as cnt
       from tbl_member
       where status = 1 and email = #{email}
-   </select>
+    </select>
 	
 	<!-- 돌려돌려돌림판에 참여하면 실행횟수 증가 시키기 -->
 	<update id="plusDolGame" parameterType="java.util.HashMap">
@@ -261,5 +262,39 @@
 		update tbl_event set count = count + 1
 	    where seq_event = 2
 	</update> 
+
+	<resultMap type="java.util.HashMap" id="tbl_login_infomap">
+	    <result property="CNT" 		column="cnt" 	 javaType="int" />
+	    <result property="TIME" 	column="time" 	 javaType="String" />
+    </resultMap>
+
+	<!-- 오늘 시간대 별로 로그인한 회원수 구하기 -->
+	<select id="loginTimeCount" parameterType="java.util.HashMap" resultMap="tbl_login_infomap"> 	
+		select substr(a.time, 12, 13) as time, nvl(b.cnt, 0) as cnt
+		from (select to_char(to_date(to_char(sysdate, 'yyyy-mm-dd'), 'yyyy-mm-dd') + ((level - 1) / 24), 'yyyy-mm-dd hh24') as time from dual connect by level <![CDATA[<=]]> 24) a
+		left outer join 
+		(select time, count(time) as cnt 
+		from (select to_char(logintime, 'yyyy-mm-dd hh24') as time 
+		from tbl_login_info where to_char(logintime, 'yyyy-mm-dd') = to_char(sysdate, 'yyyy-mm-dd')) group by time) b
+		on a.time = b.time
+		order by time asc
+	</select>	
+	
+	<resultMap type="java.util.HashMap" id="tbl_join_guestmap">
+	    <result property="CNT" 		column="cnt" 	 javaType="int" />
+	    <result property="MONTH" 	column="month" 	 javaType="String" />
+    </resultMap>
+	
+	<!-- 매달 가입한 게스트의 총수 -->
+	<select id="joinGuestChart" parameterType="java.util.HashMap" resultMap="tbl_join_guestmap"> 
+		select C.grade, nvl(A.month, B.month) as month, nvl(B.count, 0) as CNT
+	    from (select (level + 7) as grade from dual connect by level <![CDATA[<=]]> 2) C full outer join
+        (select level as month from dual connect by level <![CDATA[<=]]> 12) A on 1 = 1 full outer join
+        (select grade, month, count(month) as count
+        from (select grade, extract(year from regidate) as year, extract(month from regidate) as month from tbl_member)
+        where year = 2017 and grade in (8, 9)
+        group by month, grade) B on A.month = B.month and C.grade = B.grade
+		order by C.grade, A.month asc
+	</select>
 	
 </mapper>

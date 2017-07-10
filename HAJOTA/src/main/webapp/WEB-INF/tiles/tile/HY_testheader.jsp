@@ -15,7 +15,7 @@ $(document).ready(function(){
 
 function goconfirmroom(){
 	
-	 var gsWin = window.open('about:blank','payviewer','width=500,height=500,top=500,left=500');
+	 var gsWin = window.open('about:blank','payviewer','width=700,height=550,top=300,left=500');
      var frm =document.tripFrm;
      frm.action = '/hajota/confirmroom.go';
      frm.target ="payviewer";

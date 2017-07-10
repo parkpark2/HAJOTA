@@ -160,9 +160,10 @@ public class HY_RoomsController {
         String email = (String)loginuser.get("EMAIL");  
         String seq = (String)req.getParameter("seq_lodge");
         
-        int totalcount = service.getreviewcount();
+        int totalcount = service.getreviewcount(seq);
         HashMap<String, Object> listdetail = service.getlistdetail(seq);
-       
+        
+        
         req.setAttribute("email", email);
         req.setAttribute("totalcount", totalcount);
         req.setAttribute("listdetail", listdetail);
@@ -188,15 +189,16 @@ public class HY_RoomsController {
     }
     /*숙소 결제*/ 
    @RequestMapping(value="/addtrip.go", method={RequestMethod.GET})
-    public String addtrip(HttpServletRequest req) {
+   @ResponseBody
+    public int addtrip(HttpServletRequest req) {
     
 	    String email = req.getParameter("email");
     	String roomno = req.getParameter("roomno");
-    	String cupon = req.getParameter("cuponseq");
-    	String people = req.getParameter("A_people");
-    	String startdate = req.getParameter("A_startdate");
-    	String enddate = req.getParameter("A_enddate");
-    	String totalsaleprice = req.getParameter("A_totalsaleprice");
+    	String cupon = req.getParameter("cupon");
+    	String people = req.getParameter("people");
+    	String startdate = req.getParameter("startdate");
+    	String enddate = req.getParameter("enddate");
+    	String totalsaleprice = req.getParameter("totalsaleprice");
     	
     	HashMap<String, String> map = new HashMap<String, String>();
     	map.put("email", email);
@@ -207,10 +209,11 @@ public class HY_RoomsController {
     	map.put("enddate", enddate);
     	map.put("totalsaleprice", totalsaleprice);
     	
+    	int n = service.addtrip(map);
     	
     	
     	
-    	return "addtrip.notiles";
+    	return n;
     	// /Board/src/main/webapp/WEB-INF/views/main/test.jsp 파일을 생성한다.
     }
    
@@ -266,12 +269,11 @@ public class HY_RoomsController {
     	offset = pageno;
     	
     	RowBounds rowbounds = new RowBounds(start, offset);
-    	/*int totalcount = service.getreviewcount(seq_lodge);*/
-
-    	/*List<HashMap<String, String>> reviewlist = service.getreviewlist(seq_lodge,rowbounds);*/
-    	List<HashMap<String, String>> reviewlist = service.getreviewlist(rowbounds);
     	
-    	/*req.setAttribute("totalcount", totalcount);*/
+
+    	List<HashMap<String, String>> reviewlist = service.getreviewlist(seq_lodge,rowbounds);
+    	
+    	
     	
     	return reviewlist;
     	// /Board/src/main/webapp/WEB-INF/views/main/test.jsp 파일을 생성한다.
@@ -286,13 +288,12 @@ public class HY_RoomsController {
     	String reviewno = req.getParameter("reviewno");
     	
     	
-    	/*System.out.println(email);
-    	System.out.println(reviewno);*/
+    	
     	HashMap<String, String> map = new HashMap<String, String>();
     	map.put("email", email);
     	map.put("reviewno", reviewno);
     	
-    	/*int n = service.insertreport(map);*/
+    	
     	req.setAttribute("email", email);
     	req.setAttribute("reviewno", reviewno);
     	return "Reviewreport.notiles";

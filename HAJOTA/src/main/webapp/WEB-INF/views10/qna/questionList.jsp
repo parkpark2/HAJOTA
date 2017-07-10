@@ -147,7 +147,9 @@ tr:hover{background-color:#f5f5f5}
               $("#search2").val("${search}");   // 검색어를 유지시켜 주겠다.
           </c:if>
      }
-     
+     function goalert(){
+    	 alert("자신의 글만 읽을 수 있습니다.");
+     }
      
 </script>
 <div>
@@ -171,8 +173,14 @@ tr:hover{background-color:#f5f5f5}
 			<c:forEach var="que" items="${questionList}" varStatus="status">
 				<tr>
 					<td align="center">${que.SEQ_QUESTION}</td>
-					<td><a
-						href="<%= request.getContextPath() %>/qnaDetail.go?seq=${que.SEQ_QUESTION}">${que.SUBJECT}</a></td>
+					<td>
+					<c:if test="${sessionScope.loginuser.EMAIL == que.EMAIL}">	
+					<a href="<%= request.getContextPath() %>/qnaDetail.go?seq=${que.SEQ_QUESTION}">${que.SUBJECT}</a>
+					</c:if>
+					<c:if test="${sessionScope.loginuser.EMAIL != que.EMAIL}">	
+					<a onclick="goalert();">${que.SUBJECT}</a>
+					</c:if>	
+					</td>
 					<td>${que.EMAIL}</td>
 					<td>${que.WRITEDATE}</td>
 					<td><c:if test="${que.REPLYSTATUS==1}">		        	

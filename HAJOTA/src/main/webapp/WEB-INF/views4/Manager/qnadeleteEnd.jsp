@@ -7,7 +7,7 @@
 			alert("글 삭제 성공!!");
 			location.href="/hajota/qnaManager.go";       
 		</c:if>
-		
+		 
 		<c:if test="${n != 1}">
 			alert("글 삭제 실패!!");
 			javascript:history.back();

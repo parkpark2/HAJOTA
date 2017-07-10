@@ -69,6 +69,7 @@
 
 	<!-- 쿠폰 이름 , 종료날 , 퍼센트 가져올 맵 -->
 	<resultMap type="java.util.HashMap" id="selectcupon">
+	<result property="couponno" column="seq_coupon" javaType="String" />
 	<result property="name" column="NAME" javaType="String" />
 	<result property="endday" column="ENDDAY" javaType="String" />
 	<result property="percent" column="PERCENT" javaType="String" />
@@ -76,9 +77,9 @@
 
 	<!-- 쿠폰 이름 , 종료날 , 퍼센트 가져올 쿼리문 -->
 	<select id="getcuponlist" parameterType="java.util.HashMap" resultMap="selectcupon">
-	select NAME , to_char(ENDDAY , 'yyyy-mm-dd') as ENDDAY , PERCENT 
+	select seq_coupon , NAME , to_char(ENDDAY , 'yyyy-mm-dd') as ENDDAY , PERCENT 
 	from TBL_COUPON
-	where email = #{email}
+	where email = #{email} and status = 1
 	</select>
 
 	<!-- 리뷰 맵 -->
@@ -113,7 +114,7 @@
 	on A.seq_payment = B.seq_payment
 	)
 	V
-	<!-- where seq_lodge = #{seq_lodge} -->
+	where seq_lodge = #{seq_lodge}
 	</select>
 
 
@@ -128,7 +129,7 @@
 	on A.seq_payment = B.seq_payment
 	)
 	V
-	<!-- where seq_lodge = #{seq_lodge} -->
+	where seq_lodge = #{seq_lodge}
 	</select>
 
 	<insert id="insertreport" parameterType="java.util.HashMap">
@@ -137,6 +138,11 @@
 	</insert>
 
 
+
+    <insert id="addtrip" parameterType="java.util.HashMap">
+	  insert into tbl_payment(seq_payment , seq_lodge , email , checkin_date , checkout_date , checkin_person , seq_coupon , total_saleprice , salesdate , status)
+      values(seq_payment.nextval , #{roomno} , #{email} , #{startdate} , #{enddate} , #{people} , #{cupon} , #{totalsaleprice} , default , default)
+    </insert> 
 
 
 </mapper>

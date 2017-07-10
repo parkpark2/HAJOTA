@@ -6,7 +6,7 @@
 <script>
 	$(function() {
 		$(".datepicker").datepicker({
-
+ 
 		});
 	});
 </script>
@@ -31,7 +31,7 @@
 			</p>
 
 			<p>
-				<!-- 달력 띄우자 -->
+			
 				<span style="color: white;"> <label><i
 						class="fa fa-search"></i> 目的地</label>&nbsp;
 				</span> <input type="text" id="search" name="search" placeholder="中文/拼音"

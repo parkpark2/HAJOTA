@@ -15,7 +15,7 @@
 	#table td{width: 480px;}
 	.long {width: 470px;}
 	.short {width: 120px;} 		
-
+ 
 </style>
 
 <script type="text/javascript">

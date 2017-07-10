@@ -189,15 +189,17 @@ $(document).ready(function(){
 	</script>
 
 <div>
-	<span style="font-size: 25px; font-weight: bold;">이벤트 페이지</span>
+	<span style="font-size: 25px; font-weight: bold;">
+	<img src="<%= request.getContextPath() %>/resources/images/HSSH/managericon.png" style="width: 50px; height: 50px;" />
+	이벤트 페이지</span>
 </div>
 <div id="line" style="position:relative; top:10px; background-color:navy; height: 3px; "></div>
 
 <div class="container" style="margin-top: 100px;">
 
-<div>
-	<span style="font-size: 20px; font-weight: bold;">※쿠폰현황※</span>
-</div>
+	<div>
+		<span style="font-size: 20px; font-weight: bold;">※쿠폰현황※</span>
+	</div>
 
 <c:if test="${couponList != null || empty couponList}">
 	<div class="tableA">    
@@ -242,16 +244,21 @@ $(document).ready(function(){
 	        ${event.ENDDAY}
 	      </div>
 	      <div class="cell">
-	        ${event.PERCENT}
+	        ${event.PERCENT}%
 	      </div>	      	
 	  <c:if test="${event.STATUS == 0 }">
 	 	  <div class="cell">
-	        ${event.STATUS} 사용불가
+	        ${event.STATUS} 사용완료
 	      </div>
 	  </c:if>
 	  <c:if test="${event.STATUS == 1 }">
 	  	  <div class="cell">
 	        ${event.STATUS} 사용가능
+	      </div>
+	  </c:if>
+	  <c:if test="${event.STATUS == 2 }">
+	  	  <div class="cell">
+	        ${event.STATUS} 기간만료
 	      </div>
 	  </c:if>
 	              
@@ -356,66 +363,61 @@ $(document).ready(function(){
 </div>
 <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
 <div style="display: inline-block; width: 40%; margin-left: 5%">
-<div>
-	<span style="font-size: 20px; font-weight: bold; display: inline-block;">※오늘 생일인 회원목록※</span>
-</div>
+	<div>
+		<span style="font-size: 20px; font-weight: bold; display: inline-block;">※오늘 생일인 회원목록※</span>
+	</div>
 
-<c:if test="${birthUserList != null || empty birthUserList}">
-<div class="table">    
-    <div class="row header blue">
-      <div class="cell">
-        NO
-      </div>
-      <div class="cell">
-        EMAIL
-      </div>
-      <div class="cell">
-        NAME
-      </div>
-      <div class="cell">
-       BIRTHDAY
-      </div>
-      <div class="cell">
-       메일발송버튼
-      </div>
-    </div>
-    
-    <c:forEach var="birth" items="${birthUserList}">
-    <div class="row">
-      <div class="cell">
-       	${birth.SEQ_MEMBER}
-      </div>
-      <div class="cell">
-        ${birth.EMAIL}
-      </div>
-      <div class="cell">
-        ${birth.LAST_NAME}${birth.FIRST_NAME}
-      </div>
-      <div class="cell">
-        ${birth.BIRTHDAY}
-      </div>	
- 	  <div class="cell">
-      <button type="button" class="button" onclick="javascript:goEmail('${birth.EMAIL}')">메일발송</button>
-      </div>      
-    </div>
-	</c:forEach>	
-</div>
-</c:if>
 
-<c:if test="${birthUserList == null || empty birthUserList}">
-<div class="table">    
-   	<div class="row header blue">
+	<div class="table">    
+<c:if test="${birthUserList != null}">	
+	    <div class="row header blue">
 	      <div class="cell">
-	        BIRTH LIST
+	        NO
 	      </div>
-     	</div>
-      <div class="row">
+	      <div class="cell">
+	        EMAIL
+	      </div>
+	      <div class="cell">
+	        NAME
+	      </div>
+	      <div class="cell">
+	       BIRTHDAY
+	      </div>
+	      <div class="cell">
+	       메일발송버튼
+	      </div>
+	    </div>
+	    
+	    <c:forEach var="birth" items="${birthUserList}">
+	    <div class="row">
+	      <div class="cell">
+	       	${birth.SEQ_MEMBER}
+	      </div>
+	      <div class="cell">
+	        ${birth.EMAIL}
+	      </div>
+	      <div class="cell">
+	        ${birth.LAST_NAME}${birth.FIRST_NAME}
+	      </div>
+	      <div class="cell">
+	        ${birth.BIRTHDAY}
+	      </div>	
+	 	  <div class="cell">
+	      <button type="button" class="button" onclick="javascript:goEmail('${birth.EMAIL}')">메일발송</button>
+	      </div>      
+	    </div>
+		</c:forEach>
+	</c:if>	
+	
+	<c:if test="${birthUserList == null || empty birthUserList}">
+ 	<div class="row">
       	<div class="cell">
-       	오늘 생일인 회원이 없습니다.
+       		오늘 생일인 회원이 없습니다.
       	</div>
-      </div>
     </div>	
-</c:if>
+	</c:if>	
+			
+	</div>
 
 </div>
 </div>
@@ -433,7 +435,6 @@ $(document).ready(function(){
 </form>
 
 </div>
-</html>
 
 
 

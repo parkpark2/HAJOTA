@@ -5,364 +5,531 @@
 
 <!-- ===== #27. 루트엘리먼트 & 네임스페이스 설정(프로젝트 전체 내에서 고유해야 한다.) ===== -->
 <mapper namespace="SH_manager">
-	
-	<resultMap type="java.util.HashMap" id="Shownoticemap">
-		<result property="SEQ_NOTICE" column="seq_notice" javaType="int" />
-		<result property="ADMIN_ID" column="admin_id" javaType="String" />
-		<result property="EMAIL" column="email" javaType="String" />
-		<result property="SUBJECT" column="subject" javaType="String" />
-		<result property="CONTENT" column="content" javaType="String" />
-		<result property="WRITEDATE" column="writedate" javaType="String" />
-		<result property="STATUS" column="status" javaType="String" />
-	</resultMap>
-	
-	<select id="Shownotice" parameterType="java.util.HashMap" resultMap="Shownoticemap">
-	select seq_notice, email, subject, content, writedate, status
-	 from 
-	 (
-		select rownum as RNO, seq_notice, email, subject, content, writedate, status
-		from 
-		(
-		    select seq_notice, email, subject
-		    , case when length(content) > 10 then substr(content , 1, 10) || '....'
+   
+   <resultMap type="java.util.HashMap" id="Shownoticemap">
+      <result property="SEQ_NOTICE" column="seq_notice" javaType="int" />
+      <result property="ADMIN_ID" column="admin_id" javaType="String" />
+      <result property="EMAIL" column="email" javaType="String" />
+      <result property="SUBJECT" column="subject" javaType="String" />
+      <result property="CONTENT" column="content" javaType="String" />
+      <result property="WRITEDATE" column="writedate" javaType="String" />
+      <result property="STATUS" column="status" javaType="String" />
+   </resultMap>
+   
+   <select id="Shownotice" parameterType="java.util.HashMap" resultMap="Shownoticemap">
+   select seq_notice, email, subject, content, writedate, status
+    from 
+    (
+      select rownum as RNO, seq_notice, email, subject, content, writedate, status
+      from 
+      (
+          select seq_notice, email, subject
+          , case when length(content) > 10 then substr(content , 1, 10) || '....'
                                         else content
                                         end as content
-		    , to_char(writedate,'yyyy-mm-dd') as writedate
-		    , status
-			from tbl_notice
-		    where status = 1
-		    <if test="colname != null and search != null">     
-		        and ${colname} like '%'|| #{search} ||'%'
-		    </if>
-		    order by seq_notice desc
-		) V
-	 ) T
-	 where T.RNO <![CDATA[>=]]> #{start} and T.RNO <![CDATA[<=]]> #{end}
-	 </select>
-	 
-	<!-- ,, -->
-	<select id="getTotalCount" parameterType="java.util.HashMap" resultType="int"> 
-		select count(*)
-		from tbl_notice
-		where status = 1
-		<if test="colname != null and search != null">
-			and ${colname} like '%' || #{search} || '%'
-		</if>	
-	</select>   
-	
+          , to_char(writedate,'yyyy-mm-dd') as writedate
+          , status
+         from tbl_notice
+          where status = 1
+          <if test="colname != null and search != null">     
+              and ${colname} like '%'|| #{search} ||'%'
+          </if>
+          order by seq_notice desc
+      ) V
+    ) T
+    where T.RNO <![CDATA[>=]]> #{start} and T.RNO <![CDATA[<=]]> #{end}
+    </select>
+    
+   <!-- ,, -->
+   <select id="getTotalCount" parameterType="java.util.HashMap" resultType="int"> 
+      select count(*)
+      from tbl_notice
+      where status = 1
+      <if test="colname != null and search != null">
+         and ${colname} like '%' || #{search} || '%'
+      </if>   
+   </select>   
+   
 
-	<insert id="noticewrite" parameterType="java.util.HashMap">
-		insert into tbl_notice(seq_notice, email, subject, content, writedate, status)
-		values(seq_notice.nextval, #{email}, #{subject}, #{content}, default, default) 
-	</insert>
+   <insert id="noticewrite" parameterType="java.util.HashMap">
+      insert into tbl_notice(seq_notice, email, subject, content, writedate, status)
+      values(seq_notice.nextval, #{email}, #{subject}, #{content}, default, default) 
+   </insert>
 
-	<update id="noticedelete" parameterType="java.util.HashMap">
-		update tbl_notice set status = 0
-		where seq_notice = #{seq_notice}
-	</update>
-	
-	<select id="noticedetail" parameterType="java.util.HashMap" resultMap="Shownoticemap">
-		select rownum as RNO, seq_notice, email, subject, content, writedate, status
-		from
-		(
-			select seq_notice, email, subject, content, to_char(writedate,'yyyy-mm-dd') as writedate, status
-			from tbl_notice
-			where seq_notice = #{seq_notice}
-		) v
-	</select>
-	
-	<update id="noticechange" parameterType="java.util.HashMap">
-		update tbl_notice set content = #{content}, subject = #{subject} 
-		where status = 1 and seq_notice = #{seq_notice}
-	</update>
-	
-	<!-- all qna -->
-	<resultMap type="java.util.HashMap" id="Showqnamap">
-		<result property="SEQ_QUESTION" column="seq_question" javaType="int" />
-		<result property="EMAIL" column="email" javaType="String" />
-		<result property="SUBJECT" column="subject" javaType="String" />
-		<result property="CONTENT" column="content" javaType="String" />
-		<result property="WRITEDATE" column="writedate" javaType="String" />
-		<result property="STATUS" column="status" javaType="String" />
-		<result property="ASTAT" column="astat" javaType="String" />
-		<result property="REPLYSTATUS" column="replystatus" javaType="int"/>
-		
-	</resultMap>
-	<select id="Showallqna" parameterType="java.util.HashMap" resultMap="Showqnamap">
-	select *
-	from
-	( 
-	    select rownum as RNO, seq_question, email, subject, content, writedate, status, replystatus
+   <update id="noticedelete" parameterType="java.util.HashMap">
+      update tbl_notice set status = 0
+      where seq_notice = #{seq_notice}
+   </update>
+   
+   <select id="noticedetail" parameterType="java.util.HashMap" resultMap="Shownoticemap">
+      select rownum as RNO, seq_notice, email, subject, content, writedate, status
+      from
+      (
+         select seq_notice, email, subject, content, to_char(writedate,'yyyy-mm-dd') as writedate, status
+         from tbl_notice
+         where seq_notice = #{seq_notice}
+      ) v
+   </select>
+   
+   <update id="noticechange" parameterType="java.util.HashMap">
+      update tbl_notice set content = #{content}, subject = #{subject} 
+      where status = 1 and seq_notice = #{seq_notice}
+   </update>
+   
+   <!-- all qna -->
+   <resultMap type="java.util.HashMap" id="Showqnamap">
+      <result property="SEQ_QUESTION" column="seq_question" javaType="int" />
+      <result property="EMAIL" column="email" javaType="String" />
+      <result property="SUBJECT" column="subject" javaType="String" />
+      <result property="CONTENT" column="content" javaType="String" />
+      <result property="WRITEDATE" column="writedate" javaType="String" />
+      <result property="STATUS" column="status" javaType="String" />
+      <result property="ASTAT" column="astat" javaType="String" />
+      <result property="REPLYSTATUS" column="replystatus" javaType="int"/>
+      
+   </resultMap>
+   <select id="Showallqna" parameterType="java.util.HashMap" resultMap="Showqnamap">
+   select *
+   from
+   ( 
+       select rownum as RNO, seq_question, email, subject, content, writedate, status, replystatus
         from      
                 (               
                 select seq_question, email, subject, content, to_char(writedate,'yyyy-mm-dd') as writedate, status, replystatus
                 from tbl_question
                 )v
         where status = 1
-		<if test="colname != null and search != null">     
-		      and ${colname} like '%'|| #{search} ||'%'
-		</if>	
-		order by seq_question desc
-		) T
-	 where T.RNO <![CDATA[>=]]> #{start} and T.RNO <![CDATA[<=]]> #{end}
-	 </select>
-	 
-	 <!-- ,, -->
-	<select id="getTotalqnaCount" parameterType="java.util.HashMap" resultType="int"> 
-		select count(*)
-		from
-			(
-			select status, email, replystatus
-				 , subject 
-				 , case when length(content) > 10 then substr(content, 1, 10) || '....'
+      <if test="colname != null and search != null">     
+            and ${colname} like '%'|| #{search} ||'%'
+      </if>   
+      order by seq_question desc
+      ) T
+    where T.RNO <![CDATA[>=]]> #{start} and T.RNO <![CDATA[<=]]> #{end}
+    </select>
+    
+    <!-- ,, -->
+   <select id="getTotalqnaCount" parameterType="java.util.HashMap" resultType="int"> 
+      select count(*)
+      from
+         (
+         select status, email, replystatus
+             , subject 
+             , case when length(content) > 10 then substr(content, 1, 10) || '....'
                                   else content
                                   end as content
                  , seq_question                           
-			from tbl_question
-			)V
-			where status = 1
-		<if test="colname != null and search != null">
-			 and ${colname} like '%' || #{search} || '%'
-		</if>	
-	</select> 
-	
-	<update id="guestqnadelete" parameterType="java.util.HashMap">
-		update tbl_question set status = 0
-		where seq_question = #{seq_question}
-	</update>
-	
-	<update id="hostqnadelete" parameterType="java.util.HashMap">
-		update tbl_question set status = 0
-		where seq_question = #{seq_question}
-	</update>
-	
-	<!-- qna detail -->
-	<select id="qnadetail" parameterType="java.util.HashMap" resultMap="Showqnamap">
-		select rownum as RNO, email, subject, content, status, seq_question, writedate
-		from
-		(
-			select status, email
-				 , subject 
-				 , seq_question
-				 , case when length(content) > 10 then substr(content , 1, 10) || '....'
+         from tbl_question
+         )V
+         where status = 1
+      <if test="colname != null and search != null">
+          and ${colname} like '%' || #{search} || '%'
+      </if>   
+   </select> 
+   
+   <update id="guestqnadelete" parameterType="java.util.HashMap">
+      update tbl_question set status = 0
+      where seq_question = #{seq_question}
+   </update>
+   
+   <update id="hostqnadelete" parameterType="java.util.HashMap">
+      update tbl_question set status = 0
+      where seq_question = #{seq_question}
+   </update>
+   
+    <!-- qna detail -->
+  <!-- <select id="qnadetail" parameterType="java.util.HashMap" resultMap="Showqnamap">
+      select rownum as RNO, email, subject, content, status, seq_question, writedate
+      from
+      (
+         select status, email
+             , subject 
+             , seq_question
+             , case when length(content) > 10 then substr(content , 1, 10) || '....'
                                   else content
                                   end as content
                  , to_char(writedate, 'yyyy-mm-dd') as writedate
-			from tbl_question		
-		) v
-		where seq_question = #{seq_question}
-	</select>
-	
-	<select id="qnadetail1" parameterType="java.util.HashMap" resultMap="Showqnamap">
-		select rownum as RNO, email, subject, content, status, seq_question, writedate, replystatus
-		from
-		(
-			select status, email
-				 , subject 
-				 , seq_question		
+         from tbl_question      
+      ) v
+      where seq_question = #{seq_question}
+   </select> -->
+   
+   <select id="qnadetail1" parameterType="java.util.HashMap" resultMap="Showqnamap">
+      select rownum as RNO, email, subject, content, status, seq_question, writedate, replystatus
+      from
+      (
+         select status, email
+             , subject 
+             , seq_question      
                  , content                                
                  , to_char(writedate, 'yyyy-mm-dd') as writedate
                  , replystatus
-			from tbl_question		
-		) v
-		where seq_question = #{seq_question}
-	</select>
-	
-	<resultMap type="java.util.HashMap" id="Showanswermap">
-		<result property="SEQ_QUESTION" column="seq_question" javaType="int" />
-		<result property="EMAIL" column="email" javaType="String" />
-		<result property="SUBJECT" column="subject" javaType="String" />
-		<result property="CONTENT" column="content" javaType="String" />
-		<result property="WRITEDATE" column="writedate" javaType="String"/>
-		<result property="STATUS" column="status" javaType="int"/>
-	</resultMap>
-	
-	<select id="answerdetailShow" parameterType="java.util.HashMap" resultMap="Showanswermap">
-		select seq_question, email, subject, content, writedate, status
-		from tbl_answer
-		where seq_question = #{seq_question}
-	</select>
-	
-	<select id="guestqnashow" parameterType="java.util.HashMap" resultMap="Showqnamap">
-		select a.seq_question, a.email, a.subject
+         from tbl_question      
+      ) v
+      where seq_question = #{seq_question}
+   </select>
+   
+   <resultMap type="java.util.HashMap" id="Showanswermap">
+      <result property="SEQ_QUESTION" column="seq_question" javaType="int" />
+      <result property="EMAIL" column="email" javaType="String" />
+      <result property="SUBJECT" column="subject" javaType="String" />
+      <result property="CONTENT" column="content" javaType="String" />
+      <result property="WRITEDATE" column="writedate" javaType="String"/>
+      <result property="STATUS" column="status" javaType="int"/>
+   </resultMap>
+   
+   <select id="answerdetailShow" parameterType="java.util.HashMap" resultMap="Showanswermap">
+      select seq_question, email, subject, content, writedate, status
+      from tbl_answer
+      where seq_question = #{seq_question}
+   </select>
+   
+   <select id="guestqnashow" parameterType="java.util.HashMap" resultMap="Showqnamap">
+      select a.seq_question, a.email, a.subject
           , case when length(a.content) > 10 then substr(a.content , 1, 10) || '....'
                                 else a.content
                                 end as content
           , to_char(a.writedate,'yyyy-mm-dd') as writedate , a.status, a.replystatus
         from tbl_question a join tbl_member b
         on a.email = b.email
-        where b.grade = 9 and a.status = 1	
-		<if test='search != null and !"".equals(search)'>
-			and a.${colname} like '%' || #{search} || '%'
-		</if>
-		order by a.seq_question desc		
-	</select>
-	
-	<select id="guestqnashowCount" parameterType="java.util.HashMap" resultType="int">
-		select count(*)
-		from tbl_question	
-		where status = 1		
-		<if test='search != null and !"".equals(search)'>
-			and ${colname} like '%' || #{search} || '%'
-		</if>	
-	</select>
-	
-	<select id="hostqnashow" parameterType="java.util.HashMap" resultMap="Showqnamap">
-		select a.seq_question, a.email, a.subject
+        where b.grade = 9 and a.status = 1   
+      <if test='search != null and !"".equals(search)'>
+         and a.${colname} like '%' || #{search} || '%'
+      </if>
+      order by a.seq_question desc      
+   </select>
+   
+   <select id="guestqnashowCount" parameterType="java.util.HashMap" resultType="int">
+      select count(a.seq_question)
+        from tbl_question a join tbl_member b
+        on a.email = b.email
+        where b.grade = 9 and a.status = 1      
+      order by a.seq_question desc         
+      <if test='search != null and !"".equals(search)'>
+         and ${colname} like '%' || #{search} || '%'
+      </if>   
+   </select>
+   
+   <select id="hostqnashow" parameterType="java.util.HashMap" resultMap="Showqnamap">
+      select a.seq_question, a.email, a.subject
           , case when length(a.content) > 10 then substr(a.content , 1, 10) || '....'
                                 else a.content
                                 end as content
           , to_char(writedate,'yyyy-mm-dd') as writedate , a.status, a.replystatus
         from tbl_question a join tbl_member b
         on a.email = b.email
-        where b.grade = 8 and a.status = 1		
-		<if test='search != null and !"".equals(search)'>
-			and a.${colname} like '%' || #{search} || '%'
-		</if>
-		order by a.seq_question desc		
-	</select>
-	
-	<select id="hostqnashowCount" parameterType="java.util.HashMap" resultType="int">
-		select count(*)
-		from tbl_question	
-		where status = 1	
-		<if test='search != null and !"".equals(search)'>
-			and ${colname} like '%' || #{search} || '%'
-		</if>	
-	</select>
-	
-	<!-- guest qna detail -->
-	<select id="qnaguestdetail" parameterType="java.util.HashMap" resultMap="Showqnamap">
-		select rownum as RNO, email, subject, content, seq_question, writedate
-		from
-			(
-			select email
-				 , subject 
-				 , seq_question
-				 , case when length(content) > 10 then substr(content , 1, 10) || '....'
+        where b.grade = 8 and a.status = 1      
+      <if test='search != null and !"".equals(search)'>
+         and a.${colname} like '%' || #{search} || '%'
+      </if>
+      order by a.seq_question desc      
+   </select>
+   
+   <select id="hostqnashowCount" parameterType="java.util.HashMap" resultType="int">
+      select count(a.seq_question)
+        from tbl_question a join tbl_member b
+        on a.email = b.email
+        where b.grade = 8 and a.status = 1      
+      order by a.seq_question desc         
+      <if test='search != null and !"".equals(search)'>
+         and ${colname} like '%' || #{search} || '%'
+      </if>   
+   </select>
+   
+   <!-- guest qna detail -->
+   <!-- <select id="qnaguestdetail" parameterType="java.util.HashMap" resultMap="Showqnamap">
+      select rownum as RNO, email, subject, content, seq_question, writedate
+      from
+         (
+         select email
+             , subject 
+             , seq_question
+             , case when length(content) > 10 then substr(content , 1, 10) || '....'
                                   else content
                                   end as content
                  , to_char(writedate, 'yyyy-mm-dd') as writedate
-			from tbl_question	
-			) v
-		where seq_question = #{seq_question}
-	</select>
-	
-	<select id="qnaguestdetail2" parameterType="java.util.HashMap" resultMap="Showqnamap">
-		select rownum as RNO, email, subject, content, seq_question, writedate
-		from
-			(
-			select email
-					 , subject 
-					 , seq_question
-					 , content
-	                 , to_char(writedate, 'yyyy-mm-dd') as writedate
-	        from tbl_question	
-	        ) v
+         from tbl_question   
+         ) v
+      where seq_question = #{seq_question}
+   </select> -->
+   
+   <select id="qnaguestdetail2" parameterType="java.util.HashMap" resultMap="Showqnamap">
+      select rownum as RNO, email, subject, content, seq_question, writedate
+      from
+         (
+         select email
+                , subject 
+                , seq_question
+                , content
+                    , to_char(writedate, 'yyyy-mm-dd') as writedate
+           from tbl_question   
+           ) v
         where seq_question = #{seq_question}
-	</select>
-	
-	<!-- host qna detail -->
-	<select id="qnahostdetail" parameterType="java.util.HashMap" resultMap="Showqnamap">
-		select rownum as RNO, email, subject, content, seq_question, writedate
-		from
-			(
-			select email
-				 , subject 
-				 , seq_question
-				 , case when length(content) > 10 then substr(content , 1, 10) || '....'
+   </select>
+   
+   <!-- host qna detail -->
+   <!-- <select id="qnahostdetail" parameterType="java.util.HashMap" resultMap="Showqnamap">
+      select rownum as RNO, email, subject, content, seq_question, writedate
+      from
+         (
+         select email
+             , subject 
+             , seq_question
+             , case when length(content) > 10 then substr(content , 1, 10) || '....'
                                   else content
                                   end as content
                  , to_char(writedate, 'yyyy-mm-dd') as writedate
-			from tbl_question	
-			) v
-		where seq_question = #{seq_question}
-	</select>
-	
-	<select id="qnahostdetail3" parameterType="java.util.HashMap" resultMap="Showqnamap">
-		select rownum as RNO, email, subject, content, seq_question, writedate
-		from
-			(
-			select email
-					 , subject 
-					 , seq_question
-					 , content
-	                 , to_char(writedate, 'yyyy-mm-dd') as writedate
-	        from tbl_question	
-	        ) v
+         from tbl_question   
+         ) v
+      where seq_question = #{seq_question}
+   </select> -->
+   
+   <select id="qnahostdetail3" parameterType="java.util.HashMap" resultMap="Showqnamap">
+      select rownum as RNO, email, subject, content, seq_question, writedate
+      from
+         (
+         select email
+                , subject 
+                , seq_question
+                , content
+                    , to_char(writedate, 'yyyy-mm-dd') as writedate
+           from tbl_question   
+           ) v
         where seq_question = #{seq_question}
-	</select>
-	
-	<!-- index qna -->
-	<resultMap type="java.util.HashMap" id="Showqnamap1">
-		<result property="SEQ_QUESTION" column="seq_question" javaType="int" />
-		<result property="EMAIL" column="email" javaType="String" />
-		<result property="SUBJECT" column="subject" javaType="String" />
-		<result property="CONTENT" column="content" javaType="String" />
-		<result property="GRADE" column="grade" javaType="int"/>
-	</resultMap>
-	
-	<!-- index guest qna show -->
-	<select id="Showguestqna" resultMap="Showqnamap1">
-           select a.seq_question, a.email, a.subject, a.content
+   </select>
+   
+   <!-- index qna -->
+   <resultMap type="java.util.HashMap" id="Showqnamap1">
+      <result property="SEQ_QUESTION" column="seq_question" javaType="int" />
+      <result property="EMAIL" column="email" javaType="String" />
+      <result property="SUBJECT" column="subject" javaType="String" />
+      <result property="CONTENT" column="content" javaType="String" />
+      <result property="GRADE" column="grade" javaType="int"/>
+   </resultMap>
+   
+   <!-- index guest qna show -->
+   <select id="Showguestqna" resultMap="Showqnamap1">
+           select a.seq_question, a.email, a.subject,  
+            case when length(a.content) > 10 then substr(a.content , 1, 10) || '....'
+                                else a.content
+                                end as content
            from tbl_question a join tbl_member b  
            on a.email = b.email        
            where a.status = 1 and b.grade = 9
            order by seq_question desc
-	 </select>
-	 
-	<!-- index host qna show -->
-	<select id="Showhostqna" resultMap="Showqnamap1">
-           select a.seq_question, a.email, a.subject, a.content, b.grade
+    </select>
+    
+   <!-- index host qna show -->
+   <select id="Showhostqna" resultMap="Showqnamap1">
+           select a.seq_question, a.email, a.subject, 
+                  case when length(a.content) > 10 then substr(a.content , 1, 10) || '....'
+                                else a.content
+                                end as content
            from tbl_question a join tbl_member b       
            on a.email = b.email        
            where a.status = 1 and b.grade = 8         
            order by seq_question desc
-	</select>
-	 
-	 <!-- index notice show -->
-	<select id="Shownoticeindex" resultMap="Shownoticemap">		   
-	        select seq_notice, email, subject, content, writedate, status
-	        from tbl_notice
-	        where status = 1
-	        order by seq_notice desc    
-	</select>
-	
-	<!-- index guest count -->
-	<select id="Guestcount" resultType="int">
-		select count(*) as count
-		from tbl_member	
-		where status = 1 and grade = 9
-	</select>
-	
-	<!-- index host count -->
-	<select id="Hostcount" resultType="int">
-		select count(*) as count
-		from tbl_member
-		where status = 1 and grade = 8
-	</select>
-	
-	<!-- QNA 관리자 email 뽑아오기 -->
-	<select id="getEmail" resultType="String">
-		select a.email
-		from tbl_member
-		where status = 1 
-	</select>
-	
-	<!-- 답변테이블 insert -->
-	<insert id="answerInput" parameterType="java.util.HashMap">
-		insert into tbl_answer(seq_question, email, subject, content, writedate, status)
-		values(#{seq_question}, #{email}, #{subject}, #{reply}, default, default)
-	</insert>
-	
-	<!-- Allqna 리스트에 답변을 했는지 안했는지 알아오기 -->
-	<update id="AllqnaReply" parameterType="java.util.HashMap">
-		update tbl_question set replystatus = 1
-		where seq_question = #{seq_question}
-	</update>
-	
-</mapper>
+   </select>
+    
+    <!-- index notice show -->
+   <select id="Shownoticeindex" resultMap="Shownoticemap">         
+           select seq_notice, email, subject, 
+               case when length(content) > 10 then substr(content , 1, 10) || '....'
+                                else content
+                                end as content
+           from tbl_notice
+           where status = 1
+           order by seq_notice desc    
+   </select>
+   
+   <!-- index guest count -->
+   <select id="Guestcount" resultType="int">
+      select count(*) as count
+      from tbl_member   
+      where status = 1 and grade = 9
+   </select>
+   
+   <!-- index host count -->
+   <select id="Hostcount" resultType="int">
+      select count(*) as count
+      from tbl_member
+      where status = 1 and grade = 8
+   </select>
+   
+   <!-- QNA 관리자 email 뽑아오기 -->
+   <select id="getEmail" resultType="String">
+      select a.email
+      from tbl_member
+      where status = 1 
+   </select>
+   
+   <!-- 답변테이블 insert -->
+   <insert id="answerInput" parameterType="java.util.HashMap">
+      insert into tbl_answer(seq_question, email, subject, content, writedate, status)
+      values(#{seq_question}, #{email}, #{subject}, #{reply}, default, default)
+   </insert>
+   
+   <!-- Allqna 리스트에 답변을 했는지 안했는지 알아오기 -->
+   <update id="AllqnaReply" parameterType="java.util.HashMap">
+      update tbl_question set replystatus = 1
+      where seq_question = #{seq_question}
+   </update>
+   
+   <!-- 통계 알아오기 -->
+   <resultMap type="java.util.HashMap" id="Showsum">
+      <result property="SEQ_NOTICE" column="seq_notice" javaType="int" />
+      <result property="EMAIL" column="email" javaType="String" />
+      <result property="SUBJECT" column="subject" javaType="String" />
+      <result property="CONTENT" column="content" javaType="String" />
+      <result property="WRITEDATE" column="writedate" javaType="String" />
+      <result property="STATUS" column="status" javaType="String" />
+      <result property="COMMISSION" column="commission" javaType="String" />
+      <result property="LEVEL" column="level" javaType="String" />
+      <result property="MONTH" column="month" javaType="String" />
+      <result property="YEAR" column="year" javaType="String"/>
+   </resultMap>
+   <select id="getSum" parameterType="java.util.HashMap" resultMap="Showsum">
+   select D.month, nvl(sum(E.commission), 0) as commission
+   from (SELECT LEVEL as month
+        FROM DUAL
+        CONNECT BY LEVEL <![CDATA[<=]]> 12) D
+        left outer join
+        (select extract(month from checkin_date) as month,
+               C.total_saleprice * A.commission / 100 as commission
+         from tbl_member A
+         join tbl_lodge B
+         on A.email = B.email
+         join tbl_payment C
+         on B.seq_lodge = C.seq_lodge
+         where extract(year from checkin_date) = #{year}) E
+         on D.month = E.month
+   group by D.month
+   order by D.month asc
+   </select>
+   
+   <!-- 총수익 통계 -->
+   <select id="totalincome" parameterType="java.util.HashMap" resultType="int">
+      select sum(commission) 
+      from
+      (
+      select  D.month, nvl(sum(E.commission), 0) as commission
+      from   (SELECT LEVEL as month FROM DUAL CONNECT BY LEVEL <![CDATA[<=]]> 12) D
+              left outer join  (select  extract(month from checkin_date) as month,
+                                        C.total_saleprice * A.commission / 100 as commission
+                                from    tbl_member A
+                                join    tbl_lodge B
+                                on      A.email = B.email
+                                join    tbl_payment C
+                                on      B.seq_lodge = C.seq_lodge
+                                where   extract(year from checkin_date) = 2017) E
+              on D.month = E.month
+      group by D.month
+      order by D.month asc
+      ) v
+   </select>
+   
+   <!-- qna 카운트 통계 -->
+   <select id="qnalistsum" parameterType="java.util.HashMap" resultMap="Showsum">
+   select month, count(seq_question) as seq
+   from
+       (
+       select A.month as month, seq_question, writedate
+       from (select level as month from dual connect by level <![CDATA[<=]]> 12) A
+             full outer join (select extract(month from writedate) as month, nvl(seq_question, 0) as seq_question, writedate from tbl_question where extract(year from writedate) = #{year}) B
+             on A.month = B.month            
+             order by A.month
+       )  
+   group by month
+   order by month
+   </select> 
 
+   <!-- 오늘 접속자 수 구하기 -->
+   <select id="jintianCount" resultType="int"> 
+      select sum(cnt) as cnt
+     from
+      (select substr(a.time, 12, 13) as time, nvl(b.cnt, 0) as cnt
+      from (select to_char(to_date(to_char(sysdate, 'yyyy-mm-dd'), 'yyyy-mm-dd') + ((level - 1) / 24), 'yyyy-mm-dd hh24') as time from dual connect by level <![CDATA[<=]]> 24) a
+      left outer join 
+      (select time, count(time) as cnt 
+      from (select to_char(logintime, 'yyyy-mm-dd hh24') as time 
+      from tbl_login_info where to_char(logintime, 'yyyy-mm-dd') = to_char(sysdate, 'yyyy-mm-dd')) group by time) b
+      on a.time = b.time
+      order by time asc
+      )
+    </select>
+    
+    <!-- 지구본에 들어갈 Q&A 가져오기 -->
+    <select id="ShowqnaList" resultMap="Showqnamap"> 
+    select rno, seq_question, email, subject, alertstatus
+   from
+             (
+              select a.seq_question, a.email, a.subject, rownum as rno, a.alertstatus,
+               case when length(a.content) > 10 then substr(a.content , 1, 10) || '....'
+                                   else a.content
+                                   end as content
+              from tbl_question a join tbl_member b  
+              on a.email = b.email        
+              where a.status = 1 
+              order by seq_question desc
+             )v
+   where rno <![CDATA[<=]]> 5
+   </select>
+
+   <!-- 알림을 눌르지 않았을 경우 1, 눌렀을 경우 0 -->
+   <update id="changeStatus" parameterType="java.util.HashMap">
+      update tbl_question set alertstatus = 0
+      where seq_question = #{seq_question}
+   </update>
+
+
+   <!-- 알람 누르지 않은 갯수 구하기 -->
+   <select id="LingCount" resultType="int">
+      select count(*)
+      from
+             (
+              select a.seq_question, a.email, a.subject, rownum as rno, a.alertstatus,
+               case when length(a.content) > 10 then substr(a.content , 1, 10) || '....'
+                                   else a.content
+                                   end as content
+              from tbl_question a join tbl_member b  
+              on a.email = b.email        
+              where a.status = 1 
+              order by seq_question desc
+             )v
+      where rno <![CDATA[<=]]> 5 and alertstatus = 1
+   </select>
+
+
+
+   <resultMap type="java.util.HashMap" id="Showreport">
+      <result property="SEQ_LODGE" column="seq_lodge" javaType="int" />
+      <result property="EMAIL" column="email" javaType="String" />
+      <result property="SEQ_REVIEW" column="seq_review" javaType="String" />
+      <result property="CONTENT" column="content" javaType="String" />
+      <result property="REPORTDATE" column="reportdate" javaType="String" />
+   </resultMap>
+   
+   <!-- 신고 목록 -->
+   <select id="allreportList" parameterType="java.util.HashMap" resultMap="Showreport">
+   select  seq_lodge, seq_review, email, content , reportdate
+    from 
+      (
+         select A.seq_payment , A.seq_lodge , B.SEQ_REVIEW , B.EMAIL  , B.SCORE , B.CONTENT , B.STATUS , to_char(C.reportdate , 'yyyy-mm-dd') as reportdate , C.status
+         from TBL_PAYMENT A join tbl_review B
+         on A.seq_payment = B.seq_payment
+         join tbl_report_review C
+         on B.SEQ_REVIEW = C.SEQ_REVIEW
+         where C.status = 1
+      ) V
+   </select>
+   
+   <update id="delreport" parameterType="String">
+   
+   update tbl_report_review set status = 0
+    where seq_review = #{reportno}
+    
+   </update>
+
+</mapper>
 
 
 

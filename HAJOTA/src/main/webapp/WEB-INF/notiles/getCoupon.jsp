@@ -4,12 +4,12 @@
 
 	<script type="text/javascript">
 		<c:if test="${n == 1}">
-			alert("호스트 탈퇴 성공!!");
-			location.href="<%= request.getContextPath() %>/hostManager.go";       
+			alert("쿠폰받기 성공!!");
+			location.href="<%= request.getContextPath() %>/coupon.go";       
 		</c:if>
-		 
+		
 		<c:if test="${n != 1}">
-			alert("호스트 탈퇴 실패!!");
+			alert("쿠폰받기 실패!!");
 			javascript:history.back();
 			// 이전 페이지로 이동
 		</c:if>

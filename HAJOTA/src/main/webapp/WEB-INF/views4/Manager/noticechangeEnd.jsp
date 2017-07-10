@@ -8,7 +8,7 @@
 			alert("수정 성공!!");
 			location.href="<%= request.getContextPath() %>/noticeManager.go"; 
 		</c:if>
-		
+		 
 		<c:if test="${n != 1}">
 			alert("수정 실패!!");
 			location.href="<%= request.getContextPath() %>/noticeManager.go";  

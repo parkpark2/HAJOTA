@@ -1,10 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="<%= request.getContextPath()%>/resources/js/SH/jquery-2.0.0.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="<%= request.getContextPath()%>/resources/js/SH/jquery-2.0.0.js"></script>
  
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBEM1_6g0M675zuc-nJwdmBf-reTcY_v60"></script>
 
@@ -52,6 +51,7 @@
        $("#daummap").hide();
         
        $("#skip").click(function(){
+    	  $("#Video1").prop('muted', true); 
           $("#myDIV").hide();
           $("#skipDIV").hide();
           $("#content").show();

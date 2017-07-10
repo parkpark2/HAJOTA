@@ -109,19 +109,6 @@ public class ManagerService implements InterManagerService {
 		return recover;
 	}
 
-	// 돌려돌려돌림판 사용가능현황 가져오기
-	@Override
-	public int ShowdolGame(HashMap<String, String> map) {
-		int status = dao.ShowdolGame(map);
-		return status;
-	}
-
-	// 사다리게임 사용가능현황 가져오기
-	@Override
-	public int ShowsadaliGame(HashMap<String, String> map) {
-		int status = dao.ShowsadaliGame(map);
-		return status;
-	}
 
 	// 오늘 생일인 회원리스트 뽑아오기
 	@Override
@@ -137,11 +124,32 @@ public class ManagerService implements InterManagerService {
 		int cnt = dao.getbirthUsercount(map);
 		return cnt;
 	}
+	
+	// 돌려돌려돌림판 사용가능현황 가져오기
+	@Override
+	public int ShowdolGame(HashMap<String, String> map) {
+		int status = dao.ShowdolGame(map);
+		return status;
+	}
+
+	// 사다리게임 사용가능현황 가져오기
+	@Override
+	public int ShowsadaliGame(HashMap<String, String> map) {
+		int status = dao.ShowsadaliGame(map);
+		return status;
+	}
 
 	// 돌림판게임에 참여했던 기록 남기기
 	@Override
 	public int InsertDolGame(HashMap<String, String> map) {
 		int n = dao.InsertDolGame(map);
+		return n;
+	}
+	
+	// 사다리게임에 참여했던 기록 남기기
+	@Override
+	public int InsertSadaliGame(HashMap<String, String> map) {
+		int n = dao.InsertSadaliGame(map);
 		return n;
 	}
 
@@ -179,6 +187,24 @@ public class ManagerService implements InterManagerService {
 		int plus = dao.plusSadaliGame(map);
 		return plus;
 	}
+
+	// 오늘 시간대 별로 로그인한 회원수 구하기
+	@Override
+	public List<HashMap<String, Object>> loginTimeCount() {
+		List<HashMap<String, Object>> loginTimeCount = dao.loginTimeCount();
+		return loginTimeCount;
+	}
+
+	// 매달 가입한 게스트의 총수
+	@Override
+	public List<HashMap<String, Object>> joinGuestChart() {
+		List<HashMap<String, Object>> joinGuestChart = dao.joinGuestChart();
+		return joinGuestChart;
+	}
+
+	
+
+	
 
 	
 }

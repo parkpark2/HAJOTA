@@ -41,7 +41,7 @@
 		$("#endDate").val("${endDate}");
 	});	
 </script>
-
+	<form name="searchFrm">
 
    <!-- Navigation Bar -->
     <div class="w3-top w3-bar w3-white w3-border-bottom w3-xlarge" style="background-color: white; z-index :100;">
@@ -134,7 +134,7 @@
    </div>   
    
 
-  
+  </form>
   
   
   

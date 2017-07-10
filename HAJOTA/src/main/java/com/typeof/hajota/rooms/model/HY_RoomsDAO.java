@@ -39,22 +39,17 @@ public List<HashMap<String, String>> getcuponlist(HashMap<String, String> map) {
 	return getcuponlist;
 }
 
-/*public List<HashMap<String, String>> getreviewlist(String seq_lodge , RowBounds rowbounds) {
+
+public List<HashMap<String, String>> getreviewlist(String seq_lodge , RowBounds rowbounds) {
 
 	List<HashMap<String, String>> reviewlist = sqlsession.selectList("HY_rooms.getreviewlist",seq_lodge,rowbounds);
 	
 	return reviewlist;
-}*/
-public List<HashMap<String, String>> getreviewlist(RowBounds rowbounds) {
-
-	List<HashMap<String, String>> reviewlist = sqlsession.selectList("HY_rooms.getreviewlist",null,rowbounds);
-	
-	return reviewlist;
 }
 
-public int getreviewcount() {
+public int getreviewcount(String seq) {
 
-	int totalcount = sqlsession.selectOne("HY_rooms.getreviewcount");
+	int totalcount = sqlsession.selectOne("HY_rooms.getreviewcount",seq);
 	
 	return totalcount;
 }
@@ -63,6 +58,13 @@ public int insertreport(HashMap<String, String> map) {
 
 
 	int n = sqlsession.insert("HY_rooms.insertreport", map);
+	
+	return n;
+}
+
+public int addtrip(HashMap<String, String> map) {
+
+	int n = sqlsession.insert("HY_rooms.addtrip", map);
 	
 	return n;
 }
