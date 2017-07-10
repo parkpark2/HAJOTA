@@ -135,38 +135,38 @@ IMP.request_pay({
 		/* 이곳에서 insert를 처리하겟다. */
 		
 		alert(msg);
-		insert();
-		self.close();
+		
+		var totalsaleprice = $("#totalsaleprice").val(); 
+		var people = $("#people").val(); 
+		var startdate = $("#startdate").val(); 
+		var enddate = $("#enddate").val(); 
+		var cupon = $("#coupon").val();
+		var email = $("#c_email").val();
+		var roomno = $("#c_roomno").val();
+		
+		insert(email, roomno, cupon, startdate, enddate, people, totalsaleprice);
+		
+		
     } else {
         var msg = '결제에 실패하였습니다.';
         msg += '에러내용 : ' + rsp.error_msg;
         
         alert(msg);
-        
+        self.close();
     }
+    
 });
-} 
+}
 
-function insert(){
-	 var totalsaleprice = $("#totalsaleprice").val(); 
-	 var people = $("#people").val(); 
-	 var startdate = $("#startdate").val(); 
-	 var enddate = $("#enddate").val(); 
-	 var cupon = $("#coupon").val();
-	 var email = $("#c_email").val();
-	 var roomno = $("#c_roomno").val();
-	 alert(email);
-	 alert(roomno);
-	 alert(cupon);
-	 alert(startdate);
-	 alert(enddate);
-	 alert(people);
-	 alert(totalsaleprice);
-	 
+
+
+function insert(email, roomno, cupon, startdate, enddate, people, totalsaleprice){
 	 
 	 $.ajax({
 		 
 		url : "/hajota/addtrip.go",
+		dataType : "JSON",
+		method : "POST",
 		data : {email : email,
 				roomno : roomno,
 				cupon : cupon,
@@ -174,16 +174,30 @@ function insert(){
 				enddate : enddate,
 				people : people,
 				totalsaleprice : totalsaleprice},
-		dataType : "JSON",
-		success : function(){
-			alert("결제완료");
+		
+		success : function(data){
+			
+			if(data == 1) {
+				alert("쿠폰 사용 완료");
+				self.close();
+			}
+			
+			if(data == 0) {
+				alert("쿠폰 사용 안함");
+				self.close();
+			}
 		},
 		error : function(){
 			alert("결제실패");
 		}
 	 });
 	 
-	
+	$.ajax({
+		
+		url : "",
+		
+		
+	});
 	
 }
 

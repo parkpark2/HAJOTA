@@ -73,7 +73,7 @@
 				var showreview = "";
 				$("#showallreview").empty();
 				if(data.length ==0){
-					alert("값없음");
+					
 				}
 				else{
 					

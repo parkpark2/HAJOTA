@@ -145,4 +145,10 @@
     </insert> 
 
 
+	<update id="usecoupon" parameterType="java.util.HashMap" >
+	update TBL_COUPON set status = 0
+    where seq_coupon = #{cupon}
+	</update>
+	
+
 </mapper>

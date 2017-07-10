@@ -69,6 +69,13 @@ public int addtrip(HashMap<String, String> map) {
 	return n;
 }
 
+public int usecoupon(String cupon) {
+
+	int m = sqlsession.update("HY_rooms.usecoupon", cupon);
+	
+	return m;
+}
+
 
    
 }

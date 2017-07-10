@@ -66,6 +66,13 @@ public int addtrip(HashMap<String, String> map) {
 	return n;
 }
 
+public int usecoupon(String cupon) {
+	
+	int m = dao.usecoupon(cupon);
+	
+	return m;
+}
+
 
    
 }

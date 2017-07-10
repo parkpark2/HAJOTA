@@ -188,7 +188,7 @@ public class HY_RoomsController {
     	// /Board/src/main/webapp/WEB-INF/views/main/test.jsp 파일을 생성한다.
     }
     /*숙소 결제*/ 
-   @RequestMapping(value="/addtrip.go", method={RequestMethod.GET})
+   @RequestMapping(value="/addtrip.go", method={RequestMethod.POST})
    @ResponseBody
     public int addtrip(HttpServletRequest req) {
     
@@ -200,6 +200,15 @@ public class HY_RoomsController {
     	String enddate = req.getParameter("enddate");
     	String totalsaleprice = req.getParameter("totalsaleprice");
     	
+    	System.out.println(email);
+    	System.out.println(roomno);
+    	System.out.println(cupon);
+    	System.out.println(people);
+    	System.out.println(startdate);
+    	System.out.println(enddate);
+    	System.out.println(totalsaleprice);
+    	
+    	
     	HashMap<String, String> map = new HashMap<String, String>();
     	map.put("email", email);
     	map.put("roomno", roomno);
@@ -209,7 +218,17 @@ public class HY_RoomsController {
     	map.put("enddate", enddate);
     	map.put("totalsaleprice", totalsaleprice);
     	
-    	int n = service.addtrip(map);
+    	int n = 0;
+    	int m = 0;
+    	
+    	if(cupon != null){
+    		m = service.usecoupon(cupon);
+    	}
+    	
+    		n = service.addtrip(map);
+    	
+    	    
+    	
     	
     	
     	
